@@ -37,6 +37,16 @@ node coin.js list
 - `checklist.md` — เช็คอัตโนมัติ + เช็คมือ + exit rules
 - `journal.json` — ทุก decision + snapshot ณ เวลานั้น + ผลลัพธ์ (สร้างอัตโนมัติตอน log ครั้งแรก)
 
+## รันบน cloud (ไม่ต้องเปิดคอม)
+
+GitHub Actions (`.github/workflows/coin-scan.yml`) รัน `update` + `scan` ทุก 4 ชม
+แล้ว commit ผล (journal outcomes, candidates.json, scans.log) กลับเข้า repo เอง
+
+**วินัยสำคัญเมื่อใช้ cloud:** เครื่องเราและ GitHub เขียนไฟล์เดียวกัน
+- ก่อน `log`: `git pull --rebase` เสมอ
+- หลัง `log`: `git commit -am "log <symbol>" && git push` ทันที
+- repo ต้องเป็น **private** — journal คือข้อมูลการเทรดของเราเอง
+
 ## Eval คิดยังไง
 
 1. log ทุก decision **รวมตัวที่ skip** — เพื่อวัดทั้ง "จับ rug ได้กี่ %" และ "ฆ่าตัวดีทิ้งกี่ %"
