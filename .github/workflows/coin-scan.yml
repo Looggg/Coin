@@ -1,0 +1,43 @@
+name: coin-scan
+
+on:
+  schedule:
+    - cron: "0 */4 * * *" # every 4 hours (UTC)
+  workflow_dispatch: {} # manual run button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coin-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # collect due 1d/7d/30d outcomes first, then sweep for new candidates
+      - name: update outcomes
+        run: node coin.js update
+
+      - name: discovery scan
+        run: node coin.js scan
+
+      - name: commit results
+        run: |
+          git config user.name "coin-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add journal.json candidates.json scans.log
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "auto: update + scan $(date -u +%FT%H:%M)"
+            git pull --rebase
+            git push
+          fi

@@ -1,0 +1,6 @@
+# local-only noise — journal.json, candidates.json, scans.log ARE tracked
+update.log
+scan.log
+*.bak
+*.tmp
+node_modules/
