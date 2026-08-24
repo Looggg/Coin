@@ -15,6 +15,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -22,25 +23,39 @@ jobs:
         with:
           node-version: 22
 
-      # exit alerts first — an open position needing action beats any new find
-      - name: watch open positions
-        run: node coin.js watch
-
+      # data collection first — a failure here must not block the commit
       - name: update outcomes
+        continue-on-error: true
         run: node coin.js update
 
       - name: discovery scan
+        continue-on-error: true
         run: node coin.js scan
 
       - name: commit results
         run: |
           git config user.name "coin-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add journal.json candidates.json scans.log
+          # -A . stages whatever exists; naming journal.json explicitly would
+          # abort the whole step until the first decision is logged
+          git add -A .
           if git diff --cached --quiet; then
             echo "no changes"
           else
             git commit -m "auto: update + scan $(date -u +%FT%H:%M)"
-            git pull --rebase
-            git push
+            # a local push landing mid-run makes the rebase conflict; retry,
+            # and never leave the runner stuck mid-rebase
+            for i in 1 2 3; do
+              if git pull --rebase && git push; then
+                echo "pushed"; break
+              fi
+              git rebase --abort 2>/dev/null || true
+              sleep 5
+            done
           fi
+
+      # LAST on purpose: exits non-zero when a position needs action, so the
+      # job goes red and GitHub emails. An alert nobody is told about is not
+      # monitoring. Runs after the commit so it never blocks saving data.
+      - name: watch open positions
+        run: node coin.js watch

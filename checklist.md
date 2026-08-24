@@ -14,6 +14,7 @@
 | **Dev wallet** | ถือ > 5% | dev คนเดียวตัดสินใจ dump ได้ |
 | **Bundle/insider** | wallet ที่ fund จากแหล่งเดียวกันถือ > 25% | dev กระจาย wallet หลบการตรวจ |
 | **Holders** | < 100 คน | ไม่มี distribution จริง |
+| **Rugged flag** | rugcheck ตีตราว่า rug แล้ว | จบ ไม่ต้องดูต่อ |
 
 WARN (ไม่ตัดทิ้งแต่ต้องรู้): อายุ < 24h, vol/liq > 10x (wash), ข้อมูล LP/holder หาไม่ได้
 

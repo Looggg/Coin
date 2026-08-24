@@ -1,6 +1,5 @@
-# local-only noise — journal.json, candidates.json, scans.log ARE tracked
-update.log
-scan.log
+# local-only noise — journal.json, candidates.json, candidates-history.jsonl
+# and scans.log ARE tracked (they are the eval's data)
 *.bak
 *.tmp
 node_modules/

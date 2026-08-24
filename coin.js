@@ -2,11 +2,17 @@
 /**
  * coin.js — Solana memecoin safety-check + decision journal + eval tool
  *
- * Zero dependencies. Data sources: DexScreener API + Rugcheck API (both free, no key).
+ * Zero dependencies. Data sources (all free, no API key):
+ *   GeckoTerminal — pool discovery for `scan`
+ *   DexScreener   — price, liquidity, volume, txn counts
+ *   Rugcheck      — authorities, LP lock, holders, insider/bundle networks
  *
  * Commands:
+ *   node coin.js scan [cap]                    Sweep new+trending pools, rank survivors
  *   node coin.js check <mint>                  Fetch metrics, run safety checklist, print verdict
  *   node coin.js log <mint> buy|skip "reason"  Snapshot + record decision into journal.json
+ *   node coin.js watch                         Exit alerts on open positions (exits 1 if action needed)
+ *   node coin.js exit <mint> "reason"          Close a position, record realized return
  *   node coin.js update                        Fill in 1d/7d/30d outcomes for due entries
  *   node coin.js stats                         Summary: returns, rug rate, vs SOL baseline
  *   node coin.js list                          List journal entries
@@ -476,7 +482,8 @@ function stats() {
     console.log(`── REALIZED (${closed.length} closed position(s)) ──`);
     console.log(`  median          ${fmtPct(median(rets))}`);
     console.log(`  $10 each        $${(stake * rets.length).toFixed(0)} → $${out.toFixed(2)} (${fmtPct(out / (stake * rets.length) - 1)})`);
-    console.log(`  median hold     ${median(closed.map((e) => e.exit.heldHours)).toFixed(0)}h`);
+    const holds = closed.map((e) => e.exit.heldHours).filter(Number.isFinite);
+    if (holds.length) console.log(`  median hold     ${median(holds).toFixed(0)}h`);
     const byReason = {};
     for (const e of closed) (byReason[e.exit.reason] = byReason[e.exit.reason] || []).push(e.exit.realizedRet);
     for (const [r, rr] of Object.entries(byReason))
@@ -598,8 +605,16 @@ async function cmdScan(fullCheckCap) {
 
   passed.sort((a, b) => b.score - a.score); // best-looking survivor first
 
-  // candidates.json = latest shortlist; scans.log = permanent history
+  // candidates.json = latest shortlist (overwritten every run);
+  // candidates-history.jsonl = every candidate ever surfaced, so a find is
+  // never lost just because nobody looked within the 4h scan window;
+  // scans.log = one human-readable line per run
   fs.writeFileSync(path.join(__dirname, "candidates.json"), JSON.stringify(passed, null, 2));
+  if (passed.length)
+    fs.appendFileSync(
+      path.join(__dirname, "candidates-history.jsonl"),
+      passed.map((p) => JSON.stringify(p)).join("\n") + "\n"
+    );
   fs.appendFileSync(
     path.join(__dirname, "scans.log"),
     `${new Date().toISOString()} scanned=${list.length} passed=${passed.length}` +
@@ -681,7 +696,14 @@ async function cmdWatch() {
       acted++;
     }
   }
-  console.log(acted ? `\n${acted} position(s) need action` : `\nno action needed`);
+  if (acted) {
+    console.log(`\n${acted} position(s) need action`);
+    // non-zero exit so the CI job goes red and GitHub emails — an alert
+    // buried in a green build log is an alert nobody reads
+    process.exitCode = 1;
+  } else {
+    console.log(`\nno action needed`);
+  }
 }
 
 async function cmdExit(mint, reason) {

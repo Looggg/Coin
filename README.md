@@ -37,14 +37,21 @@ node coin.js list
 
 ## Data sources (ฟรี ไม่ต้องมี key)
 
+- [GeckoTerminal API](https://api.geckoterminal.com) — หา pool ใหม่/trending สำหรับ `scan`
 - [DexScreener API](https://docs.dexscreener.com) — ราคา, liquidity, volume, txns
-- [Rugcheck API](https://rugcheck.xyz) — mint/freeze authority, LP lock, holders, risks
+- [Rugcheck API](https://rugcheck.xyz) — mint/freeze authority, LP lock, holders, insider/bundle networks
 
 ## โครงสร้าง
 
 - `coin.js` — เครื่องมือหลัก (เกณฑ์ปรับได้ที่ `RULES` บนหัวไฟล์)
 - `checklist.md` — เช็คอัตโนมัติ + เช็คมือ + exit rules
-- `journal.json` — ทุก decision + snapshot ณ เวลานั้น + ผลลัพธ์ (สร้างอัตโนมัติตอน log ครั้งแรก)
+- `journal.json` — ทุก decision + snapshot ณ เวลานั้น + ผลลัพธ์ (สร้างตอน `log` ครั้งแรก)
+- `candidates.json` — shortlist ล่าสุด เรียงตามคะแนน (ถูกเขียนทับทุก scan)
+- `candidates-history.jsonl` — ทุก candidate ที่เคยเจอ ไม่มีวันหาย
+- `scans.log` — ประวัติการ scan บรรทัดละรอบ
+
+> อย่าตั้ง Windows Task Scheduler รัน `scan`/`update` ในเครื่อง — จะชนกับ cloud
+> (เขียนไฟล์เดียวกันแบบไม่ commit แล้ว `git pull` conflict เงียบๆ)
 
 ## รันบน cloud (ไม่ต้องเปิดคอม)
 
