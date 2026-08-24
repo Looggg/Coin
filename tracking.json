@@ -24,7 +24,14 @@
    "failReason": null,
    "score": 68
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.6338,
+    "liqUsd": 51224.62,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "ApZuxdpzMrbEYTGEzeY9afh5pj9d6qPRJCTgQYiipbKg": {
   "symbol": "CYBERLEEK",
@@ -51,7 +58,14 @@
    "failReason": "bundled/insider wallets hold 31.5% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1568,
+    "liqUsd": 1689682.85,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "66ZEoQSgY3g5KEijP8ZUucth9ZmrxwYg8ngzwgP6pump": {
   "symbol": "CATCUS",
@@ -78,7 +92,14 @@
    "failReason": null,
    "score": 80
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.9875,
+    "liqUsd": 3199.11,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump": {
   "symbol": "CATE",
@@ -105,7 +126,14 @@
    "failReason": "bundled/insider wallets hold 31.5% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.8691,
+    "liqUsd": 2263796.13,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv": {
   "symbol": "PENGU",
@@ -132,7 +160,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0199,
+    "liqUsd": 4493570.74,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "GUmbtfjSZkybSFgPibBcvwExEBdXwewJHR5PkTjzpump": {
   "symbol": "Morty",
@@ -159,7 +194,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.6922,
+    "liqUsd": 176070.46,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump": {
   "symbol": "CVXV666",
@@ -428,6 +470,195 @@
    "pass": true,
    "failReason": null,
    "score": 79
+  },
+  "o": {}
+ },
+ "GUt3ebbJm6SJCvpa8SfFzZe132a78qZDyc2yXAP1pump": {
+  "symbol": "100CATS",
+  "firstSeenAt": "2026-08-24T20:32:19.140Z",
+  "f": {
+   "priceUsd": 0.001256,
+   "liqUsd": 98195.62,
+   "vol24h": 2593230.56,
+   "vol1h": 312444.44,
+   "buys1h": 2568,
+   "sells1h": 666,
+   "chg1h": 21.57,
+   "chg6h": 80.14,
+   "chg24h": 1198,
+   "ageHours": 8.6,
+   "fdv": 1246884,
+   "top10Pct": 2.1,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 8346,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 82
+  },
+  "o": {}
+ },
+ "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump": {
+  "symbol": "cc",
+  "firstSeenAt": "2026-08-24T20:32:22.711Z",
+  "f": {
+   "priceUsd": 0.005217,
+   "liqUsd": 304085.06,
+   "vol24h": 861615.77,
+   "vol1h": 10506.38,
+   "buys1h": 20,
+   "sells1h": 49,
+   "chg1h": -3.59,
+   "chg6h": -23.61,
+   "chg24h": -0.83,
+   "ageHours": 262.4,
+   "fdv": 5034694,
+   "top10Pct": 21,
+   "insiderPct": 3.5,
+   "devPct": 0,
+   "totalHolders": 19201,
+   "lpLockedPct": 0,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {}
+ },
+ "GeSfrQiscfsEv4Hx2TKaB9Nfid12qND1YYRYS1vSpump": {
+  "symbol": "GrokBot",
+  "firstSeenAt": "2026-08-24T20:32:23.439Z",
+  "f": {
+   "priceUsd": 0.004427,
+   "liqUsd": 191319.56,
+   "vol24h": 5141260.42,
+   "vol1h": 48204.64,
+   "buys1h": 705,
+   "sells1h": 357,
+   "chg1h": -10.56,
+   "chg6h": 15.79,
+   "chg24h": 11283,
+   "ageHours": 16.1,
+   "fdv": 4381992,
+   "top10Pct": 11.1,
+   "insiderPct": 97.5,
+   "devPct": 1.76,
+   "totalHolders": 9559,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "bundled/insider wallets hold 97.5% (> 25%) — coordinated dump risk",
+   "score": null
+  },
+  "o": {}
+ },
+ "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi": {
+  "symbol": "PANTS",
+  "firstSeenAt": "2026-08-24T20:32:24.167Z",
+  "f": {
+   "priceUsd": 0.0005727,
+   "liqUsd": 78154.71,
+   "vol24h": 621201.24,
+   "vol1h": 19309.21,
+   "buys1h": 175,
+   "sells1h": 107,
+   "chg1h": -12.32,
+   "chg6h": -36.54,
+   "chg24h": -61.58,
+   "ageHours": 131.1,
+   "fdv": 561813,
+   "top10Pct": 17.8,
+   "insiderPct": 2.4,
+   "devPct": 0,
+   "totalHolders": 13002,
+   "lpLockedPct": 99.73356518715813,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 93
+  },
+  "o": {}
+ },
+ "8XtRWb4uAAJFMP4QQhoYYCWR6XXb7ybcCdiqPwz9s5WS": {
+  "symbol": "ALON",
+  "firstSeenAt": "2026-08-24T20:32:26.145Z",
+  "f": {
+   "priceUsd": 0.007396,
+   "liqUsd": 906347.5,
+   "vol24h": 718411.95,
+   "vol1h": 10779.75,
+   "buys1h": 98,
+   "sells1h": 56,
+   "chg1h": -2.46,
+   "chg6h": 6.72,
+   "chg24h": -8.67,
+   "ageHours": 21162.2,
+   "fdv": 7381220,
+   "top10Pct": 16.3,
+   "insiderPct": 7.5,
+   "devPct": 0,
+   "totalHolders": 87117,
+   "lpLockedPct": 99.98999999999644,
+   "launchpad": "unknown",
+   "pass": true,
+   "failReason": null,
+   "score": 91
+  },
+  "o": {}
+ },
+ "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump": {
+  "symbol": "TOAD",
+  "firstSeenAt": "2026-08-24T20:32:27.001Z",
+  "f": {
+   "priceUsd": 0.006247,
+   "liqUsd": 375144.71,
+   "vol24h": 658564.27,
+   "vol1h": 37076.91,
+   "buys1h": 129,
+   "sells1h": 90,
+   "chg1h": -2.3,
+   "chg6h": -0.24,
+   "chg24h": -8.62,
+   "ageHours": 390.6,
+   "fdv": 6001584,
+   "top10Pct": 26.9,
+   "insiderPct": 3.9,
+   "devPct": 0,
+   "totalHolders": 62344,
+   "lpLockedPct": 99.92465026336446,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 84
+  },
+  "o": {}
+ },
+ "Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk": {
+  "symbol": "USELESS",
+  "firstSeenAt": "2026-08-24T20:32:28.111Z",
+  "f": {
+   "priceUsd": 0.06468,
+   "liqUsd": 2261024.41,
+   "vol24h": 874458.61,
+   "vol1h": 55258.85,
+   "buys1h": 87,
+   "sells1h": 103,
+   "chg1h": 1.06,
+   "chg6h": -1.53,
+   "chg24h": -7.7,
+   "ageHours": 11310.2,
+   "fdv": 64687556,
+   "top10Pct": 32.7,
+   "insiderPct": 42.7,
+   "devPct": 0,
+   "totalHolders": 139855,
+   "lpLockedPct": 98.40999999999075,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "top-10 holders own 32.7% (> 30%) — dump risk",
+   "score": null
   },
   "o": {}
  }
