@@ -24,6 +24,10 @@ jobs:
           node-version: 22
 
       # data collection first — a failure here must not block the commit
+      - name: track scanned-token outcomes
+        continue-on-error: true
+        run: node coin.js track
+
       - name: update outcomes
         continue-on-error: true
         run: node coin.js update

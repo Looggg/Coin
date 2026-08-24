@@ -199,6 +199,13 @@ async function buildSnapshot(mint) {
     vol24h: pair.volume?.h24 ?? null,
     buys24h: pair.txns?.h24?.buys ?? null,
     sells24h: pair.txns?.h24?.sells ?? null,
+    // momentum — what the last hours look like, for pump-pattern study
+    buys1h: pair.txns?.h1?.buys ?? null,
+    sells1h: pair.txns?.h1?.sells ?? null,
+    vol1h: pair.volume?.h1 ?? null,
+    chg1h: pair.priceChange?.h1 ?? null,
+    chg6h: pair.priceChange?.h6 ?? null,
+    chg24h: pair.priceChange?.h24 ?? null,
     fdv: pair.fdv ?? null,
     ageHours: pair.pairCreatedAt ? hoursSince(pair.pairCreatedAt) : null,
     top10Pct,
@@ -568,6 +575,7 @@ async function cmdScan(fullCheckCap) {
   const list = [...candidates.entries()].slice(0, fullCheckCap);
   if (candidates.size > list.length)
     console.log(`(full-checking first ${list.length} — raise with: node coin.js scan ${candidates.size})`);
+  const tracking = loadTracking();
   const passed = [];
   let i = 0;
   for (const [mint, meta] of list) {
@@ -576,6 +584,16 @@ async function cmdScan(fullCheckCap) {
     try {
       const s = await buildSnapshot(mint);
       const verdict = runChecklist(s);
+      // track every full-checked token, pass or fail — the pump-pattern
+      // dataset needs the failures as its control group
+      if (!tracking[mint] && !s.dead) {
+        tracking[mint] = {
+          symbol: s.symbol || null,
+          firstSeenAt: new Date().toISOString(),
+          f: trackFeatures(s, verdict, verdict.pass ? scoreCandidate(s).score : null),
+          o: {},
+        };
+      }
       if (verdict.pass) {
         const { score, reasons } = scoreCandidate(s);
         console.log(`PASS ✓  score ${score}`);
@@ -603,6 +621,7 @@ async function cmdScan(fullCheckCap) {
     await sleep(600); // be gentle to DexScreener + Rugcheck
   }
 
+  saveTracking(tracking);
   passed.sort((a, b) => b.score - a.score); // best-looking survivor first
 
   // candidates.json = latest shortlist (overwritten every run);
@@ -635,6 +654,165 @@ async function cmdScan(fullCheckCap) {
     console.log("(normal — most new tokens are garbage; the filter is doing its job)");
   else
     console.log(`\nnext: manual checks (bundles/dev on gmgn.ai) → log every one you review, buy or skip`);
+}
+
+// ---------- pump-pattern tracking ----------
+// Every token the scan full-checks gets tracked — PASS and FAIL alike (the
+// FAILs are the control group). Outcomes land automatically at ~4h/1d/3d.
+// This is the research dataset that answers "what did pumpers look like when
+// first seen" without anyone having to log anything by hand.
+const TRACKING_PATH = path.join(__dirname, "tracking.json");
+const TRACK_BUCKETS = { h4: 4, d1: 24, d3: 72 };
+
+function loadTracking() {
+  if (!fs.existsSync(TRACKING_PATH)) return {};
+  return JSON.parse(fs.readFileSync(TRACKING_PATH, "utf8"));
+}
+
+function saveTracking(t) {
+  const tmp = TRACKING_PATH + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(t, null, 1));
+  fs.renameSync(tmp, TRACKING_PATH);
+}
+
+function trackFeatures(s, verdict, score) {
+  return {
+    priceUsd: s.priceUsd,
+    liqUsd: s.liqUsd,
+    vol24h: s.vol24h,
+    vol1h: s.vol1h,
+    buys1h: s.buys1h,
+    sells1h: s.sells1h,
+    chg1h: s.chg1h,
+    chg6h: s.chg6h,
+    chg24h: s.chg24h,
+    ageHours: s.ageHours != null ? +s.ageHours.toFixed(1) : null,
+    fdv: s.fdv,
+    top10Pct: s.top10Pct != null ? +s.top10Pct.toFixed(1) : null,
+    insiderPct: s.insiderPct != null ? +s.insiderPct.toFixed(1) : null,
+    devPct: s.devPct != null ? +s.devPct.toFixed(2) : null,
+    totalHolders: s.totalHolders,
+    lpLockedPct: s.lpLockedPct,
+    launchpad: s.launchpad,
+    pass: verdict.pass,
+    failReason: verdict.pass ? null : verdict.fails[0] || null,
+    score: score ?? null,
+  };
+}
+
+async function cmdTrack() {
+  const tracking = loadTracking();
+  const due = Object.entries(tracking).filter(([, r]) => {
+    if (!r.f?.priceUsd) return false;
+    const elapsedH = (Date.now() - new Date(r.firstSeenAt).getTime()) / 3.6e6;
+    return Object.entries(TRACK_BUCKETS).some(([b, h]) => !r.o[b] && elapsedH >= h);
+  });
+  if (!due.length) return console.log(`tracking: ${Object.keys(tracking).length} tokens, none due`);
+
+  console.log(`tracking: ${due.length}/${Object.keys(tracking).length} tokens due for an outcome check`);
+  // batch endpoint: /tokens/v1/solana/{mints} takes up to 30 comma-separated
+  // mints and returns a flat pair array (the /latest/dex/tokens endpoint no
+  // longer supports commas — it returns pairs:null, which must NOT be read
+  // as "everything died")
+  for (let i = 0; i < due.length; i += 25) {
+    const chunk = due.slice(i, i + 25);
+    let pairsByMint = {};
+    try {
+      const data = await getJson(
+        `https://api.dexscreener.com/tokens/v1/solana/${chunk.map(([m]) => m).join(",")}`
+      );
+      if (!Array.isArray(data)) throw new Error("unexpected response shape");
+      for (const p of data) {
+        if (p.chainId !== "solana") continue;
+        const m = p.baseToken?.address;
+        if (!m) continue;
+        if (!pairsByMint[m] || (p.liquidity?.usd || 0) > (pairsByMint[m].liquidity?.usd || 0))
+          pairsByMint[m] = p;
+      }
+      // a batch where EVERY requested mint is missing is an API anomaly, not
+      // twenty-five simultaneous rugs — skip and retry next run
+      if (Object.keys(pairsByMint).length === 0 && chunk.length > 1) {
+        console.error(`  batch returned no pairs for ${chunk.length} tokens — treating as API glitch, retrying next run`);
+        continue;
+      }
+    } catch (e) {
+      console.error(`  batch fetch failed (${e.message}) — will retry next run`);
+      continue;
+    }
+    for (const [mint, r] of chunk) {
+      const elapsedH = (Date.now() - new Date(r.firstSeenAt).getTime()) / 3.6e6;
+      const pair = pairsByMint[mint];
+      const price = pair ? Number(pair.priceUsd) : null;
+      for (const [b, h] of Object.entries(TRACK_BUCKETS)) {
+        if (r.o[b] || elapsedH < h) continue;
+        let ret = null;
+        if (pair == null) ret = -1;
+        else if (Number.isFinite(price) && r.f.priceUsd > 0) ret = price / r.f.priceUsd - 1;
+        else continue; // price glitch — retry next run
+        r.o[b] = {
+          ret: +ret.toFixed(4),
+          liqUsd: pair?.liquidity?.usd ?? null,
+          elapsedH: +elapsedH.toFixed(1),
+          dead: pair == null,
+        };
+      }
+    }
+    await sleep(400);
+  }
+  saveTracking(tracking);
+  console.log("tracking outcomes saved");
+}
+
+// aggregate the tracking dataset: what did the ones that pumped look like at
+// discovery, versus the ones that died? deterministic bucket tables.
+function cmdPatterns(bucketArg) {
+  const horizon = ["h4", "d1", "d3"].includes(bucketArg) ? bucketArg : "d1";
+  const rows = Object.values(loadTracking()).filter(
+    (r) => r.o?.[horizon] && Number.isFinite(r.o[horizon].ret)
+  );
+  if (!rows.length)
+    return console.log(`no tracked outcomes at ${horizon} yet — the cron fills these in automatically`);
+
+  const table = (label, groupFn) => {
+    const groups = {};
+    for (const r of rows) {
+      const g = groupFn(r.f);
+      if (g == null) continue;
+      (groups[g] = groups[g] || []).push(r.o[horizon].ret);
+    }
+    console.log(`── by ${label} (outcome @ ${horizon}, n=${rows.length}) ──`);
+    for (const [g, rets] of Object.entries(groups)) {
+      const twoX = rets.filter((x) => x >= 1).length;
+      const dead = rets.filter((x) => x <= -0.9).length;
+      console.log(
+        `  ${g.padEnd(16)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%`
+      );
+    }
+    console.log("");
+  };
+
+  console.log("");
+  table("verdict", (f) => (f.pass ? "PASS" : "FAIL"));
+  table("age at discovery", (f) =>
+    f.ageHours == null ? null : f.ageHours < 6 ? "<6h" : f.ageHours < 24 ? "6-24h" : f.ageHours < 72 ? "1-3d" : ">3d"
+  );
+  table("safety score", (f) =>
+    !f.pass ? "FAIL" : f.score == null ? null : f.score >= 80 ? "80-100" : f.score >= 60 ? "60-79" : "<60"
+  );
+  table("insider %", (f) =>
+    f.insiderPct == null ? "unknown" : f.insiderPct < 5 ? "<5%" : f.insiderPct < 15 ? "5-15%" : ">15%"
+  );
+  table("liquidity", (f) =>
+    f.liqUsd == null ? null : f.liqUsd < 50000 ? "$30-50k" : f.liqUsd < 150000 ? "$50-150k" : ">$150k"
+  );
+  table("1h momentum", (f) => {
+    if (f.buys1h == null || f.sells1h == null) return null;
+    const t = f.buys1h + f.sells1h;
+    if (t < 10) return "quiet";
+    const ratio = f.buys1h / Math.max(1, f.sells1h);
+    return ratio >= 1.5 ? "buy pressure" : ratio <= 0.67 ? "sell pressure" : "balanced";
+  });
+  console.log(`read this as: which discovery profile actually pumped — feed conclusions back into RULES`);
 }
 
 // ---------- exit discipline ----------
@@ -807,6 +985,10 @@ async function main() {
         return console.error(`usage: node coin.js log <mint> buy|skip "reason" [--src smartmoney|twitter|...]`);
       return cmdLog(args[0], args[1], args.slice(2).join(" "), source);
     }
+    case "track":
+      return cmdTrack();
+    case "patterns":
+      return cmdPatterns(args[0]);
     case "watch":
       return cmdWatch();
     case "exit":
@@ -828,6 +1010,8 @@ usage:
   node coin.js log <mint> buy|skip "reason" [--src <channel>]
                                               record a decision (snapshot saved);
                                               --src tags where you found it (smartmoney, twitter, ...)
+  node coin.js track                          record 4h/1d/3d outcomes for every scanned token
+  node coin.js patterns [h4|d1|d3]            pump-pattern tables: discovery profile vs outcome
   node coin.js watch                          alert on open positions: 2x, time stop, LP drain
   node coin.js exit <mint> "reason"           close a position, record realized return
   node coin.js update                         record due 1d/7d/30d outcomes
