@@ -22,11 +22,21 @@ const RAYDIUM_AUTHORITY = "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1";
 
 // ---------- thresholds (tune these as you learn from the journal) ----------
 const RULES = {
+  // entry filter
   minLiquidityUsd: 30000, // below this, $10 in/out slippage eats you
-  maxTop10Pct: 30, // top-10 holders (excl. LP) combined %
+  maxTop10Pct: 30, // top-10 holders (excl. LP/CEX) combined %
   minLpLockedPct: 80, // LP locked/burned percentage
   washVolLiqRatio: 10, // vol24h > N x liquidity => wash suspicion
   minAgeHours: 24, // younger than this => extra risk warning
+  maxDevPct: 5, // creator wallet holdings
+  maxInsiderPct: 25, // supply held by detected insider/bundle networks
+  minHolders: 100, // too few holders => one exit kills the price
+
+  // exit discipline (checklist.md rules 1-3, enforced by `watch`)
+  takeProfitX: 2, // sell half here, ride the rest free
+  timeStopHours: 48, // no movement by now => get out, capital has a cost
+  lpDrainPct: 50, // LP fell this % below entry => exit immediately
+  stopLossPct: 50, // price down this % => position is dead money
 };
 
 // ---------- helpers ----------
@@ -117,6 +127,12 @@ async function buildSnapshot(mint) {
   let freezeAuthority = null;
   let rugScore = null;
   let rugRisks = [];
+  let devPct = null;
+  let insiderPct = null;
+  let insiderCount = null;
+  let totalHolders = null;
+  let rugged = null;
+  let launchpad = null;
 
   if (rug) {
     mintAuthority = rug.token?.mintAuthority ?? null;
@@ -147,6 +163,23 @@ async function buildSnapshot(mint) {
       const lps = markets.map((m) => m.lp?.lpLockedPct).filter((x) => x != null);
       if (lps.length) lpLockedPct = Math.min(...lps);
     }
+
+    // bundle / insider detection — modern devs don't hold one big wallet, they
+    // fund 20-50 fresh wallets at launch. rugcheck traces that funding graph.
+    rugged = rug.rugged ?? null;
+    totalHolders = rug.totalHolders ?? null;
+    insiderCount = rug.graphInsidersDetected ?? null;
+    launchpad = rug.launchpad?.name ?? rug.deployPlatform ?? null;
+    const supply = Number(rug.token?.supply);
+    if (Number.isFinite(supply) && supply > 0) {
+      const creatorBal = Number(rug.creatorBalance);
+      if (Number.isFinite(creatorBal)) devPct = (creatorBal / supply) * 100;
+      const bundled = (rug.insiderNetworks || []).reduce(
+        (sum, n) => sum + (Number(n.tokenAmount) || 0),
+        0
+      );
+      insiderPct = (bundled / supply) * 100;
+    }
   }
 
   return {
@@ -168,6 +201,12 @@ async function buildSnapshot(mint) {
     freezeAuthority,
     rugScore,
     rugRisks,
+    devPct,
+    insiderPct,
+    insiderCount,
+    totalHolders,
+    rugged,
+    launchpad,
     solPriceUsd,
   };
 }
@@ -189,11 +228,22 @@ function runChecklist(s) {
   if (s.buys24h > 50 && s.sells24h === 0)
     fails.push(`${s.buys24h} buys but ZERO sells in 24h — honeypot pattern`);
 
+  if (s.rugged === true) fails.push(`rugcheck marks this token as ALREADY RUGGED`);
+  if (s.devPct != null && s.devPct > RULES.maxDevPct)
+    fails.push(`dev wallet holds ${s.devPct.toFixed(1)}% (> ${RULES.maxDevPct}%) — can dump on you`);
+  if (s.insiderPct != null && s.insiderPct > RULES.maxInsiderPct)
+    fails.push(`bundled/insider wallets hold ${s.insiderPct.toFixed(1)}% (> ${RULES.maxInsiderPct}%) — coordinated dump risk`);
+  if (s.totalHolders != null && s.totalHolders < RULES.minHolders)
+    fails.push(`only ${s.totalHolders} holders (< ${RULES.minHolders}) — no real distribution`);
+
   const dangers = (s.rugRisks || []).filter((r) => r.level === "danger");
   for (const d of dangers) fails.push(`rugcheck danger: ${d.name}`);
 
   if (s.lpLockedPct == null) warns.push("LP lock % unknown — verify manually on rugcheck.xyz");
   if (s.top10Pct == null) warns.push("holder concentration unknown — verify manually");
+  if (s.insiderPct == null) warns.push("bundle/insider data unavailable — check bubblemaps.io manually");
+  else if (s.insiderPct > 10)
+    warns.push(`insider networks hold ${s.insiderPct.toFixed(1)}% across ${s.insiderCount ?? "?"} wallets`);
   if (s.ageHours != null && s.ageHours < RULES.minAgeHours)
     warns.push(`token only ${s.ageHours.toFixed(1)}h old — highest-risk window`);
   if (s.vol24h != null && s.liqUsd != null && s.liqUsd > 0 && s.vol24h / s.liqUsd > RULES.washVolLiqRatio)
@@ -202,6 +252,50 @@ function runChecklist(s) {
   for (const w of warnRisks) warns.push(`rugcheck warn: ${w.name}`);
 
   return { pass: fails.length === 0, fails, warns };
+}
+
+/**
+ * Deterministic quality score for tokens that already PASSED the hard rules.
+ * Purely a triage aid: it ranks which survivor to inspect first, it never
+ * decides buy/skip. Same inputs always give the same number, so a threshold
+ * change can be re-run over the frozen snapshots in journal.json.
+ * Starts at 100, subtracts penalties. Higher = fewer soft red flags.
+ */
+function scoreCandidate(s) {
+  let score = 100;
+  const reasons = [];
+  const penalize = (amount, why) => {
+    if (amount <= 0) return;
+    score -= amount;
+    reasons.push(`-${amount.toFixed(0)} ${why}`);
+  };
+
+  // wash trading: volume far above what the pool depth can justify
+  if (s.vol24h != null && s.liqUsd > 0) {
+    const ratio = s.vol24h / s.liqUsd;
+    if (ratio > RULES.washVolLiqRatio)
+      penalize(Math.min(30, (ratio - RULES.washVolLiqRatio) * 0.5), `vol/liq ${ratio.toFixed(0)}x`);
+  }
+  // bundled supply still under the FAIL line is still the top dump risk
+  if (s.insiderPct != null) penalize(Math.min(25, s.insiderPct), `insider ${s.insiderPct.toFixed(0)}%`);
+  else penalize(10, "insider data missing");
+  // dev holdings weigh double — one wallet, one decision, no coordination needed
+  if (s.devPct != null) penalize(Math.min(15, s.devPct * 2), `dev ${s.devPct.toFixed(1)}%`);
+  // concentration beyond a comfortable spread
+  if (s.top10Pct != null) penalize(Math.min(15, Math.max(0, s.top10Pct - 15)), `top10 ${s.top10Pct.toFixed(0)}%`);
+  // the first day is where most rugs happen
+  if (s.ageHours != null && s.ageHours < RULES.minAgeHours)
+    penalize(((RULES.minAgeHours - s.ageHours) / RULES.minAgeHours) * 15, `age ${s.ageHours.toFixed(0)}h`);
+  // thin books cost real money on a $10 round trip
+  if (s.liqUsd != null && s.liqUsd < 100000)
+    penalize(((100000 - s.liqUsd) / 100000) * 10, `liq ${fmtUsd(s.liqUsd)}`);
+  // rugcheck's own normalised risk score
+  if (s.rugScore != null) penalize(Math.min(10, s.rugScore / 10), `rugScore ${s.rugScore}`);
+  if (s.lpLockedPct == null) penalize(8, "LP lock unknown");
+  if (s.totalHolders != null && s.totalHolders < 1000)
+    penalize(((1000 - s.totalHolders) / 1000) * 8, `${s.totalHolders} holders`);
+
+  return { score: Math.max(0, Math.round(score)), reasons };
 }
 
 function printReport(mint, s, verdict) {
@@ -218,7 +312,10 @@ function printReport(mint, s, verdict) {
   console.log(`volume 24h   ${fmtUsd(s.vol24h)}  (buys ${s.buys24h} / sells ${s.sells24h})`);
   console.log(`FDV          ${fmtUsd(s.fdv)}`);
   console.log(`age          ${s.ageHours != null ? s.ageHours < 48 ? s.ageHours.toFixed(1) + "h" : (s.ageHours / 24).toFixed(1) + "d" : "n/a"}`);
+  console.log(`holders      ${s.totalHolders != null ? s.totalHolders.toLocaleString() : "n/a"}${s.launchpad ? "  via " + s.launchpad : ""}`);
   console.log(`top10 hold   ${s.top10Pct != null ? s.top10Pct.toFixed(1) + "%" : "n/a"}`);
+  console.log(`dev holds    ${s.devPct != null ? s.devPct.toFixed(2) + "%" : "n/a"}`);
+  console.log(`insider/bundle ${s.insiderPct != null ? s.insiderPct.toFixed(1) + "% across " + (s.insiderCount ?? "?") + " wallets" : "n/a"}`);
   console.log(`LP locked    ${s.lpLockedPct != null ? s.lpLockedPct.toFixed(0) + "%" : "n/a"}`);
   console.log(`mint auth    ${s.mintAuthority ? "ACTIVE ⚠" : "revoked ✓"}`);
   console.log(`freeze auth  ${s.freezeAuthority ? "ACTIVE ⚠" : "revoked ✓"}`);
@@ -369,6 +466,24 @@ function stats() {
     console.log("");
   }
 
+  // realized results — what exit discipline actually produced, vs the paper
+  // horizons above (which assume you never sold)
+  const closed = buys.filter((e) => e.status === "closed" && Number.isFinite(e.exit?.realizedRet));
+  if (closed.length) {
+    const rets = closed.map((e) => e.exit.realizedRet);
+    const stake = 10;
+    const out = rets.reduce((s, r) => s + stake * (1 + r), 0);
+    console.log(`── REALIZED (${closed.length} closed position(s)) ──`);
+    console.log(`  median          ${fmtPct(median(rets))}`);
+    console.log(`  $10 each        $${(stake * rets.length).toFixed(0)} → $${out.toFixed(2)} (${fmtPct(out / (stake * rets.length) - 1)})`);
+    console.log(`  median hold     ${median(closed.map((e) => e.exit.heldHours)).toFixed(0)}h`);
+    const byReason = {};
+    for (const e of closed) (byReason[e.exit.reason] = byReason[e.exit.reason] || []).push(e.exit.realizedRet);
+    for (const [r, rr] of Object.entries(byReason))
+      console.log(`    "${r}" n=${rr.length} median ${fmtPct(median(rr))}`);
+    console.log("");
+  }
+
   // discovery-source comparison — which channel actually finds winners?
   const srcBuys = buys.filter((e) => e.source && validRets(e).length > 0);
   if (srcBuys.length) {
@@ -454,23 +569,34 @@ async function cmdScan(fullCheckCap) {
     try {
       const s = await buildSnapshot(mint);
       const verdict = runChecklist(s);
-      console.log(verdict.pass ? "PASS ✓" : `skip (${verdict.fails[0] || "dead"})`);
-      if (verdict.pass)
+      if (verdict.pass) {
+        const { score, reasons } = scoreCandidate(s);
+        console.log(`PASS ✓  score ${score}`);
         passed.push({
           mint,
           symbol: s.symbol,
           name: s.name,
+          score,
+          scoreReasons: reasons,
           liqUsd: s.liqUsd,
           vol24h: s.vol24h,
           ageHours: s.ageHours != null ? +s.ageHours.toFixed(1) : null,
+          insiderPct: s.insiderPct != null ? +s.insiderPct.toFixed(1) : null,
+          devPct: s.devPct != null ? +s.devPct.toFixed(2) : null,
+          totalHolders: s.totalHolders,
           warns: verdict.warns,
           checkedAt: new Date().toISOString(),
         });
+      } else {
+        console.log(`skip (${verdict.fails[0] || "dead"})`);
+      }
     } catch (e) {
       console.log(`error (${e.message})`);
     }
     await sleep(600); // be gentle to DexScreener + Rugcheck
   }
+
+  passed.sort((a, b) => b.score - a.score); // best-looking survivor first
 
   // candidates.json = latest shortlist; scans.log = permanent history
   fs.writeFileSync(path.join(__dirname, "candidates.json"), JSON.stringify(passed, null, 2));
@@ -481,17 +607,110 @@ async function cmdScan(fullCheckCap) {
       "\n"
   );
 
-  console.log(`\n${passed.length} candidate(s) → candidates.json`);
+  console.log(`\n${passed.length} candidate(s) → candidates.json  (ranked, best first)`);
+  console.log(`score = triage order only, NOT a buy signal — every one still needs manual review\n`);
   for (const c of passed) {
     console.log(
-      `  ${(c.symbol || "?").padEnd(10)} liq ${fmtUsd(c.liqUsd)}  vol24h ${fmtUsd(c.vol24h)}  age ${c.ageHours != null ? c.ageHours + "h" : "n/a"}  ${c.warns.length} warn(s)`
+      `  [${String(c.score).padStart(3)}] ${(c.symbol || "?").padEnd(10)} liq ${fmtUsd(c.liqUsd)}  vol ${fmtUsd(c.vol24h)}  age ${c.ageHours != null ? c.ageHours + "h" : "n/a"}  insider ${c.insiderPct != null ? c.insiderPct + "%" : "?"}`
     );
-    console.log(`    node coin.js check ${c.mint}`);
+    if (c.scoreReasons.length) console.log(`        ${c.scoreReasons.join(", ")}`);
+    console.log(`        node coin.js check ${c.mint}`);
   }
   if (!passed.length)
     console.log("(normal — most new tokens are garbage; the filter is doing its job)");
   else
     console.log(`\nnext: manual checks (bundles/dev on gmgn.ai) → log every one you review, buy or skip`);
+}
+
+// ---------- exit discipline ----------
+/**
+ * Turns the exit rules in checklist.md into alerts instead of willpower.
+ * Reports only — it never trades. You still place the order yourself, then
+ * record it with `exit` so the journal keeps a realized return.
+ */
+async function cmdWatch() {
+  const journal = loadJournal();
+  const open = journal.filter((e) => e.decision === "buy" && e.status !== "closed");
+  if (!open.length) return console.log("no open positions (log a buy to start tracking one)");
+
+  console.log(`${open.length} open position(s)\n`);
+  let acted = 0;
+
+  for (const e of open) {
+    const name = e.symbol || e.mint.slice(0, 8);
+    const heldHours = (Date.now() - new Date(e.loggedAt).getTime()) / 3.6e6;
+    let pair;
+    try {
+      pair = await fetchDexScreener(e.mint);
+    } catch (err) {
+      console.log(`${name.padEnd(10)} fetch failed (${err.message}) — retry next run`);
+      continue;
+    }
+    await sleep(400);
+
+    const p0 = e.snapshot?.priceUsd;
+    const liq0 = e.snapshot?.liqUsd;
+    if (pair == null) {
+      console.log(`${name.padEnd(10)} ✖ DEAD — no pair left. Position is a total loss.`);
+      console.log(`           node coin.js exit ${e.mint} "rugged/dead"\n`);
+      acted++;
+      continue;
+    }
+    const price = Number(pair.priceUsd);
+    const liq = pair.liquidity?.usd ?? null;
+    const mult = Number.isFinite(price) && p0 > 0 ? price / p0 : null;
+    const ret = mult != null ? mult - 1 : null;
+
+    const alerts = [];
+    if (mult != null && mult >= RULES.takeProfitX)
+      alerts.push(`🎯 TAKE PROFIT — ${mult.toFixed(2)}x, sell half now, ride the rest free`);
+    if (liq != null && liq0 > 0 && liq < liq0 * (1 - RULES.lpDrainPct / 100))
+      alerts.push(`🚨 LP DRAIN — liquidity ${fmtUsd(liq)} vs ${fmtUsd(liq0)} at entry. EXIT NOW, don't wait for price`);
+    if (ret != null && ret <= -RULES.stopLossPct / 100)
+      alerts.push(`🛑 STOP LOSS — ${fmtPct(ret)}. Cut it, never average down`);
+    if (heldHours > RULES.timeStopHours && mult != null && mult < RULES.takeProfitX)
+      alerts.push(`⏰ TIME STOP — ${heldHours.toFixed(0)}h with no 2x. Capital has a cost, get out`);
+
+    const flag = alerts.length ? "!" : " ";
+    console.log(
+      `${flag} ${name.padEnd(10)} ${fmtPct(ret)}  (${mult != null ? mult.toFixed(2) + "x" : "?"})  liq ${fmtUsd(liq)}  held ${heldHours.toFixed(0)}h`
+    );
+    for (const a of alerts) console.log(`           ${a}`);
+    if (alerts.length) {
+      console.log(`           node coin.js exit ${e.mint} "<reason>"\n`);
+      acted++;
+    }
+  }
+  console.log(acted ? `\n${acted} position(s) need action` : `\nno action needed`);
+}
+
+async function cmdExit(mint, reason) {
+  if (!reason) {
+    console.error(`a reason is required — it becomes the exit failure-mode data`);
+    process.exit(1);
+  }
+  const journal = loadJournal();
+  const entry = [...journal].reverse().find((e) => e.mint === mint && e.decision === "buy" && e.status !== "closed");
+  if (!entry) {
+    console.error(`no open buy position found for ${mint}`);
+    process.exit(1);
+  }
+
+  const pair = await fetchDexScreener(mint).catch(() => null);
+  const price = pair ? Number(pair.priceUsd) : null;
+  const p0 = entry.snapshot?.priceUsd;
+  const ret = pair == null ? -1 : Number.isFinite(price) && p0 > 0 ? price / p0 - 1 : null;
+
+  entry.status = "closed";
+  entry.exit = {
+    exitedAt: new Date().toISOString(),
+    heldHours: +((Date.now() - new Date(entry.loggedAt).getTime()) / 3.6e6).toFixed(1),
+    priceUsd: Number.isFinite(price) ? price : null,
+    realizedRet: ret,
+    reason,
+  };
+  saveJournal(journal);
+  console.log(`closed ${entry.symbol || mint}: ${fmtPct(ret)} after ${entry.exit.heldHours}h — "${reason}"`);
 }
 
 // ---------- commands ----------
@@ -566,6 +785,11 @@ async function main() {
         return console.error(`usage: node coin.js log <mint> buy|skip "reason" [--src smartmoney|twitter|...]`);
       return cmdLog(args[0], args[1], args.slice(2).join(" "), source);
     }
+    case "watch":
+      return cmdWatch();
+    case "exit":
+      if (args.length < 2) return console.error(`usage: node coin.js exit <mint> "reason"`);
+      return cmdExit(args[0], args.slice(1).join(" "));
     case "update":
       return updateOutcomes();
     case "stats":
@@ -582,6 +806,8 @@ usage:
   node coin.js log <mint> buy|skip "reason" [--src <channel>]
                                               record a decision (snapshot saved);
                                               --src tags where you found it (smartmoney, twitter, ...)
+  node coin.js watch                          alert on open positions: 2x, time stop, LP drain
+  node coin.js exit <mint> "reason"           close a position, record realized return
   node coin.js update                         record due 1d/7d/30d outcomes
   node coin.js stats                          returns, rug rate, vs SOL baseline
   node coin.js list                           list journal entries`);

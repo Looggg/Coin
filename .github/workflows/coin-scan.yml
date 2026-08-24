@@ -22,7 +22,10 @@ jobs:
         with:
           node-version: 22
 
-      # collect due 1d/7d/30d outcomes first, then sweep for new candidates
+      # exit alerts first — an open position needing action beats any new find
+      - name: watch open positions
+        run: node coin.js watch
+
       - name: update outcomes
         run: node coin.js update
 

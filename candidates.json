@@ -1,181 +1,234 @@
 [
   {
-    "mint": "ApZuxdpzMrbEYTGEzeY9afh5pj9d6qPRJCTgQYiipbKg",
-    "symbol": "CYBERLEEK",
-    "name": "CyberLeek",
-    "liqUsd": 1867485.28,
-    "vol24h": 37930208.38,
-    "ageHours": 187.6,
-    "warns": [
-      "vol/liq ratio 20.3x — possible wash trading",
-      "rugcheck warn: Mutable metadata"
+    "mint": "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi",
+    "symbol": "PANTS",
+    "name": "dogwifpants",
+    "score": 94,
+    "scoreReasons": [
+      "-2 insider 2%",
+      "-3 top10 18%",
+      "-1 liq $91.4k",
+      "-0 rugScore 1"
     ],
-    "checkedAt": "2026-08-23T16:45:16.359Z"
+    "liqUsd": 91406.12,
+    "vol24h": 655382.06,
+    "ageHours": 125.9,
+    "insiderPct": 2.4,
+    "devPct": 0,
+    "totalHolders": 13005,
+    "warns": [],
+    "checkedAt": "2026-08-24T15:21:57.671Z"
   },
   {
-    "mint": "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump",
-    "symbol": "CATE",
-    "name": "Catecoin",
-    "liqUsd": 1781538.44,
-    "vol24h": 53840468.47,
-    "ageHours": 672.2,
-    "warns": [
-      "vol/liq ratio 30.2x — possible wash trading"
+    "mint": "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump",
+    "symbol": "cc",
+    "name": "creator capital",
+    "score": 87,
+    "scoreReasons": [
+      "-0 vol/liq 11x",
+      "-3 insider 3%",
+      "-0 dev 0.0%",
+      "-6 top10 21%",
+      "-3 rugScore 29"
     ],
-    "checkedAt": "2026-08-23T16:45:17.580Z"
+    "liqUsd": 316623.46,
+    "vol24h": 3397232.33,
+    "ageHours": 301.9,
+    "insiderPct": 3.5,
+    "devPct": 0,
+    "totalHolders": 19040,
+    "warns": [
+      "vol/liq ratio 10.7x — possible wash trading",
+      "rugcheck warn: Copycat token"
+    ],
+    "checkedAt": "2026-08-24T15:21:50.424Z"
   },
   {
-    "mint": "4978aTN9W3CDuUREGxAQaBYqhPXt8142N4o4Sfgzpump",
-    "symbol": "YOMOGI",
-    "name": "Yomogicoin",
-    "liqUsd": 30596.95,
-    "vol24h": 8609497.76,
-    "ageHours": 15.8,
-    "warns": [
-      "token only 15.8h old — highest-risk window",
-      "vol/liq ratio 281.4x — possible wash trading"
+    "mint": "66ZEoQSgY3g5KEijP8ZUucth9ZmrxwYg8ngzwgP6pump",
+    "symbol": "CATCUS",
+    "name": "Catcus",
+    "score": 81,
+    "scoreReasons": [
+      "-7 vol/liq 24x",
+      "-0 dev 0.0%",
+      "-6 age 14h",
+      "-6 liq $42.4k",
+      "-0 rugScore 1"
     ],
-    "checkedAt": "2026-08-23T16:45:18.417Z"
-  },
-  {
-    "mint": "4cvZwC17oMiUA7peKX5GhbaUWv4U5Lwrd8118xnFpump",
-    "symbol": "CATALORIAN",
-    "name": "Elon's Space Cat",
-    "liqUsd": 392031.81,
-    "vol24h": 5576324.99,
-    "ageHours": 5,
+    "liqUsd": 42422.71,
+    "vol24h": 1039182.63,
+    "ageHours": 14.1,
+    "insiderPct": 0,
+    "devPct": 0.05,
+    "totalHolders": 4707,
     "warns": [
-      "token only 5.0h old — highest-risk window",
-      "vol/liq ratio 14.2x — possible wash trading"
+      "token only 14.1h old — highest-risk window",
+      "vol/liq ratio 24.5x — possible wash trading"
     ],
-    "checkedAt": "2026-08-23T16:45:19.249Z"
+    "checkedAt": "2026-08-24T15:21:39.754Z"
   },
   {
     "mint": "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35",
     "symbol": "Dinger",
     "name": "Schrödinger",
-    "liqUsd": 48856.12,
-    "vol24h": 2485248.18,
-    "ageHours": 440.3,
-    "warns": [
-      "vol/liq ratio 50.9x — possible wash trading"
+    "score": 81,
+    "scoreReasons": [
+      "-7 vol/liq 25x",
+      "-2 insider 2%",
+      "-1 dev 0.5%",
+      "-4 top10 19%",
+      "-5 liq $54.6k",
+      "-0 rugScore 1"
     ],
-    "checkedAt": "2026-08-23T16:45:22.960Z"
-  },
-  {
-    "mint": "3kvZYBrBPEySFwQfXZGEvJSeMWRa6BkTS34suBEYpump",
-    "symbol": "Dinger",
-    "name": "Schrödinger",
-    "liqUsd": 54275.32,
-    "vol24h": 10561873.68,
-    "ageHours": 15.2,
+    "liqUsd": 54637.76,
+    "vol24h": 1347371.02,
+    "ageHours": 462.9,
+    "insiderPct": 1.6,
+    "devPct": 0.55,
+    "totalHolders": 7641,
     "warns": [
-      "token only 15.2h old — highest-risk window",
-      "vol/liq ratio 194.6x — possible wash trading"
+      "vol/liq ratio 24.7x — possible wash trading"
     ],
-    "checkedAt": "2026-08-23T16:45:23.794Z"
+    "checkedAt": "2026-08-24T15:21:47.907Z"
   },
   {
-    "mint": "FW6R4QQeP4fzqRwDHbBkpjHx3ecvYwhd5g7chKg8pump",
-    "symbol": "WINNING",
-    "name": "Trump's Winning Coin",
-    "liqUsd": 48632.13,
-    "vol24h": 6170784.5,
-    "ageHours": 21.7,
+    "mint": "GPzpoXpD74E2C4CJNayuoyBqPQJEsPtdse3nhntrpump",
+    "symbol": "LOOKSMAX",
+    "name": "looksmax.org",
+    "score": 76,
+    "scoreReasons": [
+      "-1 vol/liq 12x",
+      "-14 insider 14%",
+      "-9 top10 24%",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 159889.95,
+    "vol24h": 1939359.48,
+    "ageHours": 270,
+    "insiderPct": 13.5,
+    "devPct": 0,
+    "totalHolders": 15417,
     "warns": [
-      "token only 21.7h old — highest-risk window",
-      "vol/liq ratio 126.9x — possible wash trading"
+      "insider networks hold 13.5% across 43 wallets",
+      "vol/liq ratio 12.1x — possible wash trading"
     ],
-    "checkedAt": "2026-08-23T16:45:24.633Z"
+    "checkedAt": "2026-08-24T15:21:52.746Z"
   },
   {
-    "mint": "94Sm8joZMSRzpQmcNVn5zZpgnRLN2DBesJYDXwuNpump",
-    "symbol": "omo",
-    "name": "omo",
-    "liqUsd": 133314.06,
-    "vol24h": 2632211.72,
-    "ageHours": 325.2,
+    "mint": "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump",
+    "symbol": "CVXV666",
+    "name": "CVXV666 Capital",
+    "score": 73,
+    "scoreReasons": [
+      "-24 vol/liq 58x",
+      "-3 top10 18%",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 143506.57,
+    "vol24h": 8299185.27,
+    "ageHours": 27.8,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 12688,
     "warns": [
-      "vol/liq ratio 19.7x — possible wash trading"
+      "vol/liq ratio 57.8x — possible wash trading"
     ],
-    "checkedAt": "2026-08-23T16:45:25.471Z"
+    "checkedAt": "2026-08-24T15:21:42.666Z"
   },
   {
-    "mint": "HBoNJ5v8g71s2boRivrHnfSB5MVPLDHHyVjruPfhGkvL",
-    "symbol": "PURPE",
-    "name": "Purple Pepe",
-    "liqUsd": 495290.73,
-    "vol24h": 531083.93,
-    "ageHours": 19177,
-    "warns": [],
-    "checkedAt": "2026-08-23T16:45:28.700Z"
-  },
-  {
-    "mint": "DDVUsN8sDFxbaX6gNBoD44kjZhFETWJnwAn4EX1dpump",
-    "symbol": "BABYCATE",
-    "name": "Baby Catecoin",
-    "liqUsd": 36666.34,
-    "vol24h": 2021815.51,
-    "ageHours": 17.9,
+    "mint": "4cvZwC17oMiUA7peKX5GhbaUWv4U5Lwrd8118xnFpump",
+    "symbol": "CATALORIAN",
+    "name": "Elon's Space Cat",
+    "score": 66,
+    "scoreReasons": [
+      "-30 vol/liq 102x",
+      "-1 liq $86.4k",
+      "-3 rugScore 29"
+    ],
+    "liqUsd": 86449.3,
+    "vol24h": 8841511.38,
+    "ageHours": 27.6,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 13123,
     "warns": [
-      "token only 17.9h old — highest-risk window",
-      "vol/liq ratio 55.1x — possible wash trading"
+      "vol/liq ratio 102.3x — possible wash trading",
+      "rugcheck warn: High holder correlation"
     ],
-    "checkedAt": "2026-08-23T16:45:30.362Z"
+    "checkedAt": "2026-08-24T15:21:37.936Z"
   },
   {
-    "mint": "5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2",
-    "symbol": "TROLL",
-    "name": "TROLL",
-    "liqUsd": 3116675.7,
-    "vol24h": 1357253.88,
-    "ageHours": 11758.3,
-    "warns": [],
-    "checkedAt": "2026-08-23T16:45:40.125Z"
-  },
-  {
-    "mint": "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump",
-    "symbol": "TOAD",
-    "name": "The Toad Pepe",
-    "liqUsd": 423532.95,
-    "vol24h": 1797168.72,
-    "ageHours": 362.8,
-    "warns": [],
-    "checkedAt": "2026-08-23T16:45:41.542Z"
+    "mint": "B4iCqVsAZv9dBiBVv58GJiBxWGmwkwbtPTn4sUQTpump",
+    "symbol": "Polycat",
+    "name": "LowPoly Cat",
+    "score": 62,
+    "scoreReasons": [
+      "-30 vol/liq 84x",
+      "-1 top10 16%",
+      "-3 age 19h",
+      "-4 liq $64.9k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 64876.47,
+    "vol24h": 5424751.51,
+    "ageHours": 18.9,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 10540,
+    "warns": [
+      "token only 18.9h old — highest-risk window",
+      "vol/liq ratio 83.6x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-24T15:21:47.075Z"
   },
   {
     "mint": "9HHTQ7YMx82E987cNqF9KczyZrfKgqvKNyA2yHSVpump",
     "symbol": "CYBERCAT",
     "name": "Cybercat",
-    "liqUsd": 72674.63,
-    "vol24h": 2616920.16,
-    "ageHours": 3.2,
-    "warns": [
-      "token only 3.2h old — highest-risk window",
-      "vol/liq ratio 36.0x — possible wash trading"
+    "score": 52,
+    "scoreReasons": [
+      "-30 vol/liq 126x",
+      "-1 insider 1%",
+      "-5 dev 2.5%",
+      "-5 top10 20%",
+      "-7 liq $34.2k",
+      "-0 rugScore 1"
     ],
-    "checkedAt": "2026-08-23T16:45:42.373Z"
+    "liqUsd": 34161.19,
+    "vol24h": 4310663.92,
+    "ageHours": 25.8,
+    "insiderPct": 1.5,
+    "devPct": 2.5,
+    "totalHolders": 10977,
+    "warns": [
+      "vol/liq ratio 126.2x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-24T15:21:41.832Z"
   },
   {
-    "mint": "EjAuFtMEP6LQDgLb11JU9bkcskhFYbgd9Q5NRXJppump",
-    "symbol": "Doge2",
-    "name": "Caesar",
-    "liqUsd": 60762.7,
-    "vol24h": 1404125.72,
-    "ageHours": 35.8,
-    "warns": [
-      "vol/liq ratio 23.1x — possible wash trading"
+    "mint": "8mBC1RTCajBMiA35TfYUxizUn5rXtuiNgiJKWNMtpump",
+    "symbol": "GIPP",
+    "name": "Gipp",
+    "score": 37,
+    "scoreReasons": [
+      "-30 vol/liq 86x",
+      "-17 insider 17%",
+      "-3 top10 18%",
+      "-7 age 13h",
+      "-6 liq $36.6k",
+      "-0 rugScore 1"
     ],
-    "checkedAt": "2026-08-23T16:45:43.242Z"
-  },
-  {
-    "mint": "Tqj8yFmagrg7oorpQkVGYR52r96RFTamvWfth9bpump",
-    "symbol": "KINS",
-    "name": "Kintara",
-    "liqUsd": 326695.55,
-    "vol24h": 634729.46,
-    "ageHours": 2231,
-    "warns": [],
-    "checkedAt": "2026-08-23T16:45:44.668Z"
+    "liqUsd": 36564.16,
+    "vol24h": 3157733.75,
+    "ageHours": 12.7,
+    "insiderPct": 16.7,
+    "devPct": 0,
+    "totalHolders": 6222,
+    "warns": [
+      "insider networks hold 16.7% across 16 wallets",
+      "token only 12.7h old — highest-risk window",
+      "vol/liq ratio 86.4x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-24T15:21:58.506Z"
   }
 ]

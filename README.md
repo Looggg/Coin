@@ -9,12 +9,21 @@
 ต้องมี Node.js (มีแล้ว) ไม่ต้องลง dependency อะไรเพิ่ม
 
 ```bash
+# กวาดหาเหรียญ: trending + new pools → filter → shortlist เรียงตามคะแนน
+node coin.js scan
+
 # เช็คความปลอดภัย token
 node coin.js check <mint_address>
 
 # บันทึกการตัดสินใจ (log ทั้ง buy และ skip เสมอ)
 node coin.js log <mint_address> buy "narrative แรง, ผ่านทุกเช็ค"
 node coin.js log <mint_address> skip "LP lock แค่ 40%"
+
+# เตือน exit: ถึง 2x / ครบ 48h / LP ร่วง / ติด stop loss
+node coin.js watch
+
+# ขายจริงแล้วบันทึก (เก็บ realized return + เหตุผล)
+node coin.js exit <mint_address> "LP drain"
 
 # รันทุกวัน — เก็บผลตอบแทน 1d/7d/30d ของทุก entry ที่ถึงกำหนด
 node coin.js update
@@ -39,7 +48,7 @@ node coin.js list
 
 ## รันบน cloud (ไม่ต้องเปิดคอม)
 
-GitHub Actions (`.github/workflows/coin-scan.yml`) รัน `update` + `scan` ทุก 4 ชม
+GitHub Actions (`.github/workflows/coin-scan.yml`) รัน `watch` + `update` + `scan` ทุก 4 ชม
 แล้ว commit ผล (journal outcomes, candidates.json, scans.log) กลับเข้า repo เอง
 
 **วินัยสำคัญเมื่อใช้ cloud:** เครื่องเราและ GitHub เขียนไฟล์เดียวกัน
