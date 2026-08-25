@@ -3405,5 +3405,59 @@
    "score": 86
   },
   "o": {}
+ },
+ "CxThkADKK4DDYqB8GBPaEAgRBzwxyPyUhFcBUmiAzN6N": {
+  "symbol": "AHTS",
+  "firstSeenAt": "2026-08-25T22:21:41.193Z",
+  "f": {
+   "priceUsd": 0.0001238,
+   "liqUsd": 30886.87,
+   "vol24h": 450353.72,
+   "vol1h": 19275.22,
+   "buys1h": 111,
+   "sells1h": 126,
+   "chg1h": 42.59,
+   "chg6h": 10.37,
+   "chg24h": -39.74,
+   "ageHours": 26.5,
+   "fdv": 121622,
+   "top10Pct": 27.1,
+   "insiderPct": 6.3,
+   "devPct": 0,
+   "totalHolders": 2840,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 72
+  },
+  "o": {}
+ },
+ "ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82": {
+  "symbol": "BOME",
+  "firstSeenAt": "2026-08-25T22:21:42.571Z",
+  "f": {
+   "priceUsd": 0.001073,
+   "liqUsd": 16672030.89,
+   "vol24h": 1629224.34,
+   "vol1h": 21119.98,
+   "buys1h": 68,
+   "sells1h": 65,
+   "chg1h": 1.21,
+   "chg6h": -1.04,
+   "chg24h": -5.28,
+   "ageHours": 21470.9,
+   "fdv": 74028663,
+   "top10Pct": 60.9,
+   "insiderPct": 101.6,
+   "devPct": 0,
+   "totalHolders": 315071,
+   "lpLockedPct": 0.009999999999908814,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {}
  }
 }
