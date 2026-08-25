@@ -834,5 +834,59 @@
    "score": null
   },
   "o": {}
+ },
+ "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump": {
+  "symbol": "BATON",
+  "firstSeenAt": "2026-08-25T04:40:42.079Z",
+  "f": {
+   "priceUsd": 0.001173,
+   "liqUsd": 113886.99,
+   "vol24h": 10496430.61,
+   "vol1h": 561199.48,
+   "buys1h": 3143,
+   "sells1h": 2380,
+   "chg1h": -41.09,
+   "chg6h": 2911,
+   "chg24h": 2911,
+   "ageHours": 5.3,
+   "fdv": 1123775,
+   "top10Pct": 16,
+   "insiderPct": 15.6,
+   "devPct": 0,
+   "totalHolders": 15506,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 42
+  },
+  "o": {}
+ },
+ "CGmBrG4GRiMvFSGaEiB7cwEd9uDYiqrXzkoyR2Qa3KrC": {
+  "symbol": "TILLY",
+  "firstSeenAt": "2026-08-25T04:40:43.552Z",
+  "f": {
+   "priceUsd": 0.0002836,
+   "liqUsd": 49658.04,
+   "vol24h": 178965.01,
+   "vol1h": 753.32,
+   "buys1h": 16,
+   "sells1h": 23,
+   "chg1h": -8.52,
+   "chg6h": -10.66,
+   "chg24h": -99.96,
+   "ageHours": 17.7,
+   "fdv": 280160,
+   "top10Pct": 13.5,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 2929,
+   "lpLockedPct": 0,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {}
  }
 }

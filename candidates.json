@@ -3,45 +3,43 @@
     "mint": "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi",
     "symbol": "PANTS",
     "name": "dogwifpants",
-    "score": 93,
+    "score": 92,
     "scoreReasons": [
       "-2 insider 2%",
       "-4 top10 19%",
-      "-1 liq $93.6k",
+      "-2 liq $84.9k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 93573.78,
-    "vol24h": 644987.46,
-    "ageHours": 135.9,
+    "liqUsd": 84932.64,
+    "vol24h": 617761.04,
+    "ageHours": 139.2,
     "insiderPct": 2.4,
     "devPct": 0,
-    "totalHolders": 13079,
+    "totalHolders": 12967,
     "warns": [],
-    "checkedAt": "2026-08-25T01:20:26.768Z"
+    "checkedAt": "2026-08-25T04:40:40.558Z"
   },
   {
     "mint": "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump",
     "symbol": "cc",
     "name": "creator capital",
-    "score": 87,
+    "score": 88,
     "scoreReasons": [
-      "-1 vol/liq 11x",
       "-3 insider 3%",
       "-0 dev 0.0%",
       "-6 top10 21%",
       "-3 rugScore 29"
     ],
-    "liqUsd": 317603.42,
-    "vol24h": 3535237.43,
-    "ageHours": 311.9,
+    "liqUsd": 295688.4,
+    "vol24h": 2117400.78,
+    "ageHours": 315.2,
     "insiderPct": 3.5,
     "devPct": 0,
-    "totalHolders": 20424,
+    "totalHolders": 20469,
     "warns": [
-      "vol/liq ratio 11.1x — possible wash trading",
       "rugcheck warn: Copycat token"
     ],
-    "checkedAt": "2026-08-25T01:20:26.063Z"
+    "checkedAt": "2026-08-25T04:40:41.294Z"
   },
   {
     "mint": "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump",
@@ -53,146 +51,149 @@
       "-12 top10 27%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 389443.22,
-    "vol24h": 665383.74,
-    "ageHours": 395.4,
+    "liqUsd": 380039.73,
+    "vol24h": 608316,
+    "ageHours": 398.7,
     "insiderPct": 3.9,
     "devPct": 0,
-    "totalHolders": 62341,
+    "totalHolders": 62308,
     "warns": [],
-    "checkedAt": "2026-08-25T01:20:27.672Z"
-  },
-  {
-    "mint": "EpXtn6xGoZ4Y45vRjiDUHSCGbBoJD5FaEqZbF98YswH1",
-    "symbol": "MADE",
-    "name": "SelfMade by SP3ND",
-    "score": 80,
-    "scoreReasons": [
-      "-0 vol/liq 11x",
-      "-12 insider 12%",
-      "-8 top10 23%",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 107430.69,
-    "vol24h": 1161322.85,
-    "ageHours": 119.8,
-    "insiderPct": 11.8,
-    "devPct": 0,
-    "totalHolders": 13084,
-    "warns": [
-      "insider networks hold 11.8% across 153 wallets",
-      "vol/liq ratio 10.8x — possible wash trading"
-    ],
-    "checkedAt": "2026-08-25T01:20:30.223Z"
+    "checkedAt": "2026-08-25T04:40:39.820Z"
   },
   {
     "mint": "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35",
     "symbol": "Dinger",
     "name": "Schrödinger",
-    "score": 78,
+    "score": 80,
     "scoreReasons": [
-      "-8 vol/liq 25x",
+      "-4 vol/liq 17x",
       "-2 insider 2%",
-      "-5 top10 20%",
-      "-7 liq $32.4k",
+      "-9 top10 24%",
+      "-6 liq $37.7k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 32376.23,
-    "vol24h": 818148.82,
-    "ageHours": 472.9,
+    "liqUsd": 37650.33,
+    "vol24h": 643555.71,
+    "ageHours": 476.2,
     "insiderPct": 1.8,
     "devPct": 0,
-    "totalHolders": 7772,
+    "totalHolders": 7689,
     "warns": [
-      "vol/liq ratio 25.3x — possible wash trading"
+      "vol/liq ratio 17.1x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T01:20:24.337Z"
+    "checkedAt": "2026-08-25T04:40:36.199Z"
   },
   {
     "mint": "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump",
     "symbol": "CVXV666",
     "name": "CVXV666 Capital",
-    "score": 68,
+    "score": 78,
     "scoreReasons": [
-      "-30 vol/liq 81x",
-      "-2 top10 17%",
+      "-19 vol/liq 47x",
+      "-3 top10 18%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 120919.24,
-    "vol24h": 9737758.29,
-    "ageHours": 37.7,
+    "liqUsd": 108266.31,
+    "vol24h": 5090634.93,
+    "ageHours": 41.1,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 14200,
+    "totalHolders": 14731,
     "warns": [
-      "vol/liq ratio 80.5x — possible wash trading"
+      "vol/liq ratio 47.0x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T01:20:17.019Z"
+    "checkedAt": "2026-08-25T04:40:29.307Z"
   },
   {
-    "mint": "9HHTQ7YMx82E987cNqF9KczyZrfKgqvKNyA2yHSVpump",
-    "symbol": "CYBERCAT",
-    "name": "Cybercat",
-    "score": 68,
+    "mint": "EpXtn6xGoZ4Y45vRjiDUHSCGbBoJD5FaEqZbF98YswH1",
+    "symbol": "MADE",
+    "name": "SelfMade by SP3ND",
+    "score": 78,
     "scoreReasons": [
-      "-13 vol/liq 37x",
-      "-1 insider 1%",
-      "-10 top10 25%",
-      "-7 liq $30.3k",
+      "-1 vol/liq 13x",
+      "-12 insider 12%",
+      "-8 top10 23%",
+      "-1 liq $93.3k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 30285.72,
-    "vol24h": 1110473.13,
-    "ageHours": 35.8,
-    "insiderPct": 1.5,
+    "liqUsd": 93309.46,
+    "vol24h": 1175471.41,
+    "ageHours": 123.2,
+    "insiderPct": 11.8,
     "devPct": 0,
-    "totalHolders": 10908,
+    "totalHolders": 13077,
     "warns": [
-      "vol/liq ratio 36.7x — possible wash trading"
+      "insider networks hold 11.8% across 153 wallets",
+      "vol/liq ratio 12.6x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T01:20:20.510Z"
-  },
-  {
-    "mint": "4cvZwC17oMiUA7peKX5GhbaUWv4U5Lwrd8118xnFpump",
-    "symbol": "CATALORIAN",
-    "name": "Elon's Space Cat",
-    "score": 65,
-    "scoreReasons": [
-      "-30 vol/liq 94x",
-      "-5 liq $53.3k",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 53298.74,
-    "vol24h": 5018152.06,
-    "ageHours": 37.6,
-    "insiderPct": 0,
-    "devPct": 0,
-    "totalHolders": 18105,
-    "warns": [
-      "vol/liq ratio 94.2x — possible wash trading"
-    ],
-    "checkedAt": "2026-08-25T01:20:15.398Z"
+    "checkedAt": "2026-08-25T04:40:42.816Z"
   },
   {
     "mint": "B4iCqVsAZv9dBiBVv58GJiBxWGmwkwbtPTn4sUQTpump",
     "symbol": "Polycat",
     "name": "LowPoly Cat",
-    "score": 63,
+    "score": 74,
     "scoreReasons": [
-      "-30 vol/liq 88x",
+      "-19 vol/liq 48x",
       "-3 top10 18%",
-      "-4 liq $59.9k",
+      "-3 liq $65.0k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 59880.21,
-    "vol24h": 5282418.23,
-    "ageHours": 28.9,
+    "liqUsd": 65043.07,
+    "vol24h": 3118928.15,
+    "ageHours": 32.2,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 11317,
+    "totalHolders": 11567,
     "warns": [
-      "vol/liq ratio 88.2x — possible wash trading"
+      "vol/liq ratio 48.0x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T01:20:17.722Z"
+    "checkedAt": "2026-08-25T04:40:35.462Z"
+  },
+  {
+    "mint": "4cvZwC17oMiUA7peKX5GhbaUWv4U5Lwrd8118xnFpump",
+    "symbol": "CATALORIAN",
+    "name": "Elon's Space Cat",
+    "score": 64,
+    "scoreReasons": [
+      "-30 vol/liq 78x",
+      "-6 liq $42.6k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 42567.4,
+    "vol24h": 3309523.34,
+    "ageHours": 40.9,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 19801,
+    "warns": [
+      "vol/liq ratio 77.7x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T04:40:27.565Z"
+  },
+  {
+    "mint": "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump",
+    "symbol": "BATON",
+    "name": "BATON",
+    "score": 42,
+    "scoreReasons": [
+      "-30 vol/liq 92x",
+      "-16 insider 16%",
+      "-1 top10 16%",
+      "-12 age 5h",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 113886.99,
+    "vol24h": 10496430.61,
+    "ageHours": 5.3,
+    "insiderPct": 15.6,
+    "devPct": 0,
+    "totalHolders": 15506,
+    "warns": [
+      "insider networks hold 15.6% across 26 wallets",
+      "token only 5.3h old — highest-risk window",
+      "vol/liq ratio 92.2x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T04:40:42.079Z"
   }
 ]
