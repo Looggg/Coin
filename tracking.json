@@ -942,7 +942,14 @@
    "failReason": null,
    "score": 83
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0956,
+    "liqUsd": 43797.08,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump": {
   "symbol": "Jimothy",
@@ -969,7 +976,14 @@
    "failReason": null,
    "score": 88
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0361,
+    "liqUsd": 975454.45,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "9firESEtMrb4hqFxtb7xCAXp4jAuoW8mz5MZwjJ2pump": {
   "symbol": "BATON",
@@ -994,6 +1008,40 @@
    "launchpad": "Pump.Fun",
    "pass": false,
    "failReason": "bundled/insider wallets hold 32.8% (> 25%) — coordinated dump risk",
+   "score": null
+  },
+  "o": {
+   "h4": {
+    "ret": 0.0701,
+    "liqUsd": 32756.17,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
+ },
+ "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr": {
+  "symbol": "POPCAT",
+  "firstSeenAt": "2026-08-25T12:50:34.080Z",
+  "f": {
+   "priceUsd": 0.06155,
+   "liqUsd": 3970942.95,
+   "vol24h": 1258199.4,
+   "vol1h": 96609.6,
+   "buys1h": 220,
+   "sells1h": 132,
+   "chg1h": -3.66,
+   "chg6h": -1.25,
+   "chg24h": 7.33,
+   "ageHours": 23679.8,
+   "fdv": 60322144,
+   "top10Pct": 39.4,
+   "insiderPct": 70.2,
+   "devPct": 0,
+   "totalHolders": 467518,
+   "lpLockedPct": 99.22999999999892,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "top-10 holders own 39.4% (> 30%) — dump risk",
    "score": null
   },
   "o": {}
