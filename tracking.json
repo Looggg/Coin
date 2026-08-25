@@ -806,7 +806,14 @@
    "failReason": null,
    "score": 68
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.4282,
+    "liqUsd": 22430.03,
+    "elapsedH": 7.4,
+    "dead": false
+   }
+  }
  },
  "9Y3fY1kwYUTgLwBU7DZKkEwCsZYj3BrXQNP74ZNEpump": {
   "symbol": "SMOLCAT",
@@ -833,7 +840,14 @@
    "failReason": "bundled/insider wallets hold 77.8% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1343,
+    "liqUsd": 37712.72,
+    "elapsedH": 7.4,
+    "dead": false
+   }
+  }
  },
  "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump": {
   "symbol": "BATON",
@@ -860,7 +874,14 @@
    "failReason": null,
    "score": 42
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.1858,
+    "liqUsd": 126154.65,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "CGmBrG4GRiMvFSGaEiB7cwEd9uDYiqrXzkoyR2Qa3KrC": {
   "symbol": "TILLY",
@@ -885,6 +906,94 @@
    "launchpad": "Pump.Fun",
    "pass": false,
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {
+   "h4": {
+    "ret": 0.0614,
+    "liqUsd": 47771.05,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
+ },
+ "D9qNfYpFtP9E3YpjBJDCD5PuWoD3445cC9K6PMX5pump": {
+  "symbol": "TRENCHERS",
+  "firstSeenAt": "2026-08-25T08:44:22.067Z",
+  "f": {
+   "priceUsd": 0.0002972,
+   "liqUsd": 45988.59,
+   "vol24h": 705299.57,
+   "vol1h": 41884.44,
+   "buys1h": 515,
+   "sells1h": 700,
+   "chg1h": 16.76,
+   "chg6h": 101,
+   "chg24h": 614,
+   "ageHours": 9.9,
+   "fdv": 290965,
+   "top10Pct": 6.9,
+   "insiderPct": 0,
+   "devPct": 0.11,
+   "totalHolders": 1993,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 83
+  },
+  "o": {}
+ },
+ "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump": {
+  "symbol": "Jimothy",
+  "firstSeenAt": "2026-08-25T08:44:32.748Z",
+  "f": {
+   "priceUsd": 0.0166,
+   "liqUsd": 967001.85,
+   "vol24h": 4408136.52,
+   "vol1h": 229812.04,
+   "buys1h": 890,
+   "sells1h": 576,
+   "chg1h": -7.32,
+   "chg6h": 43.9,
+   "chg24h": 89.9,
+   "ageHours": 958.5,
+   "fdv": 16602346,
+   "top10Pct": 13.1,
+   "insiderPct": 11.8,
+   "devPct": 0,
+   "totalHolders": 93846,
+   "lpLockedPct": 99.99197525036045,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 88
+  },
+  "o": {}
+ },
+ "9firESEtMrb4hqFxtb7xCAXp4jAuoW8mz5MZwjJ2pump": {
+  "symbol": "BATON",
+  "firstSeenAt": "2026-08-25T08:44:34.214Z",
+  "f": {
+   "priceUsd": 0.00008803,
+   "liqUsd": 31834.59,
+   "vol24h": 1348331.74,
+   "vol1h": 21708.93,
+   "buys1h": 241,
+   "sells1h": 281,
+   "chg1h": 4.55,
+   "chg6h": 4.58,
+   "chg24h": 980,
+   "ageHours": 1138.9,
+   "fdv": 88014,
+   "top10Pct": 22.4,
+   "insiderPct": 32.8,
+   "devPct": 0,
+   "totalHolders": 4705,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "bundled/insider wallets hold 32.8% (> 25%) — coordinated dump risk",
    "score": null
   },
   "o": {}
