@@ -1,20 +1,20 @@
 [
   {
-    "mint": "HBoNJ5v8g71s2boRivrHnfSB5MVPLDHHyVjruPfhGkvL",
-    "symbol": "PURPE",
-    "name": "Purple Pepe",
+    "mint": "XSTuo1fV7HHMhs4BYiwtrWSLsMCJNrooH2AssWTYZqP",
+    "symbol": "XST",
+    "name": "XST",
     "score": 100,
     "scoreReasons": [
       "-0 rugScore 1"
     ],
-    "liqUsd": 484107.26,
-    "vol24h": 94886.03,
-    "ageHours": 19227.7,
+    "liqUsd": 246805.98,
+    "vol24h": 943648.88,
+    "ageHours": 790.3,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 141153,
+    "totalHolders": 117823,
     "warns": [],
-    "checkedAt": "2026-08-25T19:28:17.955Z"
+    "checkedAt": "2026-08-25T20:22:46.356Z"
   },
   {
     "mint": "DQnkBM4eYYMnVE8Qy2K3BB7uts1fh2EwBVktEz6jpump",
@@ -26,14 +26,14 @@
       "-1 top10 16%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 331727.71,
-    "vol24h": 171332.62,
-    "ageHours": 10685.2,
+    "liqUsd": 327887.67,
+    "vol24h": 175306.37,
+    "ageHours": 10686.1,
     "insiderPct": 0,
     "devPct": 0.01,
-    "totalHolders": 34904,
+    "totalHolders": 34906,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:54.579Z"
+    "checkedAt": "2026-08-25T20:22:56.052Z"
   },
   {
     "mint": "6ehEcTMCc85aNF4x9CWx8HuvWGhxQtvKdhKVf2HDpump",
@@ -46,14 +46,32 @@
       "-3 top10 18%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 380103.02,
-    "vol24h": 128384.52,
-    "ageHours": 2362.1,
+    "liqUsd": 376713.88,
+    "vol24h": 125654.53,
+    "ageHours": 2363,
     "insiderPct": 1.5,
     "devPct": 0.26,
-    "totalHolders": 29882,
+    "totalHolders": 29881,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:45.951Z"
+    "checkedAt": "2026-08-25T20:23:11.195Z"
+  },
+  {
+    "mint": "x95HN3DWvbfCBtTjGm587z8suK3ec6cwQwgZNLbWKyp",
+    "symbol": "$HACHI",
+    "name": "Hachiko",
+    "score": 95,
+    "scoreReasons": [
+      "-5 liq $50.4k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 50447.33,
+    "vol24h": 22077.15,
+    "ageHours": 6509.4,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 90266,
+    "warns": [],
+    "checkedAt": "2026-08-25T20:23:36.314Z"
   },
   {
     "mint": "RmtMAYVTTFv2iK9muMrXEoAnSSsZPPgRPbqZCKwNDYk",
@@ -65,14 +83,14 @@
       "-5 top10 20%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 101680.61,
-    "vol24h": 228486.71,
-    "ageHours": 195.6,
+    "liqUsd": 101602.88,
+    "vol24h": 218406.64,
+    "ageHours": 196.5,
     "insiderPct": 0.6,
     "devPct": 0,
-    "totalHolders": 40459,
+    "totalHolders": 40435,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:34.669Z"
+    "checkedAt": "2026-08-25T20:22:33.217Z"
   },
   {
     "mint": "9AvytnUKsLxPxFHFqS6VLxaxt5p6BhYNr53SD2Chpump",
@@ -83,14 +101,54 @@
       "-6 top10 21%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 321894.6,
-    "vol24h": 139579.62,
-    "ageHours": 8169.9,
+    "liqUsd": 318395.94,
+    "vol24h": 135250.86,
+    "ageHours": 8170.9,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 62474,
+    "totalHolders": 62464,
     "warns": [],
-    "checkedAt": "2026-08-25T19:28:19.252Z"
+    "checkedAt": "2026-08-25T20:23:18.400Z"
+  },
+  {
+    "mint": "y1AZt42vceCmStjW4zetK3VoNarC1VxJ5iDjpiupump",
+    "symbol": "FARTBOY",
+    "name": "FARTBOY",
+    "score": 93,
+    "scoreReasons": [
+      "-6 top10 21%",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 566436.15,
+    "vol24h": 220136.22,
+    "ageHours": 14328.1,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 35462,
+    "warns": [],
+    "checkedAt": "2026-08-25T20:23:45.972Z"
+  },
+  {
+    "mint": "CGmBrG4GRiMvFSGaEiB7cwEd9uDYiqrXzkoyR2Qa3KrC",
+    "symbol": "TILLY",
+    "name": "tilly",
+    "score": 93,
+    "scoreReasons": [
+      "-1 vol/liq 11x",
+      "-0 top10 15%",
+      "-6 liq $38.5k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 38475.3,
+    "vol24h": 430443.87,
+    "ageHours": 33.8,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 3124,
+    "warns": [
+      "vol/liq ratio 11.2x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:23:48.245Z"
   },
   {
     "mint": "ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump",
@@ -101,14 +159,14 @@
       "-8 insider 8%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 165372.54,
-    "vol24h": 221340.15,
-    "ageHours": 3275.4,
+    "liqUsd": 159717.23,
+    "vol24h": 213192.13,
+    "ageHours": 3276.4,
     "insiderPct": 8,
     "devPct": 0,
     "totalHolders": 48486,
     "warns": [],
-    "checkedAt": "2026-08-25T19:28:16.658Z"
+    "checkedAt": "2026-08-25T20:23:19.585Z"
   },
   {
     "mint": "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi",
@@ -118,17 +176,17 @@
     "scoreReasons": [
       "-2 insider 2%",
       "-4 top10 19%",
-      "-3 liq $71.5k",
+      "-3 liq $69.6k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 71512.79,
-    "vol24h": 497884.25,
-    "ageHours": 154,
+    "liqUsd": 69612.19,
+    "vol24h": 513302.31,
+    "ageHours": 154.9,
     "insiderPct": 2.4,
     "devPct": 0,
-    "totalHolders": 12944,
+    "totalHolders": 13002,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:26.242Z"
+    "checkedAt": "2026-08-25T20:22:42.984Z"
   },
   {
     "mint": "8XtRWb4uAAJFMP4QQhoYYCWR6XXb7ybcCdiqPwz9s5WS",
@@ -140,14 +198,14 @@
       "-1 top10 16%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 834296.49,
-    "vol24h": 439672.61,
-    "ageHours": 21185.1,
+    "liqUsd": 815603.11,
+    "vol24h": 446986.73,
+    "ageHours": 21186,
     "insiderPct": 7.5,
     "devPct": 0,
-    "totalHolders": 87683,
+    "totalHolders": 87677,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:33.373Z"
+    "checkedAt": "2026-08-25T20:22:57.237Z"
   },
   {
     "mint": "63zfjPfH4uaX3TQZoD35WqUrqiuCQQWndMTxQHsJpump",
@@ -159,14 +217,34 @@
       "-2 top10 17%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 110366.05,
-    "vol24h": 298634.7,
-    "ageHours": 422.7,
+    "liqUsd": 112186.03,
+    "vol24h": 287610.93,
+    "ageHours": 423.6,
     "insiderPct": 6.6,
     "devPct": 0,
-    "totalHolders": 4249,
+    "totalHolders": 4258,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:51.920Z"
+    "checkedAt": "2026-08-25T20:23:31.404Z"
+  },
+  {
+    "mint": "7fDdLy2rmQKsPCkqUXEd1mN7yDfEzArc4VrctWmfkJBK",
+    "symbol": "Z500",
+    "name": "Z500",
+    "score": 89,
+    "scoreReasons": [
+      "-9 insider 9%",
+      "-0 dev 0.0%",
+      "-2 liq $75.9k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 75943.43,
+    "vol24h": 130353.26,
+    "ageHours": 196.4,
+    "insiderPct": 9,
+    "devPct": 0,
+    "totalHolders": 23069,
+    "warns": [],
+    "checkedAt": "2026-08-25T20:22:44.077Z"
   },
   {
     "mint": "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump",
@@ -178,36 +256,16 @@
       "-5 top10 20%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 135096.05,
-    "vol24h": 2787070.36,
-    "ageHours": 55.9,
+    "liqUsd": 126526.67,
+    "vol24h": 2597261.08,
+    "ageHours": 56.8,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 15047,
+    "totalHolders": 15062,
     "warns": [
-      "vol/liq ratio 20.6x — possible wash trading"
+      "vol/liq ratio 20.5x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:22.347Z"
-  },
-  {
-    "mint": "7fDdLy2rmQKsPCkqUXEd1mN7yDfEzArc4VrctWmfkJBK",
-    "symbol": "Z500",
-    "name": "Z500",
-    "score": 89,
-    "scoreReasons": [
-      "-9 insider 9%",
-      "-0 dev 0.0%",
-      "-2 liq $76.3k",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 76341.65,
-    "vol24h": 129389.96,
-    "ageHours": 195.5,
-    "insiderPct": 9,
-    "devPct": 0,
-    "totalHolders": 23083,
-    "warns": [],
-    "checkedAt": "2026-08-25T19:27:40.766Z"
+    "checkedAt": "2026-08-25T20:22:45.168Z"
   },
   {
     "mint": "FeMbDoX7R1Psc4GEcvJdsbNbZA3bfztcyDCatJVJpump",
@@ -218,16 +276,16 @@
       "-11 insider 11%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 301047.54,
-    "vol24h": 499376.44,
-    "ageHours": 2844.3,
+    "liqUsd": 297591.82,
+    "vol24h": 496668.16,
+    "ageHours": 2845.2,
     "insiderPct": 10.9,
     "devPct": 0,
-    "totalHolders": 39823,
+    "totalHolders": 39818,
     "warns": [
       "insider networks hold 10.9% across 113 wallets"
     ],
-    "checkedAt": "2026-08-25T19:27:43.211Z"
+    "checkedAt": "2026-08-25T20:22:52.192Z"
   },
   {
     "mint": "nWnDYs4dR57Cek8nsK1W8iWEqKiKZE1hW1CLvP3pump",
@@ -236,17 +294,17 @@
     "score": 89,
     "scoreReasons": [
       "-7 insider 7%",
-      "-4 liq $63.4k",
+      "-3 liq $65.9k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 63363.9,
-    "vol24h": 368139.49,
-    "ageHours": 280.1,
+    "liqUsd": 65864.41,
+    "vol24h": 346400.91,
+    "ageHours": 281,
     "insiderPct": 7,
     "devPct": 0,
-    "totalHolders": 3727,
+    "totalHolders": 3723,
     "warns": [],
-    "checkedAt": "2026-08-25T19:28:06.280Z"
+    "checkedAt": "2026-08-25T20:23:05.464Z"
   },
   {
     "mint": "H8xQ6poBjB9DTPMDTKWzWPrnxu4bDEhybxiouF8Ppump",
@@ -258,14 +316,14 @@
       "-5 top10 20%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 368036.04,
-    "vol24h": 521186.88,
-    "ageHours": 10675,
+    "liqUsd": 362827.4,
+    "vol24h": 520779.94,
+    "ageHours": 10675.9,
     "insiderPct": 6.4,
     "devPct": 0,
-    "totalHolders": 42376,
+    "totalHolders": 42384,
     "warns": [],
-    "checkedAt": "2026-08-25T19:28:26.973Z"
+    "checkedAt": "2026-08-25T20:23:30.313Z"
   },
   {
     "mint": "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump",
@@ -276,16 +334,16 @@
       "-12 insider 12%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 1045080.99,
-    "vol24h": 6590938.43,
-    "ageHours": 969.2,
+    "liqUsd": 1013279.77,
+    "vol24h": 6721197.95,
+    "ageHours": 970.1,
     "insiderPct": 11.8,
     "devPct": 0,
-    "totalHolders": 94602,
+    "totalHolders": 94699,
     "warns": [
       "insider networks hold 11.8% across 277 wallets"
     ],
-    "checkedAt": "2026-08-25T19:26:55.777Z"
+    "checkedAt": "2026-08-25T20:22:14.174Z"
   },
   {
     "mint": "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump",
@@ -297,14 +355,14 @@
       "-7 top10 22%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 134400.23,
-    "vol24h": 207401.25,
-    "ageHours": 5504,
+    "liqUsd": 135524.02,
+    "vol24h": 212914.35,
+    "ageHours": 5505,
     "insiderPct": 0,
     "devPct": 2.13,
-    "totalHolders": 5144,
+    "totalHolders": 5151,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:02.620Z"
+    "checkedAt": "2026-08-25T20:22:17.825Z"
   },
   {
     "mint": "B4iCqVsAZv9dBiBVv58GJiBxWGmwkwbtPTn4sUQTpump",
@@ -312,21 +370,21 @@
     "name": "LowPoly Cat",
     "score": 88,
     "scoreReasons": [
-      "-5 vol/liq 20x",
+      "-5 vol/liq 19x",
       "-4 top10 19%",
-      "-3 liq $74.5k",
+      "-3 liq $67.6k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 74458.04,
-    "vol24h": 1464532.41,
-    "ageHours": 47,
+    "liqUsd": 67612,
+    "vol24h": 1295675.3,
+    "ageHours": 47.9,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 11897,
+    "totalHolders": 11922,
     "warns": [
-      "vol/liq ratio 19.7x — possible wash trading"
+      "vol/liq ratio 19.2x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:03.769Z"
+    "checkedAt": "2026-08-25T20:22:18.917Z"
   },
   {
     "mint": "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump",
@@ -339,16 +397,16 @@
       "-6 top10 21%",
       "-3 rugScore 29"
     ],
-    "liqUsd": 280174.5,
-    "vol24h": 1496187.01,
-    "ageHours": 330,
+    "liqUsd": 254498.61,
+    "vol24h": 1571174.98,
+    "ageHours": 330.9,
     "insiderPct": 3.5,
     "devPct": 0,
-    "totalHolders": 20632,
+    "totalHolders": 20677,
     "warns": [
       "rugcheck warn: Copycat token"
     ],
-    "checkedAt": "2026-08-25T19:28:09.730Z"
+    "checkedAt": "2026-08-25T20:23:13.381Z"
   },
   {
     "mint": "EjAuFtMEP6LQDgLb11JU9bkcskhFYbgd9Q5NRXJppump",
@@ -358,17 +416,17 @@
     "scoreReasons": [
       "-6 insider 6%",
       "-3 top10 18%",
-      "-4 liq $59.1k",
+      "-4 liq $58.3k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 59122.71,
-    "vol24h": 554889.17,
-    "ageHours": 86.4,
+    "liqUsd": 58327.69,
+    "vol24h": 547583.43,
+    "ageHours": 87.4,
     "insiderPct": 5.9,
     "devPct": 0,
-    "totalHolders": 9310,
+    "totalHolders": 9321,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:20.049Z"
+    "checkedAt": "2026-08-25T20:22:30.942Z"
   },
   {
     "mint": "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump",
@@ -380,14 +438,14 @@
       "-7 top10 22%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 135067.61,
-    "vol24h": 268773.85,
-    "ageHours": 585.2,
+    "liqUsd": 132240.2,
+    "vol24h": 264253.08,
+    "ageHours": 586.2,
     "insiderPct": 6.6,
     "devPct": 0,
-    "totalHolders": 3940,
+    "totalHolders": 3942,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:06.068Z"
+    "checkedAt": "2026-08-25T20:22:24.755Z"
   },
   {
     "mint": "DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2",
@@ -398,38 +456,103 @@
       "-14 insider 14%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 1886911.63,
-    "vol24h": 1065938.54,
-    "ageHours": 19607.4,
+    "liqUsd": 1864511.88,
+    "vol24h": 1069842.6,
+    "ageHours": 19608.4,
     "insiderPct": 13.9,
     "devPct": 0,
-    "totalHolders": 122560,
+    "totalHolders": 122565,
     "warns": [
       "insider networks hold 13.9% across 547 wallets"
     ],
-    "checkedAt": "2026-08-25T19:27:32.075Z"
+    "checkedAt": "2026-08-25T20:22:37.249Z"
   },
   {
     "mint": "DRWnf86Z2MjdMGLq7LFSF875iK9Ajo94RVtjK4owpump",
     "symbol": "trickshot",
     "name": "trickshot",
-    "score": 85,
+    "score": 86,
     "scoreReasons": [
-      "-3 vol/liq 17x",
+      "-2 vol/liq 15x",
       "-6 top10 21%",
-      "-6 liq $43.4k",
+      "-6 liq $42.7k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 43386.62,
-    "vol24h": 715897.55,
-    "ageHours": 39.7,
+    "liqUsd": 42689.99,
+    "vol24h": 640067.66,
+    "ageHours": 40.6,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 5103,
+    "totalHolders": 5097,
     "warns": [
-      "vol/liq ratio 16.5x — possible wash trading"
+      "vol/liq ratio 15.0x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:37.116Z"
+    "checkedAt": "2026-08-25T20:22:41.887Z"
+  },
+  {
+    "mint": "HgBRWfYxEfvPhtqkaeymCQtHCrKE46qQ43pKe8HCpump",
+    "symbol": "Bert",
+    "name": "Bertram The Pomeranian",
+    "score": 86,
+    "scoreReasons": [
+      "-14 top10 29%",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 1010326.59,
+    "vol24h": 247151,
+    "ageHours": 16652,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 83529,
+    "warns": [],
+    "checkedAt": "2026-08-25T20:23:34.948Z"
+  },
+  {
+    "mint": "GCr352ouzNZkNQd3KZqs6jFuQb8LiYnWsEJSUpSfpump",
+    "symbol": "GASSPAS",
+    "name": "GASSPAS",
+    "score": 85,
+    "scoreReasons": [
+      "-5 vol/liq 19x",
+      "-1 insider 1%",
+      "-9 age 10h",
+      "-0 liq $98.9k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 98912.43,
+    "vol24h": 1892168.97,
+    "ageHours": 9.5,
+    "insiderPct": 1.1,
+    "devPct": 0,
+    "totalHolders": 4793,
+    "warns": [
+      "token only 9.5h old — highest-risk window",
+      "vol/liq ratio 19.1x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:23:10.013Z"
+  },
+  {
+    "mint": "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35",
+    "symbol": "Dinger",
+    "name": "Schrödinger",
+    "score": 84,
+    "scoreReasons": [
+      "-2 vol/liq 15x",
+      "-2 insider 2%",
+      "-6 top10 21%",
+      "-7 liq $33.8k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 33822.01,
+    "vol24h": 490974.67,
+    "ageHours": 491.9,
+    "insiderPct": 1.8,
+    "devPct": 0,
+    "totalHolders": 7960,
+    "warns": [
+      "vol/liq ratio 14.5x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:22:25.849Z"
   },
   {
     "mint": "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump",
@@ -441,37 +564,14 @@
       "-12 top10 27%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 352678.03,
-    "vol24h": 919277.85,
-    "ageHours": 413.5,
+    "liqUsd": 354249.4,
+    "vol24h": 919418.04,
+    "ageHours": 414.4,
     "insiderPct": 3.9,
     "devPct": 0,
-    "totalHolders": 62352,
+    "totalHolders": 62345,
     "warns": [],
-    "checkedAt": "2026-08-25T19:27:13.854Z"
-  },
-  {
-    "mint": "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35",
-    "symbol": "Dinger",
-    "name": "Schrödinger",
-    "score": 84,
-    "scoreReasons": [
-      "-2 vol/liq 15x",
-      "-2 insider 2%",
-      "-5 top10 20%",
-      "-7 liq $33.4k",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 33407.22,
-    "vol24h": 495602.42,
-    "ageHours": 491,
-    "insiderPct": 1.8,
-    "devPct": 0,
-    "totalHolders": 7949,
-    "warns": [
-      "vol/liq ratio 14.8x — possible wash trading"
-    ],
-    "checkedAt": "2026-08-25T19:27:16.152Z"
+    "checkedAt": "2026-08-25T20:22:29.773Z"
   },
   {
     "mint": "BcHEaaTCvycPwwsJ9yQTXdHP9X2gCLkznDbZ8VySpump",
@@ -483,16 +583,59 @@
       "-1 top10 16%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 326549.49,
-    "vol24h": 226056.7,
-    "ageHours": 1910.2,
+    "liqUsd": 313753.29,
+    "vol24h": 191288.48,
+    "ageHours": 1911.1,
     "insiderPct": 15.7,
     "devPct": 0,
-    "totalHolders": 42132,
+    "totalHolders": 42123,
     "warns": [
       "insider networks hold 15.7% across 245 wallets"
     ],
-    "checkedAt": "2026-08-25T19:27:30.632Z"
+    "checkedAt": "2026-08-25T20:22:38.430Z"
+  },
+  {
+    "mint": "5mH155ePpNWJb2GktpftLJbcTvoxFaUrv7XkZPDtpump",
+    "symbol": "catalyst",
+    "name": "catalyst",
+    "score": 83,
+    "scoreReasons": [
+      "-3 insider 3%",
+      "-7 top10 22%",
+      "-6 liq $39.1k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 39099.67,
+    "vol24h": 280058.83,
+    "ageHours": 117.8,
+    "insiderPct": 3.5,
+    "devPct": 0,
+    "totalHolders": 21013,
+    "warns": [],
+    "checkedAt": "2026-08-25T20:23:39.751Z"
+  },
+  {
+    "mint": "DXXcq4tY5e4PbXybyBMnxZjHVmzv1GVrAXoW5TcC5kbu",
+    "symbol": "piss",
+    "name": "pisscoin",
+    "score": 81,
+    "scoreReasons": [
+      "-2 vol/liq 14x",
+      "-7 insider 7%",
+      "-5 top10 20%",
+      "-5 liq $51.9k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 51865.16,
+    "vol24h": 733705.37,
+    "ageHours": 1457.4,
+    "insiderPct": 7,
+    "devPct": 0,
+    "totalHolders": 6492,
+    "warns": [
+      "vol/liq ratio 14.1x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:23:51.800Z"
   },
   {
     "mint": "EpXtn6xGoZ4Y45vRjiDUHSCGbBoJD5FaEqZbF98YswH1",
@@ -501,39 +644,19 @@
     "score": 80,
     "scoreReasons": [
       "-12 insider 12%",
-      "-8 top10 23%",
+      "-9 top10 24%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 108415.37,
-    "vol24h": 423841.32,
-    "ageHours": 137.9,
+    "liqUsd": 100318.46,
+    "vol24h": 458986.8,
+    "ageHours": 138.9,
     "insiderPct": 11.9,
     "devPct": 0,
-    "totalHolders": 13250,
+    "totalHolders": 13292,
     "warns": [
       "insider networks hold 11.9% across 154 wallets"
     ],
-    "checkedAt": "2026-08-25T19:27:56.878Z"
-  },
-  {
-    "mint": "3nTmaNvUd12oEd52rsjc8hZLqSjRm1yoEtCnZBDRpump",
-    "symbol": "VERITY",
-    "name": "Cursed Smiley",
-    "score": 80,
-    "scoreReasons": [
-      "-5 insider 5%",
-      "-9 top10 24%",
-      "-6 liq $44.2k",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 44229.28,
-    "vol24h": 104190.42,
-    "ageHours": 1755.7,
-    "insiderPct": 5.1,
-    "devPct": 0,
-    "totalHolders": 3431,
-    "warns": [],
-    "checkedAt": "2026-08-25T19:28:21.771Z"
+    "checkedAt": "2026-08-25T20:22:48.824Z"
   },
   {
     "mint": "J8PSdNP3QewKq2Z1JJJFDMaqF7KcaiJhR7gbr5KZpump",
@@ -546,16 +669,59 @@
       "-0 top10 15%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 700432.17,
-    "vol24h": 503070.83,
-    "ageHours": 4378.7,
+    "liqUsd": 684300.01,
+    "vol24h": 524412.36,
+    "ageHours": 4379.7,
     "insiderPct": 20.8,
     "devPct": 0,
-    "totalHolders": 67074,
+    "totalHolders": 67086,
     "warns": [
       "insider networks hold 20.8% across 412 wallets"
     ],
-    "checkedAt": "2026-08-25T19:28:29.420Z"
+    "checkedAt": "2026-08-25T20:23:33.677Z"
+  },
+  {
+    "mint": "CcLd8HTAKLWtQHatqPwBQjtuCA72FNB9E1ckRTEzpump",
+    "symbol": "ALTSZN",
+    "name": "ALTSEASON",
+    "score": 79,
+    "scoreReasons": [
+      "-20 insider 20%",
+      "-1 dev 0.7%",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 230260.56,
+    "vol24h": 234838.89,
+    "ageHours": 3121.7,
+    "insiderPct": 19.9,
+    "devPct": 0.65,
+    "totalHolders": 10384,
+    "warns": [
+      "insider networks hold 19.9% across 93 wallets"
+    ],
+    "checkedAt": "2026-08-25T20:23:44.760Z"
+  },
+  {
+    "mint": "AP8Wnu37Gf9RHgugPKGvpHe6LcTE2yp5GDy7pL5Upump",
+    "symbol": "ARCHITECTURE",
+    "name": "Grok Bot Architecture",
+    "score": 78,
+    "scoreReasons": [
+      "-10 vol/liq 31x",
+      "-5 top10 20%",
+      "-7 liq $33.1k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 33103.23,
+    "vol24h": 1011412.26,
+    "ageHours": 27.2,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 4904,
+    "warns": [
+      "vol/liq ratio 30.6x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:22:51.009Z"
   },
   {
     "mint": "GPzpoXpD74E2C4CJNayuoyBqPQJEsPtdse3nhntrpump",
@@ -567,61 +733,63 @@
       "-11 top10 26%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 189886.73,
-    "vol24h": 1181495.99,
-    "ageHours": 298.1,
+    "liqUsd": 179307.91,
+    "vol24h": 704900.96,
+    "ageHours": 299.1,
     "insiderPct": 14.3,
     "devPct": 0,
-    "totalHolders": 16448,
+    "totalHolders": 16441,
     "warns": [
       "insider networks hold 14.3% across 47 wallets"
     ],
-    "checkedAt": "2026-08-25T19:28:03.688Z"
+    "checkedAt": "2026-08-25T20:23:03.278Z"
+  },
+  {
+    "mint": "2NffKvfZTcFj2tyoY1Ev84PkqxA7DZnstyv6EwELpump",
+    "symbol": "Sue",
+    "name": "cat wif helmet",
+    "score": 73,
+    "scoreReasons": [
+      "-2 vol/liq 13x",
+      "-12 insider 12%",
+      "-11 top10 26%",
+      "-1 liq $85.1k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 85074.01,
+    "vol24h": 1114068.15,
+    "ageHours": 587.8,
+    "insiderPct": 12.3,
+    "devPct": 0,
+    "totalHolders": 4333,
+    "warns": [
+      "insider networks hold 12.3% across 26 wallets",
+      "vol/liq ratio 13.1x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:22:12.900Z"
   },
   {
     "mint": "CgnQ8a1u99Gk7qoySMd2wrGPMPm9bdcSJNhqMEkYpump",
     "symbol": "Loom",
     "name": "Loom",
-    "score": 73,
+    "score": 72,
     "scoreReasons": [
-      "-5 vol/liq 20x",
+      "-5 vol/liq 21x",
       "-10 insider 10%",
       "-8 top10 23%",
-      "-4 liq $56.3k",
+      "-5 liq $53.4k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 56347.92,
-    "vol24h": 1102359.27,
-    "ageHours": 1170.5,
+    "liqUsd": 53399.06,
+    "vol24h": 1100040.16,
+    "ageHours": 1171.4,
     "insiderPct": 9.8,
     "devPct": 0,
-    "totalHolders": 11734,
+    "totalHolders": 11714,
     "warns": [
-      "vol/liq ratio 19.6x — possible wash trading"
+      "vol/liq ratio 20.6x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:09.516Z"
-  },
-  {
-    "mint": "7nLukVng5teXze14rum9v57juXLjUp7JJnCveko1pump",
-    "symbol": "Martians",
-    "name": "Martians",
-    "score": 71,
-    "scoreReasons": [
-      "-15 vol/liq 40x",
-      "-8 insider 8%",
-      "-6 top10 21%",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 161310.88,
-    "vol24h": 6390194.24,
-    "ageHours": 564.6,
-    "insiderPct": 7.9,
-    "devPct": 0,
-    "totalHolders": 8474,
-    "warns": [
-      "vol/liq ratio 39.6x — possible wash trading"
-    ],
-    "checkedAt": "2026-08-25T19:27:08.367Z"
+    "checkedAt": "2026-08-25T20:22:22.197Z"
   },
   {
     "mint": "94Sm8joZMSRzpQmcNVn5zZpgnRLN2DBesJYDXwuNpump",
@@ -632,89 +800,66 @@
       "-20 insider 20%",
       "-1 dev 0.3%",
       "-8 top10 23%",
-      "-0 liq $98.4k",
+      "-0 liq $97.8k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 98361.45,
-    "vol24h": 443524.65,
-    "ageHours": 375.9,
+    "liqUsd": 97798.35,
+    "vol24h": 445868.52,
+    "ageHours": 376.8,
     "insiderPct": 20,
     "devPct": 0.32,
-    "totalHolders": 15670,
+    "totalHolders": 15658,
     "warns": [
       "insider networks hold 20.0% across 7 wallets"
     ],
-    "checkedAt": "2026-08-25T19:28:08.581Z"
+    "checkedAt": "2026-08-25T20:23:12.289Z"
   },
   {
-    "mint": "2NffKvfZTcFj2tyoY1Ev84PkqxA7DZnstyv6EwELpump",
-    "symbol": "Sue",
-    "name": "cat wif helmet",
-    "score": 69,
+    "mint": "GfjJ5MLzVcXtkrB4A5pV3G1nd4dMNekgPzvc7Fujpump",
+    "symbol": "Council",
+    "name": "The Council",
+    "score": 71,
     "scoreReasons": [
-      "-3 vol/liq 16x",
-      "-12 insider 12%",
-      "-10 top10 25%",
-      "-5 liq $49.1k",
-      "-0 rugScore 1"
-    ],
-    "liqUsd": 49085.5,
-    "vol24h": 782076.39,
-    "ageHours": 586.9,
-    "insiderPct": 12.3,
-    "devPct": 0,
-    "totalHolders": 3661,
-    "warns": [
-      "insider networks hold 12.3% across 26 wallets",
-      "vol/liq ratio 15.9x — possible wash trading"
-    ],
-    "checkedAt": "2026-08-25T19:27:18.900Z"
-  },
-  {
-    "mint": "AP8Wnu37Gf9RHgugPKGvpHe6LcTE2yp5GDy7pL5Upump",
-    "symbol": "ARCHITECTURE",
-    "name": "Grok Bot Architecture",
-    "score": 69,
-    "scoreReasons": [
-      "-18 vol/liq 46x",
+      "-1 vol/liq 12x",
+      "-20 insider 20%",
       "-6 top10 21%",
-      "-7 liq $31.7k",
+      "-1 liq $86.0k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 31728.05,
-    "vol24h": 1474163.73,
-    "ageHours": 26.3,
-    "insiderPct": 0,
+    "liqUsd": 85952.27,
+    "vol24h": 1050665.29,
+    "ageHours": 124.6,
+    "insiderPct": 20.4,
     "devPct": 0,
-    "totalHolders": 4914,
+    "totalHolders": 5073,
     "warns": [
-      "vol/liq ratio 46.5x — possible wash trading"
+      "insider networks hold 20.4% across 23 wallets",
+      "vol/liq ratio 12.2x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:38.321Z"
+    "checkedAt": "2026-08-25T20:23:54.368Z"
   },
   {
-    "mint": "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump",
-    "symbol": "SEYONGPARK",
-    "name": "Se Yong Park",
-    "score": 66,
+    "mint": "7nLukVng5teXze14rum9v57juXLjUp7JJnCveko1pump",
+    "symbol": "Martians",
+    "name": "Martians",
+    "score": 68,
     "scoreReasons": [
-      "-18 vol/liq 46x",
+      "-20 vol/liq 50x",
+      "-8 insider 8%",
+      "-1 dev 0.4%",
       "-4 top10 19%",
-      "-6 age 15h",
-      "-5 liq $46.9k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 46871.93,
-    "vol24h": 2167216.36,
-    "ageHours": 14.8,
-    "insiderPct": 0,
-    "devPct": 0,
-    "totalHolders": 4906,
+    "liqUsd": 182240.67,
+    "vol24h": 9043611.15,
+    "ageHours": 565.5,
+    "insiderPct": 7.9,
+    "devPct": 0.44,
+    "totalHolders": 10673,
     "warns": [
-      "token only 14.8h old — highest-risk window",
-      "vol/liq ratio 46.2x — possible wash trading"
+      "vol/liq ratio 49.6x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:15.003Z"
+    "checkedAt": "2026-08-25T20:22:09.236Z"
   },
   {
     "mint": "6b7KQsXqb6JR5Nmeer5zGRmo51dwDfttM5b5Nu2rpump",
@@ -722,47 +867,94 @@
     "name": "kylie",
     "score": 60,
     "scoreReasons": [
-      "-30 vol/liq 164x",
-      "-3 top10 18%",
-      "-1 age 22h",
-      "-6 liq $40.7k",
+      "-30 vol/liq 187x",
+      "-2 top10 17%",
+      "-1 age 23h",
+      "-6 liq $35.7k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 40732.51,
-    "vol24h": 6669074.42,
-    "ageHours": 21.8,
+    "liqUsd": 35710.68,
+    "vol24h": 6681126.29,
+    "ageHours": 22.7,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 12776,
+    "totalHolders": 12711,
     "warns": [
-      "token only 21.8h old — highest-risk window",
-      "vol/liq ratio 163.7x — possible wash trading"
+      "token only 22.7h old — highest-risk window",
+      "vol/liq ratio 187.1x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:27:21.198Z"
+    "checkedAt": "2026-08-25T20:22:32.036Z"
+  },
+  {
+    "mint": "52ZzDVDPk8S4T1rfKNWSvtDnzhLN8omMK1xLCBBWpump",
+    "symbol": "MrCate",
+    "name": "Mr.Cate",
+    "score": 60,
+    "scoreReasons": [
+      "-30 vol/liq 97x",
+      "-4 age 18h",
+      "-6 liq $42.0k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 42040.65,
+    "vol24h": 4071820.97,
+    "ageHours": 17.6,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 2539,
+    "warns": [
+      "token only 17.6h old — highest-risk window",
+      "vol/liq ratio 96.9x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:23:32.495Z"
+  },
+  {
+    "mint": "6ybRJGfWpArsP5bWDmUcrqakiSeUR8P581C8H9CUpump",
+    "symbol": "QUEEZING",
+    "name": "Queezing",
+    "score": 53,
+    "scoreReasons": [
+      "-26 vol/liq 62x",
+      "-4 top10 19%",
+      "-12 age 5h",
+      "-5 liq $50.2k",
+      "-0 rugScore 1"
+    ],
+    "liqUsd": 50150.88,
+    "vol24h": 3094030.38,
+    "ageHours": 4.6,
+    "insiderPct": 0,
+    "devPct": 0,
+    "totalHolders": 5021,
+    "warns": [
+      "token only 4.6h old — highest-risk window",
+      "vol/liq ratio 61.7x — possible wash trading"
+    ],
+    "checkedAt": "2026-08-25T20:23:08.921Z"
   },
   {
     "mint": "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump",
     "symbol": "BATON",
     "name": "BATON",
-    "score": 48,
+    "score": 49,
     "scoreReasons": [
-      "-30 vol/liq 202x",
+      "-30 vol/liq 182x",
       "-17 insider 17%",
-      "-2 age 20h",
-      "-3 liq $68.6k",
+      "-2 age 21h",
+      "-2 liq $76.8k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 68553.38,
-    "vol24h": 13830825.55,
-    "ageHours": 20.1,
+    "liqUsd": 76790.86,
+    "vol24h": 13942855.63,
+    "ageHours": 21,
     "insiderPct": 16.8,
     "devPct": 0,
-    "totalHolders": 18052,
+    "totalHolders": 18076,
     "warns": [
       "insider networks hold 16.8% across 31 wallets",
-      "token only 20.1h old — highest-risk window",
-      "vol/liq ratio 201.8x — possible wash trading"
+      "token only 21.0h old — highest-risk window",
+      "vol/liq ratio 181.6x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T19:26:51.291Z"
+    "checkedAt": "2026-08-25T20:22:08.143Z"
   }
 ]
