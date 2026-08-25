@@ -5,21 +5,21 @@
     "name": "LowPoly Cat",
     "score": 89,
     "scoreReasons": [
-      "-4 vol/liq 19x",
+      "-5 vol/liq 19x",
       "-4 top10 19%",
-      "-2 liq $79.6k",
+      "-2 liq $76.6k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 79586.8,
-    "vol24h": 1490322.28,
-    "ageHours": 44.2,
+    "liqUsd": 76594.97,
+    "vol24h": 1486936.84,
+    "ageHours": 44.1,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 11690,
+    "totalHolders": 11682,
     "warns": [
-      "vol/liq ratio 18.7x — possible wash trading"
+      "vol/liq ratio 19.4x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T16:39:29.906Z"
+    "checkedAt": "2026-08-25T16:31:55.468Z"
   },
   {
     "mint": "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump",
@@ -30,16 +30,16 @@
       "-12 insider 12%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 1002410.56,
-    "vol24h": 6468586.26,
-    "ageHours": 966.4,
+    "liqUsd": 1003823.39,
+    "vol24h": 6437613.25,
+    "ageHours": 966.3,
     "insiderPct": 11.8,
     "devPct": 0,
-    "totalHolders": 94475,
+    "totalHolders": 94458,
     "warns": [
       "insider networks hold 11.8% across 277 wallets"
     ],
-    "checkedAt": "2026-08-25T16:39:29.096Z"
+    "checkedAt": "2026-08-25T16:31:54.116Z"
   },
   {
     "mint": "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump",
@@ -47,20 +47,20 @@
     "name": "CVXV666 Capital",
     "score": 88,
     "scoreReasons": [
-      "-7 vol/liq 23x",
+      "-6 vol/liq 23x",
       "-5 top10 20%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 138753.39,
-    "vol24h": 3191568.55,
-    "ageHours": 53.1,
+    "liqUsd": 141483.23,
+    "vol24h": 3230486.97,
+    "ageHours": 52.9,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 14971,
+    "totalHolders": 14969,
     "warns": [
-      "vol/liq ratio 23.0x — possible wash trading"
+      "vol/liq ratio 22.8x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T16:39:34.303Z"
+    "checkedAt": "2026-08-25T16:32:04.291Z"
   },
   {
     "mint": "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump",
@@ -72,14 +72,14 @@
       "-7 top10 22%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 127114.14,
-    "vol24h": 191944.9,
-    "ageHours": 5501.2,
+    "liqUsd": 126946.76,
+    "vol24h": 194522.57,
+    "ageHours": 5501.1,
     "insiderPct": 0,
     "devPct": 2.13,
     "totalHolders": 5122,
     "warns": [],
-    "checkedAt": "2026-08-25T16:39:35.036Z"
+    "checkedAt": "2026-08-25T16:32:05.213Z"
   },
   {
     "mint": "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump",
@@ -91,62 +91,62 @@
       "-7 top10 22%",
       "-0 rugScore 1"
     ],
-    "liqUsd": 136029.03,
-    "vol24h": 281431.65,
-    "ageHours": 582.4,
+    "liqUsd": 131278.31,
+    "vol24h": 290032.95,
+    "ageHours": 582.3,
     "insiderPct": 6.6,
     "devPct": 0,
-    "totalHolders": 3907,
+    "totalHolders": 3909,
     "warns": [],
-    "checkedAt": "2026-08-25T16:39:33.571Z"
+    "checkedAt": "2026-08-25T16:32:01.082Z"
   },
   {
     "mint": "D9qNfYpFtP9E3YpjBJDCD5PuWoD3445cC9K6PMX5pump",
     "symbol": "TRENCHERS",
     "name": "Power Trenchers",
-    "score": 85,
+    "score": 84,
     "scoreReasons": [
-      "-7 vol/liq 23x",
+      "-7 vol/liq 24x",
       "-0 dev 0.1%",
       "-4 age 18h",
-      "-5 liq $54.6k",
+      "-5 liq $52.4k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 54580.26,
-    "vol24h": 1263128.66,
-    "ageHours": 17.8,
+    "liqUsd": 52428.57,
+    "vol24h": 1248896.69,
+    "ageHours": 17.7,
     "insiderPct": 0,
     "devPct": 0.11,
-    "totalHolders": 4250,
+    "totalHolders": 4235,
     "warns": [
-      "token only 17.8h old — highest-risk window",
-      "vol/liq ratio 23.1x — possible wash trading"
+      "token only 17.7h old — highest-risk window",
+      "vol/liq ratio 23.8x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T16:39:20.242Z"
+    "checkedAt": "2026-08-25T16:31:45.100Z"
   },
   {
     "mint": "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump",
     "symbol": "SEYONGPARK",
     "name": "Se Yong Park",
-    "score": 66,
+    "score": 67,
     "scoreReasons": [
-      "-18 vol/liq 47x",
+      "-18 vol/liq 45x",
       "-2 top10 17%",
-      "-7 age 12h",
-      "-6 liq $44.4k",
+      "-8 age 12h",
+      "-5 liq $45.9k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 44444.91,
-    "vol24h": 2074126.23,
-    "ageHours": 12.1,
+    "liqUsd": 45855.17,
+    "vol24h": 2071272.97,
+    "ageHours": 11.9,
     "insiderPct": 0,
     "devPct": 0,
-    "totalHolders": 4979,
+    "totalHolders": 4984,
     "warns": [
-      "token only 12.1h old — highest-risk window",
-      "vol/liq ratio 46.7x — possible wash trading"
+      "token only 11.9h old — highest-risk window",
+      "vol/liq ratio 45.2x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T16:39:38.036Z"
+    "checkedAt": "2026-08-25T16:32:09.252Z"
   },
   {
     "mint": "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump",
@@ -154,23 +154,23 @@
     "name": "BATON",
     "score": 49,
     "scoreReasons": [
-      "-30 vol/liq 157x",
+      "-30 vol/liq 152x",
       "-16 insider 16%",
       "-4 age 17h",
-      "-1 liq $85.7k",
+      "-1 liq $88.1k",
       "-0 rugScore 1"
     ],
-    "liqUsd": 85671.57,
-    "vol24h": 13453367.7,
-    "ageHours": 17.3,
+    "liqUsd": 88128.92,
+    "vol24h": 13428934.55,
+    "ageHours": 17.2,
     "insiderPct": 15.6,
     "devPct": 0,
-    "totalHolders": 18049,
+    "totalHolders": 18041,
     "warns": [
       "insider networks hold 15.6% across 26 wallets",
-      "token only 17.3h old — highest-risk window",
-      "vol/liq ratio 157.0x — possible wash trading"
+      "token only 17.2h old — highest-risk window",
+      "vol/liq ratio 152.4x — possible wash trading"
     ],
-    "checkedAt": "2026-08-25T16:39:22.707Z"
+    "checkedAt": "2026-08-25T16:31:48.106Z"
   }
 ]

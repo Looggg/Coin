@@ -32,9 +32,9 @@
     "dead": false
    },
    "d1": {
-    "ret": -0.99,
-    "liqUsd": 7426.23,
-    "elapsedH": 24.6,
+    "ret": -0.9899,
+    "liqUsd": 7477.5,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -72,9 +72,9 @@
     "dead": false
    },
    "d1": {
-    "ret": -0.2248,
-    "liqUsd": 1636318.06,
-    "elapsedH": 24.6,
+    "ret": -0.2208,
+    "liqUsd": 1639230.13,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -113,8 +113,8 @@
    },
    "d1": {
     "ret": -0.9888,
-    "liqUsd": 2960.37,
-    "elapsedH": 24.6,
+    "liqUsd": 2965.98,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -152,9 +152,9 @@
     "dead": false
    },
    "d1": {
-    "ret": 1.1002,
-    "liqUsd": 2463524.96,
-    "elapsedH": 24.6,
+    "ret": 1.0511,
+    "liqUsd": 2431253.39,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -192,9 +192,9 @@
     "dead": false
    },
    "d1": {
-    "ret": 0.0102,
-    "liqUsd": 4598072.05,
-    "elapsedH": 24.6,
+    "ret": 0.0151,
+    "liqUsd": 4612279.74,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -232,9 +232,9 @@
     "dead": false
    },
    "d1": {
-    "ret": -0.0161,
-    "liqUsd": 140749.5,
-    "elapsedH": 24.6,
+    "ret": 0.0568,
+    "liqUsd": 145685.09,
+    "elapsedH": 25,
     "dead": false
    }
   }
@@ -270,6 +270,12 @@
     "liqUsd": 119863.27,
     "elapsedH": 8.7,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.4201,
+    "liqUsd": 131410.88,
+    "elapsedH": 24.4,
+    "dead": false
    }
   }
  },
@@ -303,6 +309,12 @@
     "ret": -0.4659,
     "liqUsd": 244869.72,
     "elapsedH": 8.7,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.5927,
+    "liqUsd": 211815.31,
+    "elapsedH": 24.4,
     "dead": false
    }
   }
@@ -338,6 +350,12 @@
     "liqUsd": 59880.21,
     "elapsedH": 8.7,
     "dead": false
+   },
+   "d1": {
+    "ret": 0.4166,
+    "liqUsd": 75952.11,
+    "elapsedH": 24.4,
+    "dead": false
    }
   }
  },
@@ -371,6 +389,12 @@
     "ret": 0.0413,
     "liqUsd": 2871659.07,
     "elapsedH": 8.7,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.0153,
+    "liqUsd": 2738786.34,
+    "elapsedH": 24.4,
     "dead": false
    }
   }
@@ -406,6 +430,12 @@
     "liqUsd": 32376.23,
     "elapsedH": 8.7,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.3944,
+    "liqUsd": 39463.21,
+    "elapsedH": 24.4,
+    "dead": false
    }
   }
  },
@@ -439,6 +469,12 @@
     "ret": -0.0869,
     "liqUsd": 378964.49,
     "elapsedH": 8.7,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.3221,
+    "liqUsd": 320635.8,
+    "elapsedH": 24.4,
     "dead": false
    }
   }
@@ -474,6 +510,12 @@
     "liqUsd": 23398496.54,
     "elapsedH": 8.7,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.0789,
+    "liqUsd": 22696014.52,
+    "elapsedH": 24.4,
+    "dead": false
    }
   }
  },
@@ -507,6 +549,12 @@
     "ret": 0.0867,
     "liqUsd": 3443991.97,
     "elapsedH": 8.7,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.0275,
+    "liqUsd": 3198304.2,
+    "elapsedH": 24.4,
     "dead": false
    }
   }
@@ -542,6 +590,12 @@
     "liqUsd": 222813.09,
     "elapsedH": 8.7,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.0843,
+    "liqUsd": 253267.86,
+    "elapsedH": 24.4,
+    "dead": false
    }
   }
  },
@@ -575,6 +629,12 @@
     "ret": 0.1567,
     "liqUsd": 107286.18,
     "elapsedH": 8.7,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.0612,
+    "liqUsd": 95128.79,
+    "elapsedH": 24.4,
     "dead": false
    }
   }
@@ -1080,27 +1140,34 @@
    "failReason": "top-10 holders own 39.4% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0255,
+    "liqUsd": 3919269.08,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "2AF7CqwieUjUPALL7icuZtL3X7wENdjUjGBMmfV2pump": {
   "symbol": "TINY",
-  "firstSeenAt": "2026-08-25T16:39:32.104Z",
+  "firstSeenAt": "2026-08-25T16:31:59.707Z",
   "f": {
    "priceUsd": 0.00211,
    "liqUsd": 275836.96,
    "vol24h": 60458.4,
-   "vol1h": 249.62,
-   "buys1h": 1,
+   "vol1h": 275.46,
+   "buys1h": 2,
    "sells1h": 17,
-   "chg1h": -7.16,
-   "chg6h": -40.03,
+   "chg1h": -6.44,
+   "chg6h": -36.48,
    "chg24h": 1048,
-   "ageHours": 484.5,
+   "ageHours": 484.4,
    "fdv": 2068187,
    "top10Pct": 34,
    "insiderPct": 21.8,
    "devPct": 0,
-   "totalHolders": 6857,
+   "totalHolders": 6855,
    "lpLockedPct": 0,
    "launchpad": "Pump.Fun",
    "pass": false,
@@ -1111,23 +1178,23 @@
  },
  "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump": {
   "symbol": "Buddy",
-  "firstSeenAt": "2026-08-25T16:39:33.570Z",
+  "firstSeenAt": "2026-08-25T16:32:01.082Z",
   "f": {
-   "priceUsd": 0.001636,
-   "liqUsd": 136029.03,
-   "vol24h": 281431.65,
-   "vol1h": 14628.87,
+   "priceUsd": 0.001528,
+   "liqUsd": 131278.31,
+   "vol24h": 290032.95,
+   "vol1h": 13521.86,
    "buys1h": 121,
-   "sells1h": 65,
-   "chg1h": 5.71,
-   "chg6h": 18.54,
-   "chg24h": 48.86,
-   "ageHours": 582.4,
-   "fdv": 1582929,
+   "sells1h": 60,
+   "chg1h": -3.37,
+   "chg6h": 11.07,
+   "chg24h": 79.74,
+   "ageHours": 582.3,
+   "fdv": 1479128,
    "top10Pct": 22.2,
    "insiderPct": 6.6,
    "devPct": 0,
-   "totalHolders": 3907,
+   "totalHolders": 3909,
    "lpLockedPct": 100,
    "launchpad": "Pump.Fun",
    "pass": true,
@@ -1138,19 +1205,19 @@
  },
  "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump": {
   "symbol": "PAX",
-  "firstSeenAt": "2026-08-25T16:39:35.036Z",
+  "firstSeenAt": "2026-08-25T16:32:05.213Z",
   "f": {
-   "priceUsd": 0.001628,
-   "liqUsd": 127114.14,
-   "vol24h": 191944.9,
-   "vol1h": 8809.12,
-   "buys1h": 789,
-   "sells1h": 645,
-   "chg1h": -0.95,
-   "chg6h": 1.82,
-   "chg24h": 102,
-   "ageHours": 5501.2,
-   "fdv": 1628896,
+   "priceUsd": 0.001627,
+   "liqUsd": 126946.76,
+   "vol24h": 194522.57,
+   "vol1h": 9493.01,
+   "buys1h": 788,
+   "sells1h": 631,
+   "chg1h": 1.53,
+   "chg6h": 8.38,
+   "chg24h": 104,
+   "ageHours": 5501.1,
+   "fdv": 1627924,
    "top10Pct": 22.4,
    "insiderPct": 0,
    "devPct": 2.13,
@@ -1165,28 +1232,28 @@
  },
  "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump": {
   "symbol": "SEYONGPARK",
-  "firstSeenAt": "2026-08-25T16:39:38.035Z",
+  "firstSeenAt": "2026-08-25T16:32:09.252Z",
   "f": {
-   "priceUsd": 0.0002532,
-   "liqUsd": 44444.91,
-   "vol24h": 2074126.23,
-   "vol1h": 51950.72,
-   "buys1h": 409,
-   "sells1h": 378,
-   "chg1h": -35.77,
-   "chg6h": -38.67,
-   "chg24h": 516,
-   "ageHours": 12.1,
-   "fdv": 240643,
+   "priceUsd": 0.0002695,
+   "liqUsd": 45855.17,
+   "vol24h": 2071272.97,
+   "vol1h": 54566.16,
+   "buys1h": 408,
+   "sells1h": 382,
+   "chg1h": -22.04,
+   "chg6h": -26.71,
+   "chg24h": 555,
+   "ageHours": 11.9,
+   "fdv": 256136,
    "top10Pct": 17.3,
    "insiderPct": 0,
    "devPct": 0,
-   "totalHolders": 4979,
+   "totalHolders": 4984,
    "lpLockedPct": 100,
    "launchpad": "Pump.Fun",
    "pass": true,
    "failReason": null,
-   "score": 66
+   "score": 67
   },
   "o": {}
  }

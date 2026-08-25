@@ -2,7 +2,7 @@ name: coin-scan
 
 on:
   schedule:
-    - cron: "0 */4 * * *" # every 4 hours (UTC)
+    - cron: "0 * * * *" # hourly (UTC) — scheduled runs are best-effort, expect some skipped
   workflow_dispatch: {} # manual run button in the Actions tab
 
 permissions:
@@ -49,13 +49,19 @@ jobs:
             git commit -m "auto: update + scan $(date -u +%FT%H:%M)"
             # a local push landing mid-run makes the rebase conflict; retry,
             # and never leave the runner stuck mid-rebase
+            pushed=0
             for i in 1 2 3; do
               if git pull --rebase && git push; then
-                echo "pushed"; break
+                echo "pushed"; pushed=1; break
               fi
               git rebase --abort 2>/dev/null || true
               sleep 5
             done
+            # a run whose data never landed must go red, not silently vanish
+            if [ "$pushed" != "1" ]; then
+              echo "::error::failed to push scan results after 3 attempts (likely a rebase conflict)"
+              exit 1
+            fi
           fi
 
       # LAST on purpose: exits non-zero when a position needs action, so the

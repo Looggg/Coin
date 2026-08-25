@@ -46,9 +46,16 @@ const RULES = {
 };
 
 // ---------- helpers ----------
+// process-wide 429 tally — every API call funnels through getJson, so this
+// sees rate limiting even from callers that swallow their own errors
+// (fetchRugcheck, fetchSolPrice, fetchGeckoPools)
+let http429s = 0;
 async function getJson(url) {
   const res = await fetch(url, { headers: { accept: "application/json" } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  if (!res.ok) {
+    if (res.status === 429) http429s++;
+    throw new Error(`HTTP ${res.status} for ${url}`);
+  }
   return res.json();
 }
 
@@ -108,12 +115,19 @@ async function fetchRugcheck(mint) {
   }
 }
 
+// one SOL price per run is plenty — without the cache every full-checked
+// token costs an extra DexScreener call, which is what actually rate-limits
+// a large scan
+let solPriceCache = { at: 0, v: null };
 async function fetchSolPrice() {
+  if (solPriceCache.v != null && Date.now() - solPriceCache.at < 5 * 60e3) return solPriceCache.v;
   try {
     const pair = await fetchDexScreener(WSOL_MINT);
-    return pair ? Number(pair.priceUsd) : null;
+    const v = pair ? Number(pair.priceUsd) : null;
+    if (v != null) solPriceCache = { at: Date.now(), v };
+    return v;
   } catch {
-    return null;
+    return solPriceCache.v;
   }
 }
 
@@ -551,8 +565,8 @@ async function fetchGeckoPools(kind, pages) {
 async function cmdScan(fullCheckCap) {
   console.log("fetching trending + new pools from GeckoTerminal...");
   const pools = [
-    ...(await fetchGeckoPools("trending_pools", 2)),
-    ...(await fetchGeckoPools("new_pools", 3)),
+    ...(await fetchGeckoPools("trending_pools", 10)),
+    ...(await fetchGeckoPools("new_pools", 10)),
   ];
 
   const journal = loadJournal();
@@ -576,8 +590,12 @@ async function cmdScan(fullCheckCap) {
   if (candidates.size > list.length)
     console.log(`(full-checking first ${list.length} — raise with: node coin.js scan ${candidates.size})`);
   const tracking = loadTracking();
+  // a token already archived was fully observed once — re-tracking it under a
+  // new firstSeenAt would double-count it in patterns
+  const archived = new Set(loadArchive().map((r) => r.mint));
   const passed = [];
   let i = 0;
+  http429s = 0; // count only this scan's rate limiting
   for (const [mint, meta] of list) {
     i++;
     process.stdout.write(`[${i}/${list.length}] ${(meta.name || mint.slice(0, 8)).padEnd(28)} `);
@@ -586,7 +604,7 @@ async function cmdScan(fullCheckCap) {
       const verdict = runChecklist(s);
       // track every full-checked token, pass or fail — the pump-pattern
       // dataset needs the failures as its control group
-      if (!tracking[mint] && !s.dead) {
+      if (!tracking[mint] && !archived.has(mint) && !s.dead) {
         tracking[mint] = {
           symbol: s.symbol || null,
           firstSeenAt: new Date().toISOString(),
@@ -618,8 +636,16 @@ async function cmdScan(fullCheckCap) {
     } catch (e) {
       console.log(`error (${e.message})`);
     }
-    await sleep(600); // be gentle to DexScreener + Rugcheck
+    await sleep(1000); // Rugcheck free tier is the tight one — 60 req/min max
   }
+
+  // rate limiting must be LOUD — inside continue-on-error cron steps a silent
+  // 429 streak just looks like a quiet market. A rugcheck 429 is worse than
+  // invisible: it nulls the LP/insider/dev checks, so bad tokens pass easier.
+  if (http429s)
+    console.log(
+      `\n⚠ ${http429s} HTTP 429 responses across all APIs this scan — data is incomplete; lower the scan cap or raise the sleep`
+    );
 
   saveTracking(tracking);
   passed.sort((a, b) => b.score - a.score); // best-looking survivor first
@@ -637,6 +663,7 @@ async function cmdScan(fullCheckCap) {
   fs.appendFileSync(
     path.join(__dirname, "scans.log"),
     `${new Date().toISOString()} scanned=${list.length} passed=${passed.length}` +
+      (http429s ? ` rate429=${http429s}` : "") +
       (passed.length ? ` [${passed.map((p) => `${p.symbol}:${p.mint}`).join(" ")}]` : "") +
       "\n"
   );
@@ -662,6 +689,10 @@ async function cmdScan(fullCheckCap) {
 // This is the research dataset that answers "what did pumpers look like when
 // first seen" without anyone having to log anything by hand.
 const TRACKING_PATH = path.join(__dirname, "tracking.json");
+// finished rows (all outcomes recorded) move here, one JSON line each, so
+// tracking.json stays small and the track loop never slows down as the
+// dataset grows; patterns reads live + archive together
+const ARCHIVE_PATH = path.join(__dirname, "tracking-archive.jsonl");
 const TRACK_BUCKETS = { h4: 4, d1: 24, d3: 72 };
 
 function loadTracking() {
@@ -673,6 +704,24 @@ function saveTracking(t) {
   const tmp = TRACKING_PATH + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(t, null, 1));
   fs.renameSync(tmp, TRACKING_PATH);
+}
+
+function loadArchive() {
+  if (!fs.existsSync(ARCHIVE_PATH)) return [];
+  // per-line parse: one truncated line (killed process, bad merge) must not
+  // take down scan dedup AND patterns until someone hand-edits the file
+  const rows = [];
+  let bad = 0;
+  for (const l of fs.readFileSync(ARCHIVE_PATH, "utf8").split("\n")) {
+    if (!l.trim()) continue;
+    try {
+      rows.push(JSON.parse(l));
+    } catch {
+      bad++;
+    }
+  }
+  if (bad) console.error(`(archive: skipped ${bad} corrupt line(s) in tracking-archive.jsonl)`);
+  return rows;
 }
 
 function trackFeatures(s, verdict, score) {
@@ -700,8 +749,27 @@ function trackFeatures(s, verdict, score) {
   };
 }
 
+// retire rows with every outcome recorded to the append-only archive —
+// append BEFORE deleting from the live file so a crash between the two can
+// only duplicate a row (patterns dedupes), never lose one
+function archiveFinished(tracking) {
+  const finished = Object.entries(tracking).filter(([, r]) =>
+    Object.keys(TRACK_BUCKETS).every((b) => r.o[b])
+  );
+  if (!finished.length) return false;
+  fs.appendFileSync(
+    ARCHIVE_PATH,
+    finished.map(([mint, r]) => JSON.stringify({ mint, ...r })).join("\n") + "\n"
+  );
+  for (const [mint] of finished) delete tracking[mint];
+  console.log(`archived ${finished.length} finished token(s) → tracking-archive.jsonl`);
+  return true;
+}
+
 async function cmdTrack() {
   const tracking = loadTracking();
+  // archive first, every run — never gated behind "something is due"
+  if (archiveFinished(tracking)) saveTracking(tracking);
   const due = Object.entries(tracking).filter(([, r]) => {
     if (!r.f?.priceUsd) return false;
     const elapsedH = (Date.now() - new Date(r.firstSeenAt).getTime()) / 3.6e6;
@@ -759,6 +827,8 @@ async function cmdTrack() {
     }
     await sleep(400);
   }
+
+  archiveFinished(tracking); // rows that just completed their last bucket
   saveTracking(tracking);
   console.log("tracking outcomes saved");
 }
@@ -767,7 +837,11 @@ async function cmdTrack() {
 // discovery, versus the ones that died? deterministic bucket tables.
 function cmdPatterns(bucketArg) {
   const horizon = ["h4", "d1", "d3"].includes(bucketArg) ? bucketArg : "d1";
-  const rows = Object.values(loadTracking()).filter(
+  // archive first, live second: dedupe by mint keeps the live row if a crash
+  // ever left a token in both places
+  const byMint = new Map(loadArchive().map((r) => [r.mint, r]));
+  for (const [mint, r] of Object.entries(loadTracking())) byMint.set(mint, r);
+  const rows = [...byMint.values()].filter(
     (r) => r.o?.[horizon] && Number.isFinite(r.o[horizon].ret)
   );
   if (!rows.length)
@@ -973,7 +1047,7 @@ async function main() {
       if (!args[0]) return console.error("usage: node coin.js check <mint>");
       return cmdCheck(args[0]);
     case "scan":
-      return cmdScan(Math.max(1, Number(args[0]) || 20));
+      return cmdScan(Math.max(1, Number(args[0]) || 150));
     case "log": {
       let source = null;
       const si = args.indexOf("--src");
@@ -1005,7 +1079,7 @@ async function main() {
 
 usage:
   node coin.js scan [cap]                     sweep trending+new Solana pools, full-check
-                                              survivors (default cap 20), shortlist → candidates.json
+                                              survivors (default cap 150), shortlist → candidates.json
   node coin.js check <mint>                   run safety checklist on a token
   node coin.js log <mint> buy|skip "reason" [--src <channel>]
                                               record a decision (snapshot saved);
