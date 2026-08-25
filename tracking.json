@@ -670,6 +670,12 @@
     "liqUsd": 2967.82,
     "elapsedH": 4.8,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.9979,
+    "liqUsd": 2980.19,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -703,6 +709,12 @@
     "ret": 0.3142,
     "liqUsd": 317603.42,
     "elapsedH": 4.8,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.133,
+    "liqUsd": 252205.87,
+    "elapsedH": 24.8,
     "dead": false
    }
   }
@@ -738,6 +750,12 @@
     "liqUsd": 187449.47,
     "elapsedH": 4.8,
     "dead": false
+   },
+   "d1": {
+    "ret": 1.1816,
+    "liqUsd": 291238.5,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -771,6 +789,12 @@
     "ret": 0.3314,
     "liqUsd": 93573.78,
     "elapsedH": 4.8,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.1652,
+    "liqUsd": 72267.15,
+    "elapsedH": 24.8,
     "dead": false
    }
   }
@@ -806,6 +830,12 @@
     "liqUsd": 918254.17,
     "elapsedH": 4.8,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.2346,
+    "liqUsd": 795218.02,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -840,6 +870,12 @@
     "liqUsd": 389443.22,
     "elapsedH": 4.8,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.1588,
+    "liqUsd": 346190.61,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -873,6 +909,12 @@
     "ret": 0.032,
     "liqUsd": 2366863.13,
     "elapsedH": 4.8,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.0561,
+    "liqUsd": 2200999.34,
+    "elapsedH": 24.8,
     "dead": false
    }
   }
@@ -1174,7 +1216,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.2739,
+    "liqUsd": 233109.93,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump": {
   "symbol": "Buddy",
@@ -1201,7 +1250,14 @@
    "failReason": null,
    "score": 86
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0111,
+    "liqUsd": 129475.65,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump": {
   "symbol": "PAX",
@@ -1228,7 +1284,14 @@
    "failReason": null,
    "score": 88
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0227,
+    "liqUsd": 127248.91,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump": {
   "symbol": "SEYONGPARK",
@@ -1255,7 +1318,14 @@
    "failReason": null,
    "score": 67
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.5332,
+    "liqUsd": 30820.5,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "CgnQ8a1u99Gk7qoySMd2wrGPMPm9bdcSJNhqMEkYpump": {
   "symbol": "Loom",
@@ -3198,6 +3268,141 @@
    "pass": false,
    "failReason": "liquidity $29.2k (< $30.0k) — slippage will eat a $10 position",
    "score": null
+  },
+  "o": {}
+ },
+ "EVpszSRyQok4M6Fo5wTdC58WBJpx65y5VZGmmjm4pump": {
+  "symbol": "DOLLY",
+  "firstSeenAt": "2026-08-25T21:23:29.410Z",
+  "f": {
+   "priceUsd": 0.0002124,
+   "liqUsd": 41154.37,
+   "vol24h": 2604993.17,
+   "vol1h": 178595.78,
+   "buys1h": 2056,
+   "sells1h": 1565,
+   "chg1h": 42.73,
+   "chg6h": 426,
+   "chg24h": 426,
+   "ageHours": 3.5,
+   "fdv": 192899,
+   "top10Pct": 17.7,
+   "insiderPct": 0.6,
+   "devPct": 0,
+   "totalHolders": 7856,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "rugcheck danger: Creator history of rugged tokens",
+   "score": null
+  },
+  "o": {}
+ },
+ "FZqdw6oSDCbHtKYxmhnfbi97SnyVy8jaYpdCoMrrjKa2": {
+  "symbol": "Pistacio",
+  "firstSeenAt": "2026-08-25T21:23:30.536Z",
+  "f": {
+   "priceUsd": 0.001589,
+   "liqUsd": 120853.91,
+   "vol24h": 5744300.81,
+   "vol1h": 4502057.84,
+   "buys1h": 21622,
+   "sells1h": 19260,
+   "chg1h": 403,
+   "chg6h": 3963,
+   "chg24h": 3963,
+   "ageHours": 2,
+   "fdv": 1550504,
+   "top10Pct": 10.9,
+   "insiderPct": 8.7,
+   "devPct": 0,
+   "totalHolders": 10680,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 59
+  },
+  "o": {}
+ },
+ "46vV3ZpFNLZn1CDRYnAvqPsdW5ejEYn9GK9kPcZFpump": {
+  "symbol": "honse",
+  "firstSeenAt": "2026-08-25T21:23:49.557Z",
+  "f": {
+   "priceUsd": 0.0003299,
+   "liqUsd": 59414.58,
+   "vol24h": 247399.97,
+   "vol1h": 20640.7,
+   "buys1h": 211,
+   "sells1h": 134,
+   "chg1h": -6.87,
+   "chg6h": -19.72,
+   "chg24h": -28.14,
+   "ageHours": 288.7,
+   "fdv": 319105,
+   "top10Pct": 19.8,
+   "insiderPct": 5.7,
+   "devPct": 0,
+   "totalHolders": 7661,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 85
+  },
+  "o": {}
+ },
+ "49nkLrXi8nCZBVKsShDNasEtPe4Vn1mx9Xbr3kTa8pTL": {
+  "symbol": "App",
+  "firstSeenAt": "2026-08-25T21:23:59.820Z",
+  "f": {
+   "priceUsd": 0.0003909,
+   "liqUsd": 75703.68,
+   "vol24h": 446537.44,
+   "vol1h": 18679.03,
+   "buys1h": 119,
+   "sells1h": 136,
+   "chg1h": -6.34,
+   "chg6h": -4.71,
+   "chg24h": -45.89,
+   "ageHours": 337.9,
+   "fdv": 356875,
+   "top10Pct": 19.6,
+   "insiderPct": 20.7,
+   "devPct": 0,
+   "totalHolders": 10722,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 72
+  },
+  "o": {}
+ },
+ "7MQSupJTpY31HGChEHUAsS1pQhLSrHS5CCsB9bnaN3eS": {
+  "symbol": "Z",
+  "firstSeenAt": "2026-08-25T21:24:00.986Z",
+  "f": {
+   "priceUsd": 0.0003017,
+   "liqUsd": 58217.1,
+   "vol24h": 175646.24,
+   "vol1h": 23239.97,
+   "buys1h": 400,
+   "sells1h": 403,
+   "chg1h": 87.25,
+   "chg6h": 60.38,
+   "chg24h": 52.56,
+   "ageHours": 195.8,
+   "fdv": 295523,
+   "top10Pct": 18.3,
+   "insiderPct": 0.3,
+   "devPct": 3.06,
+   "totalHolders": 10604,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 86
   },
   "o": {}
  }
