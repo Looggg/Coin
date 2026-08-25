@@ -1352,7 +1352,14 @@
    "failReason": null,
    "score": 73
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3118,
+    "liqUsd": 46170.43,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "2NffKvfZTcFj2tyoY1Ev84PkqxA7DZnstyv6EwELpump": {
   "symbol": "Sue",
@@ -1379,7 +1386,14 @@
    "failReason": null,
    "score": 67
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 1.3942,
+    "liqUsd": 64905.01,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "7n8kRipxAQBfpGQtcGA2AbkM2HASSVCzqZ5F3QEopump": {
   "symbol": "Zoe",
@@ -1406,7 +1420,14 @@
    "failReason": "bundled/insider wallets hold 32.1% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.4367,
+    "liqUsd": 112378.3,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "EjAuFtMEP6LQDgLb11JU9bkcskhFYbgd9Q5NRXJppump": {
   "symbol": "Doge2",
@@ -1433,7 +1454,14 @@
    "failReason": null,
    "score": 87
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.2402,
+    "liqUsd": 63588.61,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6b7KQsXqb6JR5Nmeer5zGRmo51dwDfttM5b5Nu2rpump": {
   "symbol": "kylie",
@@ -1460,7 +1488,14 @@
    "failReason": null,
    "score": 59
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2562,
+    "liqUsd": 32086.6,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "BCdwQBAn8dYB5YjTsoB6TdHAWokxv28k2oZUodERpump": {
   "symbol": "MANIFEST",
@@ -1487,7 +1522,14 @@
    "failReason": "bundled/insider wallets hold 49.0% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0676,
+    "liqUsd": 481184.04,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "8Jx8AAHj86wbQgUTjGuj6GTTL5Ps3cqxKRTvpaJApump": {
   "symbol": "PENGUIN",
@@ -1514,7 +1556,14 @@
    "failReason": "top-10 holders own 47.2% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1056,
+    "liqUsd": 250367.31,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "5dkPngQmeqTUN57RqhxdA6xCaz7AKdzQoHLdk9xhpump": {
   "symbol": "fckstr",
@@ -1541,7 +1590,14 @@
    "failReason": null,
    "score": 63
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8537,
+    "liqUsd": 11167.31,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump": {
   "symbol": "Fartcoin ",
@@ -1568,7 +1624,14 @@
    "failReason": "top-10 holders own 33.8% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0174,
+    "liqUsd": 8041764.77,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2": {
   "symbol": "aura",
@@ -1595,7 +1658,14 @@
    "failReason": null,
    "score": 86
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0489,
+    "liqUsd": 1825626.52,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "BcHEaaTCvycPwwsJ9yQTXdHP9X2gCLkznDbZ8VySpump": {
   "symbol": "Jotchua",
@@ -1622,7 +1692,14 @@
    "failReason": null,
    "score": 83
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1502,
+    "liqUsd": 306294.84,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "AP8Wnu37Gf9RHgugPKGvpHe6LcTE2yp5GDy7pL5Upump": {
   "symbol": "ARCHITECTURE",
@@ -1649,7 +1726,14 @@
    "failReason": null,
    "score": 69
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3614,
+    "liqUsd": 25050.56,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "XSTuo1fV7HHMhs4BYiwtrWSLsMCJNrooH2AssWTYZqP": {
   "symbol": "XST",
@@ -1676,7 +1760,14 @@
    "failReason": "LP locked only 29% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2054,
+    "liqUsd": 29212.33,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "RmtMAYVTTFv2iK9muMrXEoAnSSsZPPgRPbqZCKwNDYk": {
   "symbol": "EYE",
@@ -1703,7 +1794,14 @@
    "failReason": null,
    "score": 94
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0166,
+    "liqUsd": 100116.06,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6NwarBvDkXhByqVp2Qkq5i9XbtA2B3Bwe8SWGu9vpump": {
   "symbol": "Cupsey",
@@ -1730,7 +1828,14 @@
    "failReason": "top-10 holders own 33.1% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0008,
+    "liqUsd": 531910.66,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "DRWnf86Z2MjdMGLq7LFSF875iK9Ajo94RVtjK4owpump": {
   "symbol": "trickshot",
@@ -1757,7 +1862,14 @@
    "failReason": null,
    "score": 85
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.6578,
+    "liqUsd": 24750.44,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6ehEcTMCc85aNF4x9CWx8HuvWGhxQtvKdhKVf2HDpump": {
   "symbol": "TOESCOIN",
@@ -1784,7 +1896,14 @@
    "failReason": null,
    "score": 95
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0082,
+    "liqUsd": 384912.2,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "FeMbDoX7R1Psc4GEcvJdsbNbZA3bfztcyDCatJVJpump": {
   "symbol": "three",
@@ -1811,7 +1930,14 @@
    "failReason": null,
    "score": 89
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0661,
+    "liqUsd": 308882.49,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "4AjvPXMn8YZG9saAVJvcWspg73oTFf2JmU4in4Xgpump": {
   "symbol": "STABLE",
@@ -1838,7 +1964,14 @@
    "failReason": "top-10 holders own 35.4% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.1502,
+    "liqUsd": 94709.08,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp": {
   "symbol": "CARDS",
@@ -1865,7 +1998,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0028,
+    "liqUsd": 3341990.65,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
   "symbol": "JUP",
@@ -1892,7 +2032,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0027,
+    "liqUsd": 72052432.8,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "7nLukVng5teXze14rum9v57juXLjUp7JJnCveko1pump": {
   "symbol": "Martians",
@@ -1919,7 +2066,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.4634,
+    "liqUsd": 163003.72,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "zj1jpp7QMveWHLs61vL9KMZf254KvW7j4AAmBF8ry2k": {
   "symbol": "BULLSHIT",
@@ -1946,7 +2100,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0678,
+    "liqUsd": 222405.62,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "DQnkBM4eYYMnVE8Qy2K3BB7uts1fh2EwBVktEz6jpump": {
   "symbol": "DJI6930",
@@ -1973,7 +2134,14 @@
    "failReason": null,
    "score": 99
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0687,
+    "liqUsd": 315840.6,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "488SaFq6wHF2z2k6NLSD3PtoSkXDNZaPkJwxze11pump": {
   "symbol": "MOMO",
@@ -2000,7 +2168,14 @@
    "failReason": "bundled/insider wallets hold 42.6% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3188,
+    "liqUsd": 68169.48,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "63zfjPfH4uaX3TQZoD35WqUrqiuCQQWndMTxQHsJpump": {
   "symbol": "Prometheus",
@@ -2027,7 +2202,14 @@
    "failReason": null,
    "score": 91
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0767,
+    "liqUsd": 103550.71,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm": {
   "symbol": "$WIF",
@@ -2054,7 +2236,14 @@
    "failReason": "top-10 holders own 43.1% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0,
+    "liqUsd": 138340.72,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5": {
   "symbol": "MEW",
@@ -2081,7 +2270,14 @@
    "failReason": "top-10 holders own 63.6% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0221,
+    "liqUsd": 8493064.12,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump": {
   "symbol": "pippin",
@@ -2108,7 +2304,14 @@
    "failReason": "top-10 holders own 62.5% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0051,
+    "liqUsd": 3941012.62,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump": {
   "symbol": "Pnut ",
@@ -2135,7 +2338,14 @@
    "failReason": "top-10 holders own 69.0% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0189,
+    "liqUsd": 3242477.23,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "2ZvFgTyLMrgyLmoPHtD5KsTyALh14ffzxJoni4oPpump": {
   "symbol": "BOGE",
@@ -2162,7 +2372,14 @@
    "failReason": "top-10 holders own 31.4% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0227,
+    "liqUsd": 88717.51,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "74SBV4zDXxTRgv1pEMoECskKBkZHc2yGPnc7GYVepump": {
   "symbol": "swarms",
@@ -2189,7 +2406,14 @@
    "failReason": "top-10 holders own 56.2% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0196,
+    "liqUsd": 1418372.63,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "3nTmaNvUd12oEd52rsjc8hZLqSjRm1yoEtCnZBDRpump": {
   "symbol": "VERITY",
@@ -2216,7 +2440,14 @@
    "failReason": null,
    "score": 81
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0087,
+    "liqUsd": 44745.53,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump": {
   "symbol": "CHILLGUY",
@@ -2243,7 +2474,14 @@
    "failReason": "top-10 holders own 48.8% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0189,
+    "liqUsd": 1297448.71,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump": {
   "symbol": "unc",
@@ -2270,7 +2508,14 @@
    "failReason": null,
    "score": 92
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.3145,
+    "liqUsd": 180354.52,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr": {
   "symbol": "SPX",
@@ -2297,7 +2542,14 @@
    "failReason": "mint authority ACTIVE (BCD75RNB…) — dev can print supply",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0456,
+    "liqUsd": 2292807.2,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "EkcTa8n14fXcHdfvZqCg72cTCutJnnKb19vcHwKTpump": {
   "symbol": "Qenis",
@@ -2324,7 +2576,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0978,
+    "liqUsd": 165160.68,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump": {
   "symbol": "VINE",
@@ -2351,7 +2610,14 @@
    "failReason": "top-10 holders own 36.2% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0294,
+    "liqUsd": 1461693.75,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "HBoNJ5v8g71s2boRivrHnfSB5MVPLDHHyVjruPfhGkvL": {
   "symbol": "PURPE",
@@ -2378,7 +2644,14 @@
    "failReason": null,
    "score": 100
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0421,
+    "liqUsd": 471610.01,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "7rSpKgASuXN5hfw3jsKNZN6ysNCR1Eixb2PD2Nd9pump": {
   "symbol": "Cog",
@@ -2405,7 +2678,14 @@
    "failReason": null,
    "score": 76
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0101,
+    "liqUsd": 62107.7,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "9AvytnUKsLxPxFHFqS6VLxaxt5p6BhYNr53SD2Chpump": {
   "symbol": "67",
@@ -2432,7 +2712,14 @@
    "failReason": null,
    "score": 94
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.086,
+    "liqUsd": 312519.41,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "nWnDYs4dR57Cek8nsK1W8iWEqKiKZE1hW1CLvP3pump": {
   "symbol": "Clussy",
@@ -2459,7 +2746,14 @@
    "failReason": null,
    "score": 90
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2438,
+    "liqUsd": 56908.82,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "DKu9kykSfbN5LBfFXtNNDPaX35o4Fv6vJ9FKk7pZpump": {
   "symbol": "AVA",
@@ -2486,7 +2780,14 @@
    "failReason": "top-10 holders own 70.4% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0045,
+    "liqUsd": 1201190.12,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx": {
   "symbol": "STONK",
@@ -2513,7 +2814,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1088,
+    "liqUsd": 392111.84,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "AMUgSjmdFsS8Y3JeL32u7A45Fpt8YF9xKaiwW5uGHdXk": {
   "symbol": "CMNS",
@@ -2540,7 +2848,14 @@
    "failReason": "top-10 holders own 80.9% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2133,
+    "liqUsd": 187970.91,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "H8xQ6poBjB9DTPMDTKWzWPrnxu4bDEhybxiouF8Ppump": {
   "symbol": "Tokabu",
@@ -2567,7 +2882,14 @@
    "failReason": null,
    "score": 89
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0545,
+    "liqUsd": 355815.95,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "6f8ZQhxqfigdv7UszZ1rirbV7Sgv83s3rxv1N2Zopump": {
   "symbol": "Dealer",
@@ -2594,7 +2916,14 @@
    "failReason": "top-10 holders own 46.1% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1383,
+    "liqUsd": 77391.89,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "HxQhDGYqyjorgogMJx7YbBHADEDxuHhLnMMmr6VYpyn": {
   "symbol": "MANLET",
@@ -2621,7 +2950,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0323,
+    "liqUsd": 212780.53,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "52ZzDVDPk8S4T1rfKNWSvtDnzhLN8omMK1xLCBBWpump": {
   "symbol": "MrCate",
@@ -2648,7 +2984,14 @@
    "failReason": null,
    "score": 63
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.7429,
+    "liqUsd": 29052.6,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "7fDdLy2rmQKsPCkqUXEd1mN7yDfEzArc4VrctWmfkJBK": {
   "symbol": "Z500",
@@ -3457,6 +3800,33 @@
    "pass": false,
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
+  },
+  "o": {}
+ },
+ "6xbZRQ1New1bHvVjk9GwY2JFNCZwd4HuVGWGgwjEpump": {
+  "symbol": "GOON",
+  "firstSeenAt": "2026-08-25T23:22:02.931Z",
+  "f": {
+   "priceUsd": 0.0001398,
+   "liqUsd": 34324.53,
+   "vol24h": 7116708.98,
+   "vol1h": 72982.77,
+   "buys1h": 586,
+   "sells1h": 604,
+   "chg1h": -26.52,
+   "chg6h": 245,
+   "chg24h": 245,
+   "ageHours": 4,
+   "fdv": 136258,
+   "top10Pct": 29.4,
+   "insiderPct": 2.1,
+   "devPct": 0,
+   "totalHolders": 9605,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 34
   },
   "o": {}
  }
