@@ -4470,5 +4470,32 @@
    "score": 61
   },
   "o": {}
+ },
+ "Ce2gx9KGXJ6C9Mp5b5x1sn9Mg87JwEbrQby4Zqo3pump": {
+  "symbol": "neet",
+  "firstSeenAt": "2026-08-26T07:42:21.748Z",
+  "f": {
+   "priceUsd": 0.03331,
+   "liqUsd": 1728583.24,
+   "vol24h": 410725.59,
+   "vol1h": 4525.58,
+   "buys1h": 3,
+   "sells1h": 15,
+   "chg1h": -1.08,
+   "chg6h": 1.65,
+   "chg24h": -15.17,
+   "ageHours": 11670.7,
+   "fdv": 33308830,
+   "top10Pct": 16.4,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 78583,
+   "lpLockedPct": 99.99921147587655,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 98
+  },
+  "o": {}
  }
 }
