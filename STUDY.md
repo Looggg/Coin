@@ -18,7 +18,7 @@
 
 **1. Pump เกิดชั่วโมง 10-20 ของอายุ pool ไม่ใช่นาทีแรก**
 Polycat peak ชม.15, CVXV666 peak ชม.17 และ volume 3 ชม.แรกมีแค่ 3-4% ของทั้งหมด
-→ **ไม่ต้อง snipe นาทีแรก** cron 4 ชม เจอทัน — ทั้งสองตัวอยู่ใน candidates.json ของเราก่อน peak จริง (CVXV666 score 73-77, Polycat 62)
+→ **ไม่ต้อง snipe นาทีแรก** cron เจอทัน — ทั้งสองตัวอยู่ใน candidates.json ของเราก่อน peak จริง (CVXV666 score 73-77, Polycat 62)
 
 **2. ทางขึ้นโหดมาก — shakeout ก่อน peak**
 Polycat: drawdown **-89%** ระหว่างทางขึ้นก่อนถึง 31x
@@ -34,7 +34,7 @@ CVXV666: drawdown **-97%** ก่อนถึง 92x
 Polycat score 62 (vol/liq 84x), CVXV666 score 73 (vol/liq 58x) — wash-trade warn ทั้งคู่แต่พุ่งจริง
 → vol/liq สูงอาจเป็น **สัญญาณความสนใจ** ไม่ใช่แค่ wash — ให้ patterns table ตัดสิน
 
-## คำถามที่ tracking dataset จะตอบ (สะสมอัตโนมัติทุก 4 ชม)
+## คำถามที่ tracking dataset จะตอบ (สะสมอัตโนมัติทุกชั่วโมง)
 
 1. อายุตอนเจอช่วงไหน (`<6h` / `6-24h` / `1-3d`) ให้ median return ดีสุด?
 2. vol/liq สูง = สัญญาณพุ่ง หรือสัญญาณ rug กันแน่?
@@ -126,3 +126,53 @@ peakH, samples}`
 
 **หมายเหตุ:** ตัวเลข h4 ทั้งหมดที่อ้างในบันทึกวันนี้เก็บ*ก่อน* guard นี้ จึงยังมี
 12 rows ที่ปนอยู่ — ทิศทางไม่น่าเปลี่ยน แต่ให้ re-run เทียบเมื่อ dataset สะอาดโตพอ
+
+## 2026-08-26 — alert gate (notification path) — ยังไม่มีหลักฐานรองรับ
+
+**บันทึกย้อนหลัง** — วันนี้เพิ่ม RULES 10 ตัวรวดเดียวโดยไม่ได้ลง STUDY.md ผิดกฎ
+"cite data, one variable at a time" ใน CLAUDE.md ที่ตั้งไว้เอง ตัวนี้คือการชดใช้
+
+**บริบท:** ต้องการแจ้งเตือนเข้ามือถือ ลองเมลก่อน → เข้า spam ไม่เด้ง เปลี่ยนเป็น
+`node coin.js alert` → GitHub issue assign → GitHub app push (ใช้ได้จริง issue #1)
+
+`alert` เป็นเลขคณิตล้วนบน candidates.json ไม่มี LLM — ตรงกับ "No LLM in the
+decision pipeline" และ output จบด้วยคำสั่ง `log` เสมอ คนยังตัดสินใจเอง
+
+**RULES ที่เพิ่ม แบ่งตามว่ามีหลักฐานไหม:**
+
+| key | ค่า | หลักฐาน |
+|---|---|---|
+| `alertMaxChg24h` | 100 | ✅ chg24h >100% → median -64.8% @d1 (n=11) |
+| `alertMinChg24h` | -50 | ✅ chg24h <-50% → median -21.2%, winner 0% @d1 (n=4) |
+| `alertMinAgeHours` | 24 | ✅ bucket <6h/6-24h rug 38%, median -43% @d1 |
+| `alertMinScore` | 80 | ❌ **ขัดหลักฐาน** — ดูด้านล่าง |
+| `alertMaxInsiderPct` | 5 | ❌ **ขัดหลักฐาน** — ดูด้านล่าง |
+| `alertMaxFdv` | 1.5M | ⚠️ เดา (ต้องการ headroom ให้ 2x ไม่ใช่ผลจาก data) |
+| `alertMinVolLiq` | 1 | ⚠️ liveness ไม่ใช่ return signal — ตัด token ตาย (vol/liq 0.4x) |
+| `alertCooldownHours` | 72 | ⚠️ กันสแปม ไม่เกี่ยวกับ return |
+| `alertPullbackChg24h` | 30 | ⚠️ heuristic ของ entry line |
+| `alertDowntrendChg6h` | -10 | ⚠️ heuristic ของ entry line |
+
+**สองตัวที่ขัดหลักฐานตัวเอง** (`patterns d1`, n=31):
+```
+safety score  80-100  n= 9  median -32.2%  2x+  0%  rug 33%
+              FAIL    n=16  median  -6.8%  2x+ 13%  rug  0%
+insider %     <5%     n=16  median -26.7%  2x+  0%  rug 25%
+              >15%    n=11  median  -5.6%  2x+ 18%  rug  0%
+```
+`alertMinScore: 80` และ `alertMaxInsiderPct: 5` เลือก cell ที่**แย่ที่สุด**ทั้งคู่
+
+เก็บไว้ในฐานะ **noise control** (กันเตือนเรื่องขยะ) ไม่ใช่ตัวทำนาย return —
+n=31 เล็กมากและน่าจะ confounded (PASS เอียงไปหา token อายุน้อย fdv เล็ก) แต่
+**ห้ามอ่านว่า "score สูง = ดี"** จนกว่า d3 จะมีข้อมูลพอ
+
+**คำถามเปิดข้อใหม่:** ถ้า d3 ยังยืนยันว่า insider >15% ทำได้ดีกว่า <5%
+→ `maxInsiderPct` ทั้งระบบอาจผิดทิศ ไม่ใช่แค่ alert gate
+
+**หนี้ที่รู้ตัว (แก้ทีหลังได้):**
+- `patterns` verdict table ผสม PASS สองนิยาม — row ก่อน 2026-08-26 ใช้ floor 30k
+  หลังจากนั้น 50k ยังไม่มี marker แยก (แก้ offline ได้เพราะเก็บ `f.liqUsd` ไว้)
+- ถ้า push ล้มครบ 3 ครั้งหลังสร้าง issue สำเร็จ → `alerts-sent.json` ไม่ขึ้น origin
+  → รอบหน้าเตือนซ้ำ 1 ใบ (ทางกลับกัน issue สร้างไม่สำเร็จ handle ถูกแล้ว)
+- `alertMinVolLiq: 1` วัดผลจริงแล้วตัดออกแค่ 1 จาก 37 row — ตั้งชื่อว่า
+  "tightening" แต่แทบไม่ได้ tighten อะไร

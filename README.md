@@ -55,7 +55,7 @@ node coin.js list
 
 ## รันบน cloud (ไม่ต้องเปิดคอม)
 
-GitHub Actions (`.github/workflows/coin-scan.yml`) รัน `watch` + `update` + `scan` ทุก 4 ชม
+GitHub Actions (`.github/workflows/coin-scan.yml`) รัน `watch` + `update` + `scan` ทุกชั่วโมง
 แล้ว commit ผล (journal outcomes, candidates.json, scans.log) กลับเข้า repo เอง
 
 **วินัยสำคัญเมื่อใช้ cloud:** เครื่องเราและ GitHub เขียนไฟล์เดียวกัน

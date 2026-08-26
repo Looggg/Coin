@@ -657,10 +657,12 @@ async function cmdScan(fullCheckCap) {
           scoreReasons: reasons,
           liqUsd: s.liqUsd,
           vol24h: s.vol24h,
-          // price/fdv/momentum are carried here on purpose: the alerting
-          // routine runs in a cloud sandbox whose egress proxy blocks
-          // api.dexscreener.com, so it cannot refetch these itself. this
-          // file (refreshed hourly by the Action) is its only source.
+          // price/fdv/momentum are carried here on purpose: `alert` quotes
+          // entry/2x/stop levels off these numbers and must stay pure
+          // arithmetic over one frozen snapshot — no second fetch, so the
+          // levels always match the scan they are attributed to. (It was
+          // added for a cloud sandbox that could not reach dexscreener; the
+          // determinism is why it stayed after that path was dropped.)
           priceUsd: s.priceUsd,
           fdv: s.fdv,
           chg1h: s.chg1h,
@@ -697,7 +699,7 @@ async function cmdScan(fullCheckCap) {
 
   // candidates.json = latest shortlist (overwritten every run);
   // candidates-history.jsonl = every candidate ever surfaced, so a find is
-  // never lost just because nobody looked within the 4h scan window;
+  // never lost just because nobody looked within the scan window;
   // scans.log = one human-readable line per run
   fs.writeFileSync(path.join(__dirname, "candidates.json"), JSON.stringify(passed, null, 2));
   if (passed.length)

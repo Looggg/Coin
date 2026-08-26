@@ -43,7 +43,8 @@ jobs:
       # exit 3 = nothing cleared the gate, which is the normal, quiet case.
       # NOT continue-on-error: a notification path that silently fails forever
       # is the failure this step exists to prevent (same reasoning as `watch`
-      # below). It runs after the data steps, so going red never costs data.
+      # below). The commit step below is `if: always()` precisely so this one
+      # can go red without discarding the hour's scan and tracking data.
       - name: alert on notable candidates
         env:
           GH_TOKEN: ${{ github.token }}
@@ -71,7 +72,9 @@ jobs:
           fi
           rm -f alert-body.md
 
+      # always(): a red alert step above must not cost us the hour's data
       - name: commit results
+        if: always()
         run: |
           git config user.name "coin-bot"
           git config user.email "actions@users.noreply.github.com"

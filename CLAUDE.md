@@ -39,7 +39,8 @@ GitHub Actions hourly (track → update → scan → commit → watch).
 
 `scan [cap]` · `check <mint>` · `log <mint> buy|skip "reason" [--src ch]` ·
 `watch` (exit 1 = action needed) · `exit <mint> "reason"` · `track` ·
-`patterns [h4|d1|d3]` · `update` · `stats` · `list`
+`patterns [h4|d1|d3]` · `update` · `stats` · `list` ·
+`alert [--commit-sent]` (phone notification body; exit 3 = nothing to say)
 
 ## Style
 
