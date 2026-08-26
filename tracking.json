@@ -4556,7 +4556,14 @@
    "failReason": null,
    "score": 98
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0991,
+    "liqUsd": 1812649.13,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "3N5imznFARN7MYo5cpv8mMCfPwsC769S9sYMbrcUpump": {
   "symbol": "MEEMERS",
@@ -4583,7 +4590,14 @@
    "failReason": null,
    "score": 80
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.7811,
+    "liqUsd": null,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "pepo1CFNU2RXf7yXX7HNXazXwxsq8WrPvDHpHriwoLY": {
   "symbol": "PEPO",
@@ -4771,6 +4785,33 @@
    "pass": false,
    "failReason": "mint authority ACTIVE (BCD75RNB…) — dev can print supply",
    "score": null
+  },
+  "o": {}
+ },
+ "CcgRSw62atZK9EEAQVGyTcsshgtGJxtLHK2ZGwZ7pump": {
+  "symbol": "Sky",
+  "firstSeenAt": "2026-08-26T12:42:12.968Z",
+  "f": {
+   "priceUsd": 0.004654,
+   "liqUsd": 185934.29,
+   "vol24h": 2828965.08,
+   "vol1h": 80192.11,
+   "buys1h": 2801,
+   "sells1h": 969,
+   "chg1h": -7.26,
+   "chg6h": 24.1,
+   "chg24h": 6726,
+   "ageHours": 14.6,
+   "fdv": 4590820,
+   "top10Pct": 20.9,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 13877,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 86
   },
   "o": {}
  }
