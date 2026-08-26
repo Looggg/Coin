@@ -1030,6 +1030,12 @@
     "liqUsd": 126154.65,
     "elapsedH": 4.1,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.7392,
+    "liqUsd": 61434.86,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -1063,6 +1069,12 @@
     "ret": 0.0614,
     "liqUsd": 47771.05,
     "elapsedH": 4.1,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.2119,
+    "liqUsd": 40691.33,
+    "elapsedH": 24.8,
     "dead": false
    }
   }
@@ -4084,7 +4096,14 @@
    "failReason": null,
    "score": 77
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8987,
+    "liqUsd": 36153.45,
+    "elapsedH": 4.5,
+    "dead": false
+   }
+  }
  },
  "2sLKA6PzFVjeTUaiKBCkDbDiS8MuoZAeXxZMgs9Apump": {
   "symbol": "C4T",
@@ -4326,6 +4345,33 @@
    "pass": false,
    "failReason": "bundled/insider wallets hold 115.4% (> 25%) — coordinated dump risk",
    "score": null
+  },
+  "o": {}
+ },
+ "2wMTr4ZttVr5tmS4wLStee59wi8f9QQfMtT2Hoispump": {
+  "symbol": "GTA",
+  "firstSeenAt": "2026-08-26T05:30:37.935Z",
+  "f": {
+   "priceUsd": 0.0001197,
+   "liqUsd": 31782.32,
+   "vol24h": 744202.37,
+   "vol1h": 6951.62,
+   "buys1h": 40,
+   "sells1h": 104,
+   "chg1h": 22.64,
+   "chg6h": -16.67,
+   "chg24h": -84.71,
+   "ageHours": 289.9,
+   "fdv": 116027,
+   "top10Pct": 20.5,
+   "insiderPct": 4.8,
+   "devPct": 0,
+   "totalHolders": 6266,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 76
   },
   "o": {}
  }
