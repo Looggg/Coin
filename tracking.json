@@ -4488,7 +4488,14 @@
    "failReason": null,
    "score": 76
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.3057,
+    "liqUsd": 193360.68,
+    "elapsedH": 4.7,
+    "dead": false
+   }
+  }
  },
  "DaPayqzdCXcrmvgz9Wx7MySipXxcSofGPtkMgVdqpump": {
   "symbol": "SABL",
@@ -4515,7 +4522,14 @@
    "failReason": null,
    "score": 61
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2046,
+    "liqUsd": 33975.65,
+    "elapsedH": 4.7,
+    "dead": false
+   }
+  }
  },
  "Ce2gx9KGXJ6C9Mp5b5x1sn9Mg87JwEbrQby4Zqo3pump": {
   "symbol": "neet",
@@ -4676,6 +4690,87 @@
    "pass": true,
    "failReason": null,
    "score": 76
+  },
+  "o": {}
+ },
+ "2c1KjiyQow66QfsnCtoyuqfo3AuxgpBMEoAq5oiiXqdu": {
+  "symbol": "Chiikawa",
+  "firstSeenAt": "2026-08-26T11:25:48.322Z",
+  "f": {
+   "priceUsd": 0.0003704,
+   "liqUsd": 78936.61,
+   "vol24h": 791931.76,
+   "vol1h": 44048.97,
+   "buys1h": 411,
+   "sells1h": 293,
+   "chg1h": -22.61,
+   "chg6h": -65.62,
+   "chg24h": -77.32,
+   "ageHours": 3403.9,
+   "fdv": 370307,
+   "top10Pct": 14.7,
+   "insiderPct": 49.3,
+   "devPct": 0,
+   "totalHolders": 16796,
+   "lpLockedPct": 100,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "bundled/insider wallets hold 49.3% (> 25%) — coordinated dump risk",
+   "score": null
+  },
+  "o": {}
+ },
+ "5ncPV6YVUXxuK9NVphwC7UkLd1gQZuGhdfEaDNxUpump": {
+  "symbol": "sus",
+  "firstSeenAt": "2026-08-26T11:25:51.782Z",
+  "f": {
+   "priceUsd": 0.0008905,
+   "liqUsd": 81390.28,
+   "vol24h": 1358350.9,
+   "vol1h": 47457.84,
+   "buys1h": 293,
+   "sells1h": 186,
+   "chg1h": 5.58,
+   "chg6h": 246,
+   "chg24h": 1900,
+   "ageHours": 13.7,
+   "fdv": 873394,
+   "top10Pct": 80,
+   "insiderPct": 5.3,
+   "devPct": 0,
+   "totalHolders": 2599,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "top-10 holders own 80.0% (> 30%) — dump risk",
+   "score": null
+  },
+  "o": {}
+ },
+ "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs": {
+  "symbol": "WETH",
+  "firstSeenAt": "2026-08-26T11:25:53.199Z",
+  "f": {
+   "priceUsd": 2467.43,
+   "liqUsd": 4974833.2,
+   "vol24h": 11180655.02,
+   "vol1h": 747252.93,
+   "buys1h": 704,
+   "sells1h": 566,
+   "chg1h": 0.62,
+   "chg6h": 0.09,
+   "chg24h": -0.45,
+   "ageHours": 32817,
+   "fdv": 214839674,
+   "top10Pct": 75.1,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 762635,
+   "lpLockedPct": 0,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "mint authority ACTIVE (BCD75RNB…) — dev can print supply",
+   "score": null
   },
   "o": {}
  }
