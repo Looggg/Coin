@@ -41,13 +41,15 @@ jobs:
       # so a qualifying candidate becomes an assigned issue. Deterministic:
       # `alert` is plain arithmetic over candidates.json, no model involved.
       # exit 3 = nothing cleared the gate, which is the normal, quiet case.
+      # NOT continue-on-error: a notification path that silently fails forever
+      # is the failure this step exists to prevent (same reasoning as `watch`
+      # below). It runs after the data steps, so going red never costs data.
       - name: alert on notable candidates
-        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set +e
-          node coin.js alert > alert-body.md
+          node coin.js alert --commit-sent > alert-body.md
           rc=$?
           set -e
           if [ $rc -eq 3 ]; then

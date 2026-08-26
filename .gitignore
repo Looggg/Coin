@@ -3,3 +3,5 @@
 *.bak
 *.tmp
 node_modules/
+# scratch file the alert step writes; the notification body, not data
+alert-body.md

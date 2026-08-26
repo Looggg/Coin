@@ -46,16 +46,25 @@ const RULES = {
   minHolders: 100, // too few holders => one exit kills the price
 
   // `alert` notification gate — STRICTER than the PASS verdict on purpose.
-  // PASS only means "no hard red flag"; these extra bounds come from the
-  // 2026-08-26 tracking analysis (see STUDY.md) and exist to keep the phone
-  // quiet. Loosening them costs attention, not money.
-  alertMinScore: 80,
-  alertMaxInsiderPct: 5,
+  // PASS only means "no hard red flag"; this gate decides what is worth a
+  // phone buzz. Loosening it costs attention, not money.
+  //
+  // HONESTY NOTE: only alertMaxChg24h and alertMinAgeHours are backed by the
+  // 2026-08-26 tracking analysis. alertMinScore and alertMaxInsiderPct are
+  // NOT — at d1 that dataset shows score 80-100 and insider <5% were the
+  // WORST cells (median -32%/-27%, rug 33%/25%) while FAIL and insider >15%
+  // did better. n is ~30 and almost certainly confounded, so these two stay
+  // as conservative "don't buzz me about junk" filters, not as claims that
+  // they predict returns. See the open question in STUDY.md before touching.
+  alertMinScore: 80, // NOT return-backed — noise control only
+  alertMaxInsiderPct: 5, // NOT return-backed — see note above
   alertMaxFdv: 1500000,
   alertMaxChg24h: 100, // already-pumped: chg24h > 100% ran -64.8% median @d1
+  alertMinChg24h: -50, // chg24h < -50% ran median -21% and 0% winners @d1
   alertMinAgeHours: 24,
   alertCooldownHours: 72, // do not re-alert the same mint inside this window
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
+  alertDowntrendChg6h: -10, // below this, say so instead of "enter at market"
 
   // exit discipline (checklist.md rules 1-3, enforced by `watch`)
   takeProfitX: 2, // sell half here, ride the rest free
@@ -853,7 +862,12 @@ async function cmdTrack() {
       // running peak/trough, sampled once per cron pass. hourly sampling
       // misses intra-hour spikes, so peakRet is a LOWER BOUND on the best
       // exit that was actually available — never read it as exact.
-      if (ret != null) {
+      //
+      // pair == null is excluded on purpose: a single mint missing from a
+      // batch is often an API omission, not a rug, and folding its -1 into
+      // troughRet would permanently mark a live token as having crashed.
+      // the bucket write below still records the dead case with dead: true.
+      if (ret != null && pair != null) {
         r.p = r.p || { peakRet: 0, troughRet: 0, peakH: 0, samples: 0 };
         r.p.samples++;
         if (ret > r.p.peakRet) {
@@ -947,13 +961,28 @@ function cmdPatterns(bucketArg) {
   // path section: answers the questions a fixed-horizon ret cannot. only
   // rows tracked since peak sampling shipped (2026-08-26) carry r.p, so this
   // stays quiet until the dataset has some.
-  const withPath = rows.filter((r) => r.p && r.p.samples > 1);
+  // 6+ samples, and only at d3, where the peak window and the return window
+  // finally line up (r.p keeps accumulating until the row archives at 72h,
+  // so at h4 this would compare a 108h peak against a 4h return). with two
+  // samples the table is just the d1 reading restated — and it would read as
+  // evidence about the stop loss, the one question STUDY.md says not to
+  // answer casually.
+  const withPath =
+    horizon === "d3" ? rows.filter((r) => r.p && r.p.samples >= 6) : [];
   if (withPath.length) {
     console.log(`── path (n=${withPath.length} with peak sampling) ──`);
-    const peaks = withPath.map((r) => r.p.peakRet);
+    // peakRet is floored at 0 by its initializer, so a median over all rows
+    // is pinned to 0 whenever most tokens never traded above entry. report
+    // the median only over rows that actually got above entry, and say how
+    // many those were.
+    const aboveEntry = withPath.filter((r) => r.p.peakRet > 0);
     const hit2x = withPath.filter((r) => r.p.peakRet >= 1);
     const ended = hit2x.filter((r) => r.o[horizon].ret < 1).length;
-    console.log(`  median peak     ${fmtPct(median(peaks))}   (lower bound — sampled hourly)`);
+    console.log(`  above entry     ${aboveEntry.length}/${withPath.length} ever traded above the discovery price`);
+    if (aboveEntry.length)
+      console.log(
+        `  median peak     ${fmtPct(median(aboveEntry.map((r) => r.p.peakRet)))}   (of those; lower bound — sampled hourly)`
+      );
     console.log(`  touched 2x      ${hit2x.length}/${withPath.length}, of which ${ended} gave it all back by ${horizon}`);
     // the stop-loss question from STUDY.md: how many tokens that ended up
     // profitable had already breached -50% first?
@@ -1150,20 +1179,40 @@ function alertQualifies(c, sent, now) {
   if (c.fdv == null || c.fdv >= R.alertMaxFdv) return false;
   if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
   if (c.chg24h == null || c.chg24h >= R.alertMaxChg24h) return false;
+  if (c.chg24h <= R.alertMinChg24h) return false;
   if (!(c.ageHours >= R.alertMinAgeHours)) return false;
   if (!(c.priceUsd > 0)) return false;
-  const last = sent[c.mint] ? new Date(sent[c.mint]).getTime() : null;
-  if (last && now - last < R.alertCooldownHours * 3.6e6) return false;
+  // never quote a price the scan did not just fetch: `discovery scan` is
+  // continue-on-error, so a failed scan leaves the previous run's
+  // candidates.json in place and every level below would be computed from
+  // a stale priceUsd
+  const seenAt = c.checkedAt ? new Date(c.checkedAt).getTime() : NaN;
+  if (!Number.isFinite(seenAt) || now - seenAt > 2 * 3.6e6) return false;
+  // a corrupt timestamp must fail CLOSED (treat as just-alerted); NaN
+  // comparisons are false, which would silently bypass the cooldown
+  if (c.mint in sent) {
+    const last = new Date(sent[c.mint]).getTime();
+    if (!Number.isFinite(last)) return false;
+    if (now - last < R.alertCooldownHours * 3.6e6) return false;
+  }
   return true;
 }
 
 function alertBody(c) {
   const P = c.priceUsd;
   const R = RULES;
-  const entry =
-    c.chg24h > R.alertPullbackChg24h
-      ? `ขึ้นมา ${c.chg24h.toFixed(0)}% ใน 24h — รอย่อโซน **${fmtPrice(P * 0.72)} – ${fmtPrice(P * 0.8)}**`
-      : `เข้าแถว **${fmtPrice(P)}** ได้`;
+  // three cases, not two. the old code branched only on the up side, so a
+  // token down 35% in 24h fell through to "enter at market" — a falling
+  // knife dressed up as an entry signal.
+  let entry;
+  if (c.chg24h > R.alertPullbackChg24h) {
+    entry = `ขึ้นมา ${c.chg24h.toFixed(0)}% ใน 24h — รอย่อโซน **${fmtPrice(P * 0.72)} – ${fmtPrice(P * 0.8)}**`;
+  } else if (c.chg6h != null && c.chg6h < R.alertDowntrendChg6h) {
+    entry =
+      `⚠ ยังเป็นขาลง (6h ${c.chg6h}%, 24h ${c.chg24h}%) — **อย่าเพิ่งรับมีด** รอให้ 6h กลับเป็นบวกก่อน`;
+  } else {
+    entry = `เข้าแถว **${fmtPrice(P)}** ได้`;
+  }
   return [
     `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}`,
     "",
@@ -1185,7 +1234,7 @@ function alertBody(c) {
   ].join("\n");
 }
 
-function cmdAlert() {
+function cmdAlert(commitSent) {
   const CAND_PATH = path.join(__dirname, "candidates.json");
   if (!fs.existsSync(CAND_PATH)) {
     console.error("no candidates.json — run `node coin.js scan` first");
@@ -1213,10 +1262,23 @@ function cmdAlert() {
     ].join("\n")
   );
 
-  // written only after the body is emitted; the caller decides whether the
-  // notification actually went out, and commits this file if it did
-  for (const c of hits) sent[c.mint] = new Date(now).toISOString();
-  fs.writeFileSync(ALERTS_SENT_PATH, JSON.stringify(sent, null, 1));
+  // The dedup write is opt-in. A bare `node coin.js alert` on the laptop is a
+  // preview: if it recorded the mints, the next cloud run would go quiet for
+  // 72h and the phone notification would never happen — the exact failure the
+  // workflow's revert branch exists to prevent, entered through the front door.
+  // Only the workflow, which actually creates the issue, passes --commit-sent.
+  if (commitSent) {
+    for (const c of hits) sent[c.mint] = new Date(now).toISOString();
+    // prune anything long past the cooldown so this file cannot grow forever
+    const cutoff = now - RULES.alertCooldownHours * 3.6e6 * 4;
+    for (const [m, t] of Object.entries(sent)) {
+      const ts = new Date(t).getTime();
+      if (Number.isFinite(ts) && ts < cutoff) delete sent[m];
+    }
+    fs.writeFileSync(ALERTS_SENT_PATH, JSON.stringify(sent, null, 1));
+  } else {
+    console.error("(preview — alerts-sent.json not written; pass --commit-sent to record)");
+  }
   console.error(`alert: ${hits.length} token(s) — ${hits.map((c) => c.symbol).join(", ")}`);
 }
 
@@ -1246,7 +1308,7 @@ async function main() {
     case "watch":
       return cmdWatch();
     case "alert":
-      return cmdAlert();
+      return cmdAlert(args.includes("--commit-sent"));
     case "exit":
       if (args.length < 2) return console.error(`usage: node coin.js exit <mint> "reason"`);
       return cmdExit(args[0], args.slice(1).join(" "));
@@ -1269,8 +1331,9 @@ usage:
   node coin.js track                          record 4h/1d/3d outcomes for every scanned token
   node coin.js patterns [h4|d1|d3]            pump-pattern tables: discovery profile vs outcome
   node coin.js watch                          alert on open positions: 2x, time stop, LP drain
-  node coin.js alert                          print a phone-notification body for candidates that
-                                              clear the alert gate (exit 3 = nothing); 72h dedup
+  node coin.js alert [--commit-sent]          print a phone-notification body for candidates that
+                                              clear the alert gate (exit 3 = nothing). previews by
+                                              default; --commit-sent records the 72h dedup
   node coin.js exit <mint> "reason"           close a position, record realized return
   node coin.js update                         record due 1d/7d/30d outcomes
   node coin.js stats                          returns, rug rate, vs SOL baseline
