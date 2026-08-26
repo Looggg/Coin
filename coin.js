@@ -61,6 +61,12 @@ const RULES = {
   alertMaxFdv: 1500000,
   alertMaxChg24h: 100, // already-pumped: chg24h > 100% ran -64.8% median @d1
   alertMinChg24h: -50, // chg24h < -50% ran median -21% and 0% winners @d1
+  // liveness, not a return signal: the first live issue alerted a 9-month-old
+  // token doing $21k of volume on $51k liq (vol/liq 0.4x) purely because its
+  // score was 95. nobody trades it; there is nothing to exit into. kept well
+  // below the 5-10x band patterns flags as interesting, so it only removes
+  // the dead.
+  alertMinVolLiq: 1,
   alertMinAgeHours: 24,
   alertCooldownHours: 72, // do not re-alert the same mint inside this window
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
@@ -1180,6 +1186,8 @@ function alertQualifies(c, sent, now) {
   if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
   if (c.chg24h == null || c.chg24h >= R.alertMaxChg24h) return false;
   if (c.chg24h <= R.alertMinChg24h) return false;
+  if (c.vol24h == null || !(c.liqUsd > 0) || c.vol24h / c.liqUsd < R.alertMinVolLiq)
+    return false;
   if (!(c.ageHours >= R.alertMinAgeHours)) return false;
   if (!(c.priceUsd > 0)) return false;
   // never quote a price the scan did not just fetch: `discovery scan` is
@@ -1201,15 +1209,16 @@ function alertQualifies(c, sent, now) {
 function alertBody(c) {
   const P = c.priceUsd;
   const R = RULES;
-  // three cases, not two. the old code branched only on the up side, so a
-  // token down 35% in 24h fell through to "enter at market" — a falling
-  // knife dressed up as an entry signal.
+  // the knife check comes FIRST. it used to sit behind the pullback branch,
+  // so 24h +35% / 6h -22% (up on the day, dumping right now) won the pretty
+  // pullback-zone line while the 6h collapse went unmentioned. what is
+  // happening in the last 6h outranks what happened over the last 24.
   let entry;
-  if (c.chg24h > R.alertPullbackChg24h) {
-    entry = `ขึ้นมา ${c.chg24h.toFixed(0)}% ใน 24h — รอย่อโซน **${fmtPrice(P * 0.72)} – ${fmtPrice(P * 0.8)}**`;
-  } else if (c.chg6h != null && c.chg6h < R.alertDowntrendChg6h) {
+  if (c.chg6h != null && c.chg6h < R.alertDowntrendChg6h) {
     entry =
-      `⚠ ยังเป็นขาลง (6h ${c.chg6h}%, 24h ${c.chg24h}%) — **อย่าเพิ่งรับมีด** รอให้ 6h กลับเป็นบวกก่อน`;
+      `⚠ กำลังเป็นขาลง (6h ${c.chg6h}%, 24h ${c.chg24h}%) — **อย่าเพิ่งรับมีด** รอให้ 6h กลับเป็นบวกก่อน`;
+  } else if (c.chg24h > R.alertPullbackChg24h) {
+    entry = `ขึ้นมา ${c.chg24h.toFixed(0)}% ใน 24h — รอย่อโซน **${fmtPrice(P * 0.72)} – ${fmtPrice(P * 0.8)}**`;
   } else {
     entry = `เข้าแถว **${fmtPrice(P)}** ได้`;
   }
