@@ -1110,6 +1110,12 @@
     "liqUsd": 43797.08,
     "elapsedH": 4.1,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.992,
+    "liqUsd": 2623.37,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -1144,6 +1150,12 @@
     "liqUsd": 975454.45,
     "elapsedH": 4.1,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.1277,
+    "liqUsd": 892221.35,
+    "elapsedH": 24.8,
+    "dead": false
    }
   }
  },
@@ -1177,6 +1189,12 @@
     "ret": 0.0701,
     "liqUsd": 32756.17,
     "elapsedH": 4.1,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.6861,
+    "liqUsd": 17701.71,
+    "elapsedH": 24.8,
     "dead": false
    }
   }
@@ -4436,7 +4454,14 @@
    "failReason": null,
    "score": 76
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0744,
+    "liqUsd": 30492.05,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "FPfi9q1AixdUeWQVPFHJMJQ7a43S78dm6UZ4fzN4pump": {
   "symbol": "nosis",
@@ -4543,6 +4568,60 @@
    "pass": true,
    "failReason": null,
    "score": 80
+  },
+  "o": {}
+ },
+ "pepo1CFNU2RXf7yXX7HNXazXwxsq8WrPvDHpHriwoLY": {
+  "symbol": "PEPO",
+  "firstSeenAt": "2026-08-26T09:36:21.014Z",
+  "f": {
+   "priceUsd": 0.0003082,
+   "liqUsd": 80808.01,
+   "vol24h": 202972.61,
+   "vol1h": 8437.58,
+   "buys1h": 125,
+   "sells1h": 85,
+   "chg1h": -0.06,
+   "chg6h": 77.57,
+   "chg24h": 211,
+   "ageHours": 14365.5,
+   "fdv": 307582,
+   "top10Pct": 13.8,
+   "insiderPct": 0,
+   "devPct": 2.93,
+   "totalHolders": 14364,
+   "lpLockedPct": 99.3397524608249,
+   "launchpad": "unknown",
+   "pass": true,
+   "failReason": null,
+   "score": 92
+  },
+  "o": {}
+ },
+ "2WbTSrJHr1hNCtmYBjuSetZNdsZWZ2eZTuK9GjNPpump": {
+  "symbol": "Pistacia",
+  "firstSeenAt": "2026-08-26T09:36:31.940Z",
+  "f": {
+   "priceUsd": 0.0002229,
+   "liqUsd": 39433.35,
+   "vol24h": 1287760.4,
+   "vol1h": 136604.81,
+   "buys1h": 6764,
+   "sells1h": 3877,
+   "chg1h": -15.42,
+   "chg6h": -54.53,
+   "chg24h": 132,
+   "ageHours": 6.6,
+   "fdv": 221115,
+   "top10Pct": 2.9,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 1675,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 72
   },
   "o": {}
  }
