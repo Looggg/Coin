@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write # the alert step opens an issue to push a phone notification
 
 concurrency:
   group: coin-scan
@@ -36,12 +37,45 @@ jobs:
         continue-on-error: true
         run: node coin.js scan
 
+      # Phone notification path. GitHub's mobile app pushes on issue assignment,
+      # so a qualifying candidate becomes an assigned issue. Deterministic:
+      # `alert` is plain arithmetic over candidates.json, no model involved.
+      # exit 3 = nothing cleared the gate, which is the normal, quiet case.
+      - name: alert on notable candidates
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          node coin.js alert > alert-body.md
+          rc=$?
+          set -e
+          if [ $rc -eq 3 ]; then
+            echo 'nothing clears the alert gate'; rm -f alert-body.md; exit 0
+          fi
+          if [ $rc -ne 0 ]; then
+            echo "::error::coin.js alert failed with exit $rc"; rm -f alert-body.md; exit 1
+          fi
+          # if the issue cannot be created, drop alerts-sent.json so the next
+          # run retries instead of silently swallowing the alert forever
+          if ! gh issue create \
+                --title "[Coin] candidate(s) $(date -u +%F\ %H:%M) UTC" \
+                --body-file alert-body.md \
+                --assignee ${{ github.repository_owner }}; then
+            echo '::error::gh issue create failed — reverting alerts-sent.json so the next run retries'
+            git checkout -- alerts-sent.json 2>/dev/null || rm -f alerts-sent.json
+            rm -f alert-body.md
+            exit 1
+          fi
+          rm -f alert-body.md
+
       - name: commit results
         run: |
           git config user.name "coin-bot"
           git config user.email "actions@users.noreply.github.com"
           # -A . stages whatever exists; naming journal.json explicitly would
           # abort the whole step until the first decision is logged
+          rm -f alert-body.md # scratch, never commit it
           git add -A .
           if git diff --cached --quiet; then
             echo "no changes"

@@ -45,6 +45,18 @@ const RULES = {
   maxInsiderPct: 25, // supply held by detected insider/bundle networks
   minHolders: 100, // too few holders => one exit kills the price
 
+  // `alert` notification gate — STRICTER than the PASS verdict on purpose.
+  // PASS only means "no hard red flag"; these extra bounds come from the
+  // 2026-08-26 tracking analysis (see STUDY.md) and exist to keep the phone
+  // quiet. Loosening them costs attention, not money.
+  alertMinScore: 80,
+  alertMaxInsiderPct: 5,
+  alertMaxFdv: 1500000,
+  alertMaxChg24h: 100, // already-pumped: chg24h > 100% ran -64.8% median @d1
+  alertMinAgeHours: 24,
+  alertCooldownHours: 72, // do not re-alert the same mint inside this window
+  alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
+
   // exit discipline (checklist.md rules 1-3, enforced by `watch`)
   takeProfitX: 2, // sell half here, ride the rest free
   timeStopHours: 48, // no movement by now => get out, capital has a cost
@@ -1104,6 +1116,110 @@ async function cmdLog(mint, decision, reason, source) {
   await updateOutcomes();
 }
 
+// ---------- alert ----------
+// Deterministic: same inputs -> same issue body, no model in the path. Reads
+// only candidates.json (written by the hourly Action, which has network) so
+// this runs anywhere. Prints the notification body to stdout and exits 0 when
+// there is something to say; exits 3 when there is not, which is the normal
+// case and must not be read as a failure by the caller.
+const ALERTS_SENT_PATH = path.join(__dirname, "alerts-sent.json");
+
+// 4 significant figures, never scientific notation: these are prices like
+// 0.0000007312 and a human has to paste them into a chart
+function fmtPrice(x) {
+  if (!Number.isFinite(x) || x <= 0) return "?";
+  const decimals = Math.max(0, 4 - 1 - Math.floor(Math.log10(x)));
+  return "$" + x.toFixed(Math.min(20, decimals));
+}
+
+function loadAlertsSent() {
+  if (!fs.existsSync(ALERTS_SENT_PATH)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(ALERTS_SENT_PATH, "utf8"));
+  } catch {
+    // a corrupt dedup file must not block alerts; worst case, one repeat
+    console.error("(alerts-sent.json unreadable — treating as empty)");
+    return {};
+  }
+}
+
+function alertQualifies(c, sent, now) {
+  const R = RULES;
+  if (!(c.score >= R.alertMinScore)) return false;
+  if (c.insiderPct == null || c.insiderPct >= R.alertMaxInsiderPct) return false;
+  if (c.fdv == null || c.fdv >= R.alertMaxFdv) return false;
+  if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
+  if (c.chg24h == null || c.chg24h >= R.alertMaxChg24h) return false;
+  if (!(c.ageHours >= R.alertMinAgeHours)) return false;
+  if (!(c.priceUsd > 0)) return false;
+  const last = sent[c.mint] ? new Date(sent[c.mint]).getTime() : null;
+  if (last && now - last < R.alertCooldownHours * 3.6e6) return false;
+  return true;
+}
+
+function alertBody(c) {
+  const P = c.priceUsd;
+  const R = RULES;
+  const entry =
+    c.chg24h > R.alertPullbackChg24h
+      ? `ขึ้นมา ${c.chg24h.toFixed(0)}% ใน 24h — รอย่อโซน **${fmtPrice(P * 0.72)} – ${fmtPrice(P * 0.8)}**`
+      : `เข้าแถว **${fmtPrice(P)}** ได้`;
+  return [
+    `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}`,
+    "",
+    "```",
+    c.mint,
+    "```",
+    "",
+    `liq ${fmtUsd(c.liqUsd)} · FDV ${fmtUsd(c.fdv)} · vol24h ${fmtUsd(c.vol24h)} · insider ${c.insiderPct}% · อายุ ${c.ageHours}h`,
+    `chg 1h ${c.chg1h ?? "?"}% · 6h ${c.chg6h ?? "?"}% · 24h ${c.chg24h}%`,
+    "",
+    `- **เข้า:** ${entry}`,
+    `- **ขายครึ่งที่ 2x:** ${fmtPrice(P * 2)}`,
+    `- **ที่เหลือ 3-4x:** ${fmtPrice(P * 3)} – ${fmtPrice(P * 4)} — อย่ารอยอด`,
+    `- **Stop loss:** ${fmtPrice(P * (1 - R.stopLossPct / 100))} หรือออกทันทีถ้า LP หดแรง`,
+    `- **Time stop:** ${R.timeStopHours}h ไม่ขยับ = ออก`,
+    "",
+    `[dexscreener](https://dexscreener.com/solana/${c.mint}) · [gmgn](https://gmgn.ai/sol/token/${c.mint})`,
+    `ข้อมูล ณ ${c.checkedAt}`,
+  ].join("\n");
+}
+
+function cmdAlert() {
+  const CAND_PATH = path.join(__dirname, "candidates.json");
+  if (!fs.existsSync(CAND_PATH)) {
+    console.error("no candidates.json — run `node coin.js scan` first");
+    process.exit(3);
+  }
+  const candidates = JSON.parse(fs.readFileSync(CAND_PATH, "utf8"));
+  const sent = loadAlertsSent();
+  const now = Date.now();
+  const hits = candidates.filter((c) => alertQualifies(c, sent, now));
+  if (!hits.length) {
+    console.error(`alert: ${candidates.length} candidate(s), none clear the notification gate`);
+    process.exit(3);
+  }
+
+  console.log(
+    [
+      hits.map(alertBody).join("\n\n---\n\n"),
+      "",
+      "---",
+      "",
+      "ตัวเลขเข้า/ออกคำนวณจาก exit rules ใน RULES ตรงๆ ไม่ใช่คำทำนาย — filter กัน downside เท่านั้น.",
+      "$10 ต่อไม้คือ stop loss ตัวจริง.",
+      "",
+      "ดูแล้วบันทึก: `node coin.js log <mint> buy|skip \"reason\"` — skip ก็เป็น data",
+    ].join("\n")
+  );
+
+  // written only after the body is emitted; the caller decides whether the
+  // notification actually went out, and commits this file if it did
+  for (const c of hits) sent[c.mint] = new Date(now).toISOString();
+  fs.writeFileSync(ALERTS_SENT_PATH, JSON.stringify(sent, null, 1));
+  console.error(`alert: ${hits.length} token(s) — ${hits.map((c) => c.symbol).join(", ")}`);
+}
+
 async function main() {
   const [cmd, ...args] = process.argv.slice(2);
   switch (cmd) {
@@ -1129,6 +1245,8 @@ async function main() {
       return cmdPatterns(args[0]);
     case "watch":
       return cmdWatch();
+    case "alert":
+      return cmdAlert();
     case "exit":
       if (args.length < 2) return console.error(`usage: node coin.js exit <mint> "reason"`);
       return cmdExit(args[0], args.slice(1).join(" "));
@@ -1151,6 +1269,8 @@ usage:
   node coin.js track                          record 4h/1d/3d outcomes for every scanned token
   node coin.js patterns [h4|d1|d3]            pump-pattern tables: discovery profile vs outcome
   node coin.js watch                          alert on open positions: 2x, time stop, LP drain
+  node coin.js alert                          print a phone-notification body for candidates that
+                                              clear the alert gate (exit 3 = nothing); 72h dedup
   node coin.js exit <mint> "reason"           close a position, record realized return
   node coin.js update                         record due 1d/7d/30d outcomes
   node coin.js stats                          returns, rug rate, vs SOL baseline
