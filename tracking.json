@@ -4624,5 +4624,59 @@
    "score": 72
   },
   "o": {}
+ },
+ "CvjSaRcTmcrfutekYzrBEEdTWx1RmRTWDToqtXmCpump": {
+  "symbol": "LaPeace",
+  "firstSeenAt": "2026-08-26T10:31:00.624Z",
+  "f": {
+   "priceUsd": 0.0005458,
+   "liqUsd": 73904.54,
+   "vol24h": 1118663.56,
+   "vol1h": 32017.21,
+   "buys1h": 186,
+   "sells1h": 211,
+   "chg1h": -6.35,
+   "chg6h": -7.61,
+   "chg24h": 116,
+   "ageHours": 143.8,
+   "fdv": 521720,
+   "top10Pct": 18.7,
+   "insiderPct": 0.2,
+   "devPct": 0,
+   "totalHolders": 10807,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 91
+  },
+  "o": {}
+ },
+ "FzJ1Cm4kwEjiPmfna8WXWwjC7i41KnB9oi9wz3nHpump": {
+  "symbol": "Frug",
+  "firstSeenAt": "2026-08-26T10:31:03.079Z",
+  "f": {
+   "priceUsd": 0.001478,
+   "liqUsd": 109421.9,
+   "vol24h": 3009621.85,
+   "vol1h": 3009621.85,
+   "buys1h": 27061,
+   "sells1h": 22883,
+   "chg1h": 3686,
+   "chg6h": 3686,
+   "chg24h": 3686,
+   "ageHours": 1,
+   "fdv": 1478634,
+   "top10Pct": 15.6,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 8673,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 76
+  },
+  "o": {}
  }
 }
