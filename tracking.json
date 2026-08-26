@@ -4050,7 +4050,14 @@
    "failReason": null,
    "score": 34
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0529,
+    "liqUsd": 33555.75,
+    "elapsedH": 4.4,
+    "dead": false
+   }
+  }
  },
  "AY6dVdZ7DQUGnh3BBhpoXmTvaRGQgsppKkPkfucppump": {
   "symbol": "SpaceCat",
@@ -4237,6 +4244,87 @@
    "launchpad": "unknown",
    "pass": false,
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {}
+ },
+ "547tWxWhym8U7Y7DvhGJktpkcs5eHeywvSYnhwvdpump": {
+  "symbol": "fih",
+  "firstSeenAt": "2026-08-26T03:49:50.217Z",
+  "f": {
+   "priceUsd": 0.001155,
+   "liqUsd": 100573.08,
+   "vol24h": 5012747.71,
+   "vol1h": 984499.6,
+   "buys1h": 6629,
+   "sells1h": 5092,
+   "chg1h": -40.61,
+   "chg6h": 2799,
+   "chg24h": 2799,
+   "ageHours": 4.5,
+   "fdv": 1129311,
+   "top10Pct": 32,
+   "insiderPct": 17.9,
+   "devPct": 20.56,
+   "totalHolders": 11514,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "top-10 holders own 32.0% (> 30%) — dump risk",
+   "score": null
+  },
+  "o": {}
+ },
+ "4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz": {
+  "symbol": "GTA6",
+  "firstSeenAt": "2026-08-26T03:50:54.508Z",
+  "f": {
+   "priceUsd": 0.001445,
+   "liqUsd": 172458.66,
+   "vol24h": 252996.6,
+   "vol1h": 3883.39,
+   "buys1h": 28,
+   "sells1h": 15,
+   "chg1h": -0.34,
+   "chg6h": 2.95,
+   "chg24h": -13.39,
+   "ageHours": 464.3,
+   "fdv": 1445052,
+   "top10Pct": 21.2,
+   "insiderPct": 88.8,
+   "devPct": 0.02,
+   "totalHolders": 15638,
+   "lpLockedPct": 0,
+   "launchpad": "StonkFun",
+   "pass": false,
+   "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
+  },
+  "o": {}
+ },
+ "kwmFrypdhdGvcGduaBWwMwPy5qa3v6TTkX7VJc7pump": {
+  "symbol": "Meowzart",
+  "firstSeenAt": "2026-08-26T03:50:55.599Z",
+  "f": {
+   "priceUsd": 0.017,
+   "liqUsd": 340078.85,
+   "vol24h": 482696.47,
+   "vol1h": 13361.57,
+   "buys1h": 8652,
+   "sells1h": 7495,
+   "chg1h": 3.16,
+   "chg6h": 21.68,
+   "chg24h": 40055,
+   "ageHours": 22.7,
+   "fdv": 16999262,
+   "top10Pct": 19,
+   "insiderPct": 115.4,
+   "devPct": 0,
+   "totalHolders": 2498,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": false,
+   "failReason": "bundled/insider wallets hold 115.4% (> 25%) — coordinated dump risk",
    "score": null
   },
   "o": {}
