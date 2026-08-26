@@ -4130,7 +4130,14 @@
    "failReason": null,
    "score": 66
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8148,
+    "liqUsd": 28632.53,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "4kqEkiDmkkyQWayzQB5B3dUP6whgAL3becLH5jexpump": {
   "symbol": "George",
@@ -4157,7 +4164,14 @@
    "failReason": null,
    "score": 44
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3012,
+    "liqUsd": 30078.65,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "BbF6bnegMqFfEA9yuwBeDWgoWPnL82rtQRiBLUKApump": {
   "symbol": "catacio",
@@ -4184,7 +4198,14 @@
    "failReason": null,
    "score": 52
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.7944,
+    "liqUsd": null,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "G1iBvjhZ9wpGUZdQcvhRSqjow3x6xetsnmEBBMm1pump": {
   "symbol": "PITCOIN",
@@ -4211,7 +4232,14 @@
    "failReason": null,
    "score": 75
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0259,
+    "liqUsd": 56499.49,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "Fe58Mj6xJq2p5Aiu6VbaMdQivAwoeionX4VtuYzRyhya": {
   "symbol": "Martians",
@@ -4238,7 +4266,14 @@
    "failReason": "liquidity $0.020000 (< $30.0k) — slippage will eat a $10 position",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -1,
+    "liqUsd": null,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "61V8vBaqAGMpgDQi4JcAwo1dmBGHsyhzodcPqnEVpump": {
   "symbol": "arc",
@@ -4265,7 +4300,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0067,
+    "liqUsd": 4482096.01,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "547tWxWhym8U7Y7DvhGJktpkcs5eHeywvSYnhwvdpump": {
   "symbol": "fih",
@@ -4372,6 +4414,60 @@
    "pass": true,
    "failReason": null,
    "score": 76
+  },
+  "o": {}
+ },
+ "FPfi9q1AixdUeWQVPFHJMJQ7a43S78dm6UZ4fzN4pump": {
+  "symbol": "nosis",
+  "firstSeenAt": "2026-08-26T06:39:52.394Z",
+  "f": {
+   "priceUsd": 0.002015,
+   "liqUsd": 167184.64,
+   "vol24h": 2428025.18,
+   "vol1h": 293433.31,
+   "buys1h": 1065,
+   "sells1h": 923,
+   "chg1h": 0.21,
+   "chg6h": 257,
+   "chg24h": 380,
+   "ageHours": 406.9,
+   "fdv": 1962068,
+   "top10Pct": 20.6,
+   "insiderPct": 16.2,
+   "devPct": 0,
+   "totalHolders": 11309,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 76
+  },
+  "o": {}
+ },
+ "DaPayqzdCXcrmvgz9Wx7MySipXxcSofGPtkMgVdqpump": {
+  "symbol": "SABL",
+  "firstSeenAt": "2026-08-26T06:40:18.104Z",
+  "f": {
+   "priceUsd": 0.0002033,
+   "liqUsd": 37929.47,
+   "vol24h": 1045800.78,
+   "vol1h": 21315.08,
+   "buys1h": 143,
+   "sells1h": 109,
+   "chg1h": -3.87,
+   "chg6h": 29.09,
+   "chg24h": 381,
+   "ageHours": 7.6,
+   "fdv": 194859,
+   "top10Pct": 28.1,
+   "insiderPct": 0,
+   "devPct": 0.1,
+   "totalHolders": 2256,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 61
   },
   "o": {}
  }
