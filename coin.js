@@ -630,6 +630,17 @@ async function cmdScan(fullCheckCap) {
           scoreReasons: reasons,
           liqUsd: s.liqUsd,
           vol24h: s.vol24h,
+          // price/fdv/momentum are carried here on purpose: the alerting
+          // routine runs in a cloud sandbox whose egress proxy blocks
+          // api.dexscreener.com, so it cannot refetch these itself. this
+          // file (refreshed hourly by the Action) is its only source.
+          priceUsd: s.priceUsd,
+          fdv: s.fdv,
+          chg1h: s.chg1h,
+          chg6h: s.chg6h,
+          chg24h: s.chg24h,
+          buys1h: s.buys1h,
+          sells1h: s.sells1h,
           ageHours: s.ageHours != null ? +s.ageHours.toFixed(1) : null,
           insiderPct: s.insiderPct != null ? +s.insiderPct.toFixed(1) : null,
           devPct: s.devPct != null ? +s.devPct.toFixed(2) : null,
