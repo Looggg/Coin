@@ -4334,7 +4334,14 @@
    "failReason": "top-10 holders own 32.0% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1833,
+    "liqUsd": 92226.96,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz": {
   "symbol": "GTA6",
@@ -4361,7 +4368,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.063,
+    "liqUsd": 170464.92,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "kwmFrypdhdGvcGduaBWwMwPy5qa3v6TTkX7VJc7pump": {
   "symbol": "Meowzart",
@@ -4388,7 +4402,14 @@
    "failReason": "bundled/insider wallets hold 115.4% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.1871,
+    "liqUsd": 371091.39,
+    "elapsedH": 4.8,
+    "dead": false
+   }
+  }
  },
  "2wMTr4ZttVr5tmS4wLStee59wi8f9QQfMtT2Hoispump": {
   "symbol": "GTA",
@@ -4495,6 +4516,33 @@
    "pass": true,
    "failReason": null,
    "score": 98
+  },
+  "o": {}
+ },
+ "3N5imznFARN7MYo5cpv8mMCfPwsC769S9sYMbrcUpump": {
+  "symbol": "MEEMERS",
+  "firstSeenAt": "2026-08-26T08:37:26.861Z",
+  "f": {
+   "priceUsd": 0.0001822,
+   "liqUsd": 34858.28,
+   "vol24h": 554208.38,
+   "vol1h": 102480.83,
+   "buys1h": 766,
+   "sells1h": 1180,
+   "chg1h": -0.11,
+   "chg6h": 34.3,
+   "chg24h": 357,
+   "ageHours": 6.9,
+   "fdv": 177607,
+   "top10Pct": 7.1,
+   "insiderPct": 0,
+   "devPct": 0.01,
+   "totalHolders": 1647,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 80
   },
   "o": {}
  }
