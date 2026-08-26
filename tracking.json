@@ -40,9 +40,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9919,
+   "troughRet": -0.9924,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "ApZuxdpzMrbEYTGEzeY9afh5pj9d6qPRJCTgQYiipbKg": {
@@ -86,9 +86,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.315,
+   "troughRet": -0.4078,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "66ZEoQSgY3g5KEijP8ZUucth9ZmrxwYg8ngzwgP6pump": {
@@ -134,7 +134,7 @@
    "peakRet": 0,
    "troughRet": -0.9892,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump": {
@@ -180,7 +180,7 @@
    "peakRet": 0.8175,
    "troughRet": 0,
    "peakH": 45.9,
-   "samples": 1
+   "samples": 2
   }
  },
  "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv": {
@@ -226,7 +226,7 @@
    "peakRet": 0,
    "troughRet": -0.0488,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "GUmbtfjSZkybSFgPibBcvwExEBdXwewJHR5PkTjzpump": {
@@ -272,7 +272,7 @@
    "peakRet": 0,
    "troughRet": -0.363,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump": {
@@ -316,9 +316,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7982,
+   "troughRet": -0.8363,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Ab1sTFNv2tV5DX1XpriwNehXgiJhdq2RQ5LtD5BXpump": {
@@ -364,7 +364,7 @@
    "peakRet": 0,
    "troughRet": -0.6617,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "B4iCqVsAZv9dBiBVv58GJiBxWGmwkwbtPTn4sUQTpump": {
@@ -410,7 +410,7 @@
    "peakRet": 1.3221,
    "troughRet": 0,
    "peakH": 45.3,
-   "samples": 1
+   "samples": 2
   }
  },
  "9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump": {
@@ -456,7 +456,7 @@
    "peakRet": 0.1176,
    "troughRet": 0,
    "peakH": 45.3,
-   "samples": 1
+   "samples": 2
   }
  },
  "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35": {
@@ -500,9 +500,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.614,
+   "troughRet": -0.6278,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6": {
@@ -546,9 +546,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.419,
+   "troughRet": -0.4211,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn": {
@@ -592,9 +592,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0381,
+   "troughRet": -0.0465,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2": {
@@ -638,9 +638,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0932,
+   "troughRet": -0.098,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN": {
@@ -684,9 +684,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1044,
+   "troughRet": -0.1084,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "EpXtn6xGoZ4Y45vRjiDUHSCGbBoJD5FaEqZbF98YswH1": {
@@ -730,9 +730,9 @@
   },
   "p": {
    "peakRet": 0.0462,
-   "troughRet": 0,
+   "troughRet": -0.1647,
    "peakH": 45.3,
-   "samples": 1
+   "samples": 2
   }
  },
  "GUt3ebbJm6SJCvpa8SfFzZe132a78qZDyc2yXAP1pump": {
@@ -776,9 +776,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9979,
+   "troughRet": -0.998,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump": {
@@ -822,9 +822,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2066,
+   "troughRet": -0.2114,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "GeSfrQiscfsEv4Hx2TKaB9Nfid12qND1YYRYS1vSpump": {
@@ -870,7 +870,7 @@
    "peakRet": 0,
    "troughRet": -0.9972,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi": {
@@ -913,10 +913,10 @@
    }
   },
   "p": {
-   "peakRet": 0.1163,
+   "peakRet": 0.1477,
    "troughRet": 0,
-   "peakH": 41.4,
-   "samples": 1
+   "peakH": 42.1,
+   "samples": 2
   }
  },
  "8XtRWb4uAAJFMP4QQhoYYCWR6XXb7ybcCdiqPwz9s5WS": {
@@ -962,7 +962,7 @@
    "peakRet": 0,
    "troughRet": -0.1237,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump": {
@@ -1006,9 +1006,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1874,
+   "troughRet": -0.2204,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk": {
@@ -1054,7 +1054,7 @@
    "peakRet": 0,
    "troughRet": -0.0275,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9HHTQ7YMx82E987cNqF9KczyZrfKgqvKNyA2yHSVpump": {
@@ -1098,9 +1098,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.8204,
+   "troughRet": -0.8299,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9Y3fY1kwYUTgLwBU7DZKkEwCsZYj3BrXQNP74ZNEpump": {
@@ -1144,9 +1144,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7317,
+   "troughRet": -0.7542,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump": {
@@ -1192,7 +1192,7 @@
    "peakRet": 0,
    "troughRet": -0.7761,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CGmBrG4GRiMvFSGaEiB7cwEd9uDYiqrXzkoyR2Qa3KrC": {
@@ -1236,9 +1236,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.3759,
+   "troughRet": -0.3974,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "D9qNfYpFtP9E3YpjBJDCD5PuWoD3445cC9K6PMX5pump": {
@@ -1284,7 +1284,7 @@
    "peakRet": 0,
    "troughRet": -0.992,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump": {
@@ -1328,9 +1328,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.191,
+   "troughRet": -0.2114,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9firESEtMrb4hqFxtb7xCAXp4jAuoW8mz5MZwjJ2pump": {
@@ -1374,9 +1374,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7634,
+   "troughRet": -0.7896,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr": {
@@ -1420,9 +1420,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0539,
+   "troughRet": -0.0598,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2AF7CqwieUjUPALL7icuZtL3X7wENdjUjGBMmfV2pump": {
@@ -1462,7 +1462,7 @@
    "peakRet": 0,
    "troughRet": -0.2043,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump": {
@@ -1499,10 +1499,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0157,
+   "peakRet": 0.1446,
    "troughRet": 0,
-   "peakH": 21.4,
-   "samples": 1
+   "peakH": 22.1,
+   "samples": 2
   }
  },
  "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump": {
@@ -1542,7 +1542,7 @@
    "peakRet": 0,
    "troughRet": -0.0258,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump": {
@@ -1580,9 +1580,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.4468,
+   "troughRet": -0.4516,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CgnQ8a1u99Gk7qoySMd2wrGPMPm9bdcSJNhqMEkYpump": {
@@ -1622,7 +1622,7 @@
    "peakRet": 0,
    "troughRet": -0.3761,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2NffKvfZTcFj2tyoY1Ev84PkqxA7DZnstyv6EwELpump": {
@@ -1662,7 +1662,7 @@
    "peakRet": 2.9349,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "7n8kRipxAQBfpGQtcGA2AbkM2HASSVCzqZ5F3QEopump": {
@@ -1702,7 +1702,7 @@
    "peakRet": 1.5715,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "EjAuFtMEP6LQDgLb11JU9bkcskhFYbgd9Q5NRXJppump": {
@@ -1742,7 +1742,7 @@
    "peakRet": 0,
    "troughRet": -0.124,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6b7KQsXqb6JR5Nmeer5zGRmo51dwDfttM5b5Nu2rpump": {
@@ -1780,9 +1780,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.5688,
+   "troughRet": -0.6127,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "BCdwQBAn8dYB5YjTsoB6TdHAWokxv28k2oZUodERpump": {
@@ -1822,7 +1822,7 @@
    "peakRet": 0.0923,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "8Jx8AAHj86wbQgUTjGuj6GTTL5Ps3cqxKRTvpaJApump": {
@@ -1860,9 +1860,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1252,
+   "troughRet": -0.1305,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "5dkPngQmeqTUN57RqhxdA6xCaz7AKdzQoHLdk9xhpump": {
@@ -1902,7 +1902,7 @@
    "peakRet": 0,
    "troughRet": -0.916,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump": {
@@ -1942,7 +1942,7 @@
    "peakRet": 0.0787,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2": {
@@ -1982,7 +1982,7 @@
    "peakRet": 0,
    "troughRet": -0.0338,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "BcHEaaTCvycPwwsJ9yQTXdHP9X2gCLkznDbZ8VySpump": {
@@ -2022,7 +2022,7 @@
    "peakRet": 0,
    "troughRet": -0.2947,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "AP8Wnu37Gf9RHgugPKGvpHe6LcTE2yp5GDy7pL5Upump": {
@@ -2060,9 +2060,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.4641,
+   "troughRet": -0.5803,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "XSTuo1fV7HHMhs4BYiwtrWSLsMCJNrooH2AssWTYZqP": {
@@ -2102,7 +2102,7 @@
    "peakRet": 0,
    "troughRet": -0.1215,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "RmtMAYVTTFv2iK9muMrXEoAnSSsZPPgRPbqZCKwNDYk": {
@@ -2142,7 +2142,7 @@
    "peakRet": 0,
    "troughRet": -0.1055,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6NwarBvDkXhByqVp2Qkq5i9XbtA2B3Bwe8SWGu9vpump": {
@@ -2182,7 +2182,7 @@
    "peakRet": 0,
    "troughRet": -0.0388,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "DRWnf86Z2MjdMGLq7LFSF875iK9Ajo94RVtjK4owpump": {
@@ -2220,9 +2220,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7105,
+   "troughRet": -0.7424,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6ehEcTMCc85aNF4x9CWx8HuvWGhxQtvKdhKVf2HDpump": {
@@ -2262,7 +2262,7 @@
    "peakRet": 0.0636,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "FeMbDoX7R1Psc4GEcvJdsbNbZA3bfztcyDCatJVJpump": {
@@ -2302,7 +2302,7 @@
    "peakRet": 0.1411,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "4AjvPXMn8YZG9saAVJvcWspg73oTFf2JmU4in4Xgpump": {
@@ -2342,7 +2342,7 @@
    "peakRet": 0.6281,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp": {
@@ -2382,7 +2382,7 @@
    "peakRet": 0,
    "troughRet": -0.0742,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
@@ -2422,7 +2422,7 @@
    "peakRet": 0.0511,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "7nLukVng5teXze14rum9v57juXLjUp7JJnCveko1pump": {
@@ -2459,10 +2459,10 @@
    }
   },
   "p": {
-   "peakRet": 0.1809,
+   "peakRet": 0.1826,
    "troughRet": 0,
-   "peakH": 19.4,
-   "samples": 1
+   "peakH": 20.1,
+   "samples": 2
   }
  },
  "zj1jpp7QMveWHLs61vL9KMZf254KvW7j4AAmBF8ry2k": {
@@ -2502,7 +2502,7 @@
    "peakRet": 0.0325,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "DQnkBM4eYYMnVE8Qy2K3BB7uts1fh2EwBVktEz6jpump": {
@@ -2540,9 +2540,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1417,
+   "troughRet": -0.1541,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "488SaFq6wHF2z2k6NLSD3PtoSkXDNZaPkJwxze11pump": {
@@ -2582,7 +2582,7 @@
    "peakRet": 0,
    "troughRet": -0.3159,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "63zfjPfH4uaX3TQZoD35WqUrqiuCQQWndMTxQHsJpump": {
@@ -2620,9 +2620,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0991,
+   "troughRet": -0.141,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm": {
@@ -2662,7 +2662,7 @@
    "peakRet": 0.0305,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5": {
@@ -2702,7 +2702,7 @@
    "peakRet": 0,
    "troughRet": -0.0442,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump": {
@@ -2740,9 +2740,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0375,
+   "troughRet": -0.0498,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump": {
@@ -2780,9 +2780,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0305,
+   "troughRet": -0.0332,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2ZvFgTyLMrgyLmoPHtD5KsTyALh14ffzxJoni4oPpump": {
@@ -2822,7 +2822,7 @@
    "peakRet": 0,
    "troughRet": -0.1489,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "74SBV4zDXxTRgv1pEMoECskKBkZHc2yGPnc7GYVepump": {
@@ -2859,10 +2859,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0305,
+   "peakRet": 0.0327,
    "troughRet": 0,
-   "peakH": 19.4,
-   "samples": 1
+   "peakH": 20.1,
+   "samples": 2
   }
  },
  "3nTmaNvUd12oEd52rsjc8hZLqSjRm1yoEtCnZBDRpump": {
@@ -2900,9 +2900,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0309,
+   "troughRet": -0.1686,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump": {
@@ -2939,10 +2939,10 @@
    }
   },
   "p": {
-   "peakRet": 0.024,
+   "peakRet": 0.0455,
    "troughRet": 0,
-   "peakH": 19.4,
-   "samples": 1
+   "peakH": 20.1,
+   "samples": 2
   }
  },
  "ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump": {
@@ -2979,10 +2979,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0951,
+   "peakRet": 0.1183,
    "troughRet": 0,
-   "peakH": 19.4,
-   "samples": 1
+   "peakH": 20.1,
+   "samples": 2
   }
  },
  "J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr": {
@@ -3020,9 +3020,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0169,
+   "troughRet": -0.0217,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "EkcTa8n14fXcHdfvZqCg72cTCutJnnKb19vcHwKTpump": {
@@ -3060,9 +3060,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.155,
+   "troughRet": -0.1789,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump": {
@@ -3100,9 +3100,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.023,
+   "troughRet": -0.0281,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "HBoNJ5v8g71s2boRivrHnfSB5MVPLDHHyVjruPfhGkvL": {
@@ -3142,7 +3142,7 @@
    "peakRet": 0,
    "troughRet": -0.1081,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7rSpKgASuXN5hfw3jsKNZN6ysNCR1Eixb2PD2Nd9pump": {
@@ -3182,7 +3182,7 @@
    "peakRet": 0,
    "troughRet": -0.1241,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9AvytnUKsLxPxFHFqS6VLxaxt5p6BhYNr53SD2Chpump": {
@@ -3222,7 +3222,7 @@
    "peakRet": 0,
    "troughRet": -0.0686,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "nWnDYs4dR57Cek8nsK1W8iWEqKiKZE1hW1CLvP3pump": {
@@ -3260,9 +3260,9 @@
   },
   "p": {
    "peakRet": 0.129,
-   "troughRet": 0,
+   "troughRet": -0.039,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "DKu9kykSfbN5LBfFXtNNDPaX35o4Fv6vJ9FKk7pZpump": {
@@ -3300,9 +3300,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0011,
+   "troughRet": -0.0096,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx": {
@@ -3342,7 +3342,7 @@
    "peakRet": 0.155,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "AMUgSjmdFsS8Y3JeL32u7A45Fpt8YF9xKaiwW5uGHdXk": {
@@ -3382,7 +3382,7 @@
    "peakRet": 0,
    "troughRet": -0.0633,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "H8xQ6poBjB9DTPMDTKWzWPrnxu4bDEhybxiouF8Ppump": {
@@ -3420,9 +3420,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1968,
+   "troughRet": -0.2112,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6f8ZQhxqfigdv7UszZ1rirbV7Sgv83s3rxv1N2Zopump": {
@@ -3460,9 +3460,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1055,
+   "troughRet": -0.1869,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "HxQhDGYqyjorgogMJx7YbBHADEDxuHhLnMMmr6VYpyn": {
@@ -3502,7 +3502,7 @@
    "peakRet": 0.1532,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "52ZzDVDPk8S4T1rfKNWSvtDnzhLN8omMK1xLCBBWpump": {
@@ -3540,9 +3540,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9902,
+   "troughRet": -0.9903,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7fDdLy2rmQKsPCkqUXEd1mN7yDfEzArc4VrctWmfkJBK": {
@@ -3580,9 +3580,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0947,
+   "troughRet": -0.1236,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "GPzpoXpD74E2C4CJNayuoyBqPQJEsPtdse3nhntrpump": {
@@ -3620,9 +3620,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2621,
+   "troughRet": -0.2652,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "94Sm8joZMSRzpQmcNVn5zZpgnRLN2DBesJYDXwuNpump": {
@@ -3659,10 +3659,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0171,
+   "peakRet": 0.078,
    "troughRet": 0,
-   "peakH": 18.5,
-   "samples": 1
+   "peakH": 19.2,
+   "samples": 2
   }
  },
  "Tqj8yFmagrg7oorpQkVGYR52r96RFTamvWfth9bpump": {
@@ -3702,7 +3702,7 @@
    "peakRet": 0,
    "troughRet": -0.1311,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "DMUzXdincSucnKTMLtVFBCBcAwuNehoqyrmbYi5hpump": {
@@ -3740,9 +3740,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1753,
+   "troughRet": -0.2531,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7V4vYUApSWg1CWBHSxaEWZ8irJAU4q8pPmpZS3mJpump": {
@@ -3782,7 +3782,7 @@
    "peakRet": 0,
    "troughRet": -0.2435,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "J8PSdNP3QewKq2Z1JJJFDMaqF7KcaiJhR7gbr5KZpump": {
@@ -3822,7 +3822,7 @@
    "peakRet": 0,
    "troughRet": -0.0854,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6ybRJGfWpArsP5bWDmUcrqakiSeUR8P581C8H9CUpump": {
@@ -3860,9 +3860,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.8629,
+   "troughRet": -0.8896,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "GCr352ouzNZkNQd3KZqs6jFuQb8LiYnWsEJSUpSfpump": {
@@ -3899,10 +3899,10 @@
    }
   },
   "p": {
-   "peakRet": 0.2448,
+   "peakRet": 0.317,
    "troughRet": 0,
-   "peakH": 17.6,
-   "samples": 1
+   "peakH": 18.3,
+   "samples": 2
   }
  },
  "Hos282xmdMJHwMjhni91fNqdjDsgWjgSckxuGc1Bpump": {
@@ -3940,9 +3940,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.4181,
+   "troughRet": -0.4279,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "HgBRWfYxEfvPhtqkaeymCQtHCrKE46qQ43pKe8HCpump": {
@@ -3980,9 +3980,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0713,
+   "troughRet": -0.077,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "x95HN3DWvbfCBtTjGm587z8suK3ec6cwQwgZNLbWKyp": {
@@ -4022,7 +4022,7 @@
    "peakRet": 0,
    "troughRet": -0.0183,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "HiY4qx8j5QuVh5UFnKyFq1DvzzDNgFkgyyhEeDXhpump": {
@@ -4062,7 +4062,7 @@
    "peakRet": 0.2973,
    "troughRet": 0,
    "peakH": 17.6,
-   "samples": 1
+   "samples": 2
   }
  },
  "5mH155ePpNWJb2GktpftLJbcTvoxFaUrv7XkZPDtpump": {
@@ -4099,10 +4099,10 @@
    }
   },
   "p": {
-   "peakRet": 0.2476,
+   "peakRet": 0.4685,
    "troughRet": 0,
-   "peakH": 17.6,
-   "samples": 1
+   "peakH": 18.3,
+   "samples": 2
   }
  },
  "8x5VqbHA8D7NkD52uNuS5nnt3PwA8pLD34ymskeSo2Wn": {
@@ -4140,9 +4140,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0013,
+   "troughRet": -0.0108,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CcLd8HTAKLWtQHatqPwBQjtuCA72FNB9E1ckRTEzpump": {
@@ -4182,7 +4182,7 @@
    "peakRet": 0.1391,
    "troughRet": 0,
    "peakH": 17.5,
-   "samples": 1
+   "samples": 2
   }
  },
  "y1AZt42vceCmStjW4zetK3VoNarC1VxJ5iDjpiupump": {
@@ -4222,7 +4222,7 @@
    "peakRet": 0,
    "troughRet": -0.1168,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9Pfync3ejPC9eHqVzq3nYQJAhyhjqpnB9UsaSfLxpump": {
@@ -4259,10 +4259,10 @@
    }
   },
   "p": {
-   "peakRet": 0.3158,
+   "peakRet": 0.3238,
    "troughRet": 0,
-   "peakH": 17.5,
-   "samples": 1
+   "peakH": 18.3,
+   "samples": 2
   }
  },
  "98sMhvDwXj1RQi5c5Mndm3vPe9cBqPrbLaufMXFNMh5g": {
@@ -4299,10 +4299,10 @@
    }
   },
   "p": {
-   "peakRet": 0.001,
+   "peakRet": 0.0021,
    "troughRet": 0,
-   "peakH": 17.5,
-   "samples": 1
+   "peakH": 18.3,
+   "samples": 2
   }
  },
  "DXXcq4tY5e4PbXybyBMnxZjHVmzv1GVrAXoW5TcC5kbu": {
@@ -4340,9 +4340,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0891,
+   "troughRet": -0.106,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R": {
@@ -4382,7 +4382,7 @@
    "peakRet": 0,
    "troughRet": -0.043,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "GfjJ5MLzVcXtkrB4A5pV3G1nd4dMNekgPzvc7Fujpump": {
@@ -4420,9 +4420,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2287,
+   "troughRet": -0.3395,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "DLhzqAWwE2YkPLdYvvWNMZ71vxZJQD2FByMfWFHppump": {
@@ -4462,7 +4462,7 @@
    "peakRet": 0,
    "troughRet": -0.0295,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "EVpszSRyQok4M6Fo5wTdC58WBJpx65y5VZGmmjm4pump": {
@@ -4502,7 +4502,7 @@
    "peakRet": 0,
    "troughRet": -0.8102,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "FZqdw6oSDCbHtKYxmhnfbi97SnyVy8jaYpdCoMrrjKa2": {
@@ -4539,10 +4539,10 @@
    }
   },
   "p": {
-   "peakRet": 5.051,
+   "peakRet": 5.4317,
    "troughRet": 0,
-   "peakH": 16.6,
-   "samples": 1
+   "peakH": 17.3,
+   "samples": 2
   }
  },
  "46vV3ZpFNLZn1CDRYnAvqPsdW5ejEYn9GK9kPcZFpump": {
@@ -4580,9 +4580,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0867,
+   "troughRet": -0.1137,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "49nkLrXi8nCZBVKsShDNasEtPe4Vn1mx9Xbr3kTa8pTL": {
@@ -4622,7 +4622,7 @@
    "peakRet": 0,
    "troughRet": -0.2062,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "7MQSupJTpY31HGChEHUAsS1pQhLSrHS5CCsB9bnaN3eS": {
@@ -4662,7 +4662,7 @@
    "peakRet": 0,
    "troughRet": -0.3238,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CxThkADKK4DDYqB8GBPaEAgRBzwxyPyUhFcBUmiAzN6N": {
@@ -4702,7 +4702,7 @@
    "peakRet": 0,
    "troughRet": -0.2366,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82": {
@@ -4740,9 +4740,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0252,
+   "troughRet": -0.0466,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "6xbZRQ1New1bHvVjk9GwY2JFNCZwd4HuVGWGgwjEpump": {
@@ -4780,9 +4780,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1516,
+   "troughRet": -0.2597,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "AY6dVdZ7DQUGnh3BBhpoXmTvaRGQgsppKkPkfucppump": {
@@ -4820,9 +4820,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.8997,
+   "troughRet": -0.9175,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2sLKA6PzFVjeTUaiKBCkDbDiS8MuoZAeXxZMgs9Apump": {
@@ -4860,9 +4860,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.8614,
+   "troughRet": -0.9085,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "4kqEkiDmkkyQWayzQB5B3dUP6whgAL3becLH5jexpump": {
@@ -4900,9 +4900,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.3376,
+   "troughRet": -0.374,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "BbF6bnegMqFfEA9yuwBeDWgoWPnL82rtQRiBLUKApump": {
@@ -4942,7 +4942,7 @@
    "peakRet": 0,
    "troughRet": -0.7944,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "G1iBvjhZ9wpGUZdQcvhRSqjow3x6xetsnmEBBMm1pump": {
@@ -4982,7 +4982,7 @@
    "peakRet": 0,
    "troughRet": -0.2743,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Fe58Mj6xJq2p5Aiu6VbaMdQivAwoeionX4VtuYzRyhya": {
@@ -5022,7 +5022,7 @@
    "peakRet": 0,
    "troughRet": -1,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "61V8vBaqAGMpgDQi4JcAwo1dmBGHsyhzodcPqnEVpump": {
@@ -5060,9 +5060,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0318,
+   "troughRet": -0.0358,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "547tWxWhym8U7Y7DvhGJktpkcs5eHeywvSYnhwvdpump": {
@@ -5102,7 +5102,7 @@
    "peakRet": 0.4736,
    "troughRet": 0,
    "peakH": 10.1,
-   "samples": 1
+   "samples": 2
   }
  },
  "4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz": {
@@ -5140,9 +5140,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1626,
+   "troughRet": -0.2062,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "kwmFrypdhdGvcGduaBWwMwPy5qa3v6TTkX7VJc7pump": {
@@ -5180,9 +5180,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9924,
+   "troughRet": -0.9933,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2wMTr4ZttVr5tmS4wLStee59wi8f9QQfMtT2Hoispump": {
@@ -5222,7 +5222,7 @@
    "peakRet": 0.3484,
    "troughRet": 0,
    "peakH": 8.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "FPfi9q1AixdUeWQVPFHJMJQ7a43S78dm6UZ4fzN4pump": {
@@ -5260,9 +5260,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1042,
+   "troughRet": -0.1578,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "DaPayqzdCXcrmvgz9Wx7MySipXxcSofGPtkMgVdqpump": {
@@ -5300,9 +5300,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.152,
+   "troughRet": -0.4884,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "Ce2gx9KGXJ6C9Mp5b5x1sn9Mg87JwEbrQby4Zqo3pump": {
@@ -5339,10 +5339,10 @@
    }
   },
   "p": {
-   "peakRet": 0.1249,
+   "peakRet": 0.1375,
    "troughRet": 0,
-   "peakH": 6.2,
-   "samples": 1
+   "peakH": 6.9,
+   "samples": 2
   }
  },
  "3N5imznFARN7MYo5cpv8mMCfPwsC769S9sYMbrcUpump": {
@@ -5382,7 +5382,7 @@
    "peakRet": 0,
    "troughRet": -0.7811,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "pepo1CFNU2RXf7yXX7HNXazXwxsq8WrPvDHpHriwoLY": {
@@ -5422,7 +5422,7 @@
    "peakRet": 0,
    "troughRet": -0.2128,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2WbTSrJHr1hNCtmYBjuSetZNdsZWZ2eZTuK9GjNPpump": {
@@ -5460,9 +5460,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.4092,
+   "troughRet": -0.5325,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CvjSaRcTmcrfutekYzrBEEdTWx1RmRTWDToqtXmCpump": {
@@ -5490,12 +5490,19 @@
    "failReason": null,
    "score": 91
   },
-  "o": {},
+  "o": {
+   "h4": {
+    "ret": 0.1348,
+    "liqUsd": 78812.49,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  },
   "p": {
    "peakRet": 0.2001,
    "troughRet": 0,
    "peakH": 3.4,
-   "samples": 1
+   "samples": 2
   }
  },
  "FzJ1Cm4kwEjiPmfna8WXWwjC7i41KnB9oi9wz3nHpump": {
@@ -5523,12 +5530,19 @@
    "failReason": null,
    "score": 76
   },
-  "o": {},
+  "o": {
+   "h4": {
+    "ret": -0.9707,
+    "liqUsd": 18859.98,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9546,
+   "troughRet": -0.9707,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "2c1KjiyQow66QfsnCtoyuqfo3AuxgpBMEoAq5oiiXqdu": {
@@ -5561,7 +5575,7 @@
    "peakRet": 0.6126,
    "troughRet": 0,
    "peakH": 2.5,
-   "samples": 1
+   "samples": 2
   }
  },
  "5ncPV6YVUXxuK9NVphwC7UkLd1gQZuGhdfEaDNxUpump": {
@@ -5592,9 +5606,9 @@
   "o": {},
   "p": {
    "peakRet": 0.1052,
-   "troughRet": 0,
+   "troughRet": -0.1024,
    "peakH": 2.5,
-   "samples": 1
+   "samples": 2
   }
  },
  "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs": {
@@ -5625,9 +5639,9 @@
   "o": {},
   "p": {
    "peakRet": 0,
-   "troughRet": -0.0059,
+   "troughRet": -0.0076,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "CcgRSw62atZK9EEAQVGyTcsshgtGJxtLHK2ZGwZ7pump": {
@@ -5657,10 +5671,37 @@
   },
   "o": {},
   "p": {
-   "peakRet": 0.0728,
+   "peakRet": 0.1654,
    "troughRet": 0,
-   "peakH": 1.2,
-   "samples": 1
+   "peakH": 1.9,
+   "samples": 2
   }
+ },
+ "EBnA9HbJkhRTP1n1ZCkZzNCGjLssRWTetBFL9nzPpump": {
+  "symbol": "FRUG",
+  "firstSeenAt": "2026-08-26T14:40:13.227Z",
+  "f": {
+   "priceUsd": 0.0009491,
+   "liqUsd": 89045.86,
+   "vol24h": 2259268.16,
+   "vol1h": 696110.78,
+   "buys1h": 4478,
+   "sells1h": 3553,
+   "chg1h": 97.63,
+   "chg6h": 41513,
+   "chg24h": 41513,
+   "ageHours": 5617.2,
+   "fdv": 948886,
+   "top10Pct": 19.8,
+   "insiderPct": 38.9,
+   "devPct": 0.22,
+   "totalHolders": 5954,
+   "lpLockedPct": 100,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "bundled/insider wallets hold 38.9% (> 25%) — coordinated dump risk",
+   "score": null
+  },
+  "o": {}
  }
 }
