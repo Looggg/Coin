@@ -950,6 +950,12 @@
     "liqUsd": 22430.03,
     "elapsedH": 7.4,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.7928,
+    "liqUsd": 12637.65,
+    "elapsedH": 25.1,
+    "dead": false
    }
   }
  },
@@ -983,6 +989,12 @@
     "ret": -0.1343,
     "liqUsd": 37712.72,
     "elapsedH": 7.4,
+    "dead": false
+   },
+   "d1": {
+    "ret": -0.6484,
+    "liqUsd": 23402.14,
+    "elapsedH": 25.1,
     "dead": false
    }
   }
@@ -3800,7 +3812,14 @@
    "failReason": "rugcheck danger: Creator history of rugged tokens",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8102,
+    "liqUsd": null,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "FZqdw6oSDCbHtKYxmhnfbi97SnyVy8jaYpdCoMrrjKa2": {
   "symbol": "Pistacio",
@@ -3827,7 +3846,14 @@
    "failReason": null,
    "score": 59
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 6.0296,
+    "liqUsd": 379924.37,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "46vV3ZpFNLZn1CDRYnAvqPsdW5ejEYn9GK9kPcZFpump": {
   "symbol": "honse",
@@ -3854,7 +3880,14 @@
    "failReason": null,
    "score": 85
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1522,
+    "liqUsd": 54959.72,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "49nkLrXi8nCZBVKsShDNasEtPe4Vn1mx9Xbr3kTa8pTL": {
   "symbol": "App",
@@ -3881,7 +3914,14 @@
    "failReason": null,
    "score": 72
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.1954,
+    "liqUsd": 83505.53,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "7MQSupJTpY31HGChEHUAsS1pQhLSrHS5CCsB9bnaN3eS": {
   "symbol": "Z",
@@ -3908,7 +3948,14 @@
    "failReason": null,
    "score": 86
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3298,
+    "liqUsd": 47689.33,
+    "elapsedH": 5,
+    "dead": false
+   }
+  }
  },
  "CxThkADKK4DDYqB8GBPaEAgRBzwxyPyUhFcBUmiAzN6N": {
   "symbol": "AHTS",
@@ -3935,7 +3982,14 @@
    "failReason": null,
    "score": 72
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3629,
+    "liqUsd": 24294.07,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82": {
   "symbol": "BOME",
@@ -3962,7 +4016,14 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.0196,
+    "liqUsd": 16476151.11,
+    "elapsedH": 4.1,
+    "dead": false
+   }
+  }
  },
  "6xbZRQ1New1bHvVjk9GwY2JFNCZwd4HuVGWGgwjEpump": {
   "symbol": "GOON",
@@ -4015,6 +4076,168 @@
    "pass": true,
    "failReason": null,
    "score": 77
+  },
+  "o": {}
+ },
+ "2sLKA6PzFVjeTUaiKBCkDbDiS8MuoZAeXxZMgs9Apump": {
+  "symbol": "C4T",
+  "firstSeenAt": "2026-08-26T02:26:29.874Z",
+  "f": {
+   "priceUsd": 0.0005589,
+   "liqUsd": 67479.1,
+   "vol24h": 2981573.67,
+   "vol1h": 267567.82,
+   "buys1h": 1718,
+   "sells1h": 1081,
+   "chg1h": -0.84,
+   "chg6h": 1246,
+   "chg24h": 1246,
+   "ageHours": 3.5,
+   "fdv": 554956,
+   "top10Pct": 14,
+   "insiderPct": 0,
+   "devPct": 0.32,
+   "totalHolders": 5767,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 66
+  },
+  "o": {}
+ },
+ "4kqEkiDmkkyQWayzQB5B3dUP6whgAL3becLH5jexpump": {
+  "symbol": "George",
+  "firstSeenAt": "2026-08-26T02:27:06.101Z",
+  "f": {
+   "priceUsd": 0.0001647,
+   "liqUsd": 36209.48,
+   "vol24h": 2978905.72,
+   "vol1h": 79043.91,
+   "buys1h": 677,
+   "sells1h": 570,
+   "chg1h": -31.81,
+   "chg6h": 305,
+   "chg24h": 305,
+   "ageHours": 4,
+   "fdv": 157859,
+   "top10Pct": 22.2,
+   "insiderPct": 0,
+   "devPct": 0,
+   "totalHolders": 5832,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 44
+  },
+  "o": {}
+ },
+ "BbF6bnegMqFfEA9yuwBeDWgoWPnL82rtQRiBLUKApump": {
+  "symbol": "catacio",
+  "firstSeenAt": "2026-08-26T02:27:30.654Z",
+  "f": {
+   "priceUsd": 0.000193,
+   "liqUsd": 37291.59,
+   "vol24h": 1489174.04,
+   "vol1h": 412027.49,
+   "buys1h": 4108,
+   "sells1h": 2455,
+   "chg1h": -52.91,
+   "chg6h": 314,
+   "chg24h": 314,
+   "ageHours": 2.3,
+   "fdv": 189469,
+   "top10Pct": 21.3,
+   "insiderPct": 0,
+   "devPct": 3.56,
+   "totalHolders": 3678,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 52
+  },
+  "o": {}
+ },
+ "G1iBvjhZ9wpGUZdQcvhRSqjow3x6xetsnmEBBMm1pump": {
+  "symbol": "PITCOIN",
+  "firstSeenAt": "2026-08-26T02:27:35.763Z",
+  "f": {
+   "priceUsd": 0.0002395,
+   "liqUsd": 55904.37,
+   "vol24h": 584563.92,
+   "vol1h": 8140.06,
+   "buys1h": 75,
+   "sells1h": 100,
+   "chg1h": 4.57,
+   "chg6h": 29.13,
+   "chg24h": 115,
+   "ageHours": 320.7,
+   "fdv": 238564,
+   "top10Pct": 17.7,
+   "insiderPct": 18,
+   "devPct": 0,
+   "totalHolders": 10854,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 75
+  },
+  "o": {}
+ },
+ "Fe58Mj6xJq2p5Aiu6VbaMdQivAwoeionX4VtuYzRyhya": {
+  "symbol": "Martians",
+  "firstSeenAt": "2026-08-26T02:27:42.036Z",
+  "f": {
+   "priceUsd": 0.00003821,
+   "liqUsd": 0.02,
+   "vol24h": 0.8,
+   "vol1h": 0,
+   "buys1h": 0,
+   "sells1h": 0,
+   "chg1h": null,
+   "chg6h": -79.86,
+   "chg24h": 1677,
+   "ageHours": 7.6,
+   "fdv": 382158,
+   "top10Pct": 100,
+   "insiderPct": 5.7,
+   "devPct": 0,
+   "totalHolders": 56,
+   "lpLockedPct": 100,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "liquidity $0.020000 (< $30.0k) — slippage will eat a $10 position",
+   "score": null
+  },
+  "o": {}
+ },
+ "61V8vBaqAGMpgDQi4JcAwo1dmBGHsyhzodcPqnEVpump": {
+  "symbol": "arc",
+  "firstSeenAt": "2026-08-26T02:27:47.665Z",
+  "f": {
+   "priceUsd": 0.07285,
+   "liqUsd": 10577871.77,
+   "vol24h": 111538.69,
+   "vol1h": 1216.19,
+   "buys1h": 27,
+   "sells1h": 2,
+   "chg1h": 0.61,
+   "chg6h": 1.78,
+   "chg24h": 0.81,
+   "ageHours": 14049.7,
+   "fdv": 72856655,
+   "top10Pct": 64,
+   "insiderPct": 10.4,
+   "devPct": 0,
+   "totalHolders": 180319,
+   "lpLockedPct": 0,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "LP locked only 0% (< 80%) — rug pull possible",
+   "score": null
   },
   "o": {}
  }
