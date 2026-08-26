@@ -29,7 +29,14 @@ const RAYDIUM_AUTHORITY = "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1";
 // ---------- thresholds (tune these as you learn from the journal) ----------
 const RULES = {
   // entry filter
-  minLiquidityUsd: 30000, // below this, $10 in/out slippage eats you
+  // verdict floor. raised 30k->50k 2026-08-26: the 30-50k band was 26/130
+  // tracked tokens at win 16% / rug 29%@d1, EV -22%@h4 and -44%@d1 even
+  // after clamping returns to the +200%/-50% exit rules. see STUDY.md.
+  minLiquidityUsd: 50000, // below this, $10 in/out slippage eats you
+  // scan pre-filter floor, deliberately BELOW the verdict floor: the band
+  // between the two still gets scanned, scored and tracked (as FAIL), so the
+  // dataset keeps the evidence that would let us walk this change back
+  minTrackLiquidityUsd: 30000,
   maxTop10Pct: 30, // top-10 holders (excl. LP/CEX) combined %
   minLpLockedPct: 80, // LP locked/burned percentage
   washVolLiqRatio: 10, // vol24h > N x liquidity => wash suspicion
@@ -579,11 +586,11 @@ async function cmdScan(fullCheckCap) {
     if (!mint || MAJORS.has(mint) || seen.has(mint) || candidates.has(mint)) continue;
     // cheap pre-filter on pool data before spending API calls on a full check
     const liq = Number(a.reserve_in_usd);
-    if (!Number.isFinite(liq) || liq < RULES.minLiquidityUsd) continue;
+    if (!Number.isFinite(liq) || liq < RULES.minTrackLiquidityUsd) continue;
     candidates.set(mint, { name: a.name });
   }
   console.log(
-    `${pools.length} pools seen → ${candidates.size} pass pre-filter (liq ≥ ${fmtUsd(RULES.minLiquidityUsd)}, not majors, not already journaled)`
+    `${pools.length} pools seen → ${candidates.size} pass pre-filter (liq ≥ ${fmtUsd(RULES.minTrackLiquidityUsd)}, not majors, not already journaled)`
   );
 
   const list = [...candidates.entries()].slice(0, fullCheckCap);
@@ -770,14 +777,18 @@ async function cmdTrack() {
   const tracking = loadTracking();
   // archive first, every run — never gated behind "something is due"
   if (archiveFinished(tracking)) saveTracking(tracking);
-  const due = Object.entries(tracking).filter(([, r]) => {
-    if (!r.f?.priceUsd) return false;
+  // poll EVERY unfinished row, not just the ones with a bucket due: peak and
+  // trough are path data. a fixed-horizon ret cannot say whether a -99%@d1
+  // token touched 3x on the way down, so the take-profit and stop-loss
+  // questions in STUDY.md are unanswerable without sampling between buckets.
+  const due = Object.entries(tracking).filter(([, r]) => r.f?.priceUsd > 0);
+  if (!due.length) return console.log(`tracking: ${Object.keys(tracking).length} tokens, none pollable`);
+
+  const dueBuckets = due.filter(([, r]) => {
     const elapsedH = (Date.now() - new Date(r.firstSeenAt).getTime()) / 3.6e6;
     return Object.entries(TRACK_BUCKETS).some(([b, h]) => !r.o[b] && elapsedH >= h);
-  });
-  if (!due.length) return console.log(`tracking: ${Object.keys(tracking).length} tokens, none due`);
-
-  console.log(`tracking: ${due.length}/${Object.keys(tracking).length} tokens due for an outcome check`);
+  }).length;
+  console.log(`tracking: polling ${due.length} token(s), ${dueBuckets} with a bucket due`);
   // batch endpoint: /tokens/v1/solana/{mints} takes up to 30 comma-separated
   // mints and returns a flat pair array (the /latest/dex/tokens endpoint no
   // longer supports commas — it returns pairs:null, which must NOT be read
@@ -811,12 +822,35 @@ async function cmdTrack() {
       const elapsedH = (Date.now() - new Date(r.firstSeenAt).getTime()) / 3.6e6;
       const pair = pairsByMint[mint];
       const price = pair ? Number(pair.priceUsd) : null;
+
+      let ret = null;
+      if (pair == null) ret = -1;
+      else if (Number.isFinite(price)) ret = price / r.f.priceUsd - 1;
+
+      // running peak/trough, sampled once per cron pass. hourly sampling
+      // misses intra-hour spikes, so peakRet is a LOWER BOUND on the best
+      // exit that was actually available — never read it as exact.
+      if (ret != null) {
+        r.p = r.p || { peakRet: 0, troughRet: 0, peakH: 0, samples: 0 };
+        r.p.samples++;
+        if (ret > r.p.peakRet) {
+          r.p.peakRet = +ret.toFixed(4);
+          r.p.peakH = +elapsedH.toFixed(1);
+        }
+        if (ret < r.p.troughRet) r.p.troughRet = +ret.toFixed(4);
+      }
+
       for (const [b, h] of Object.entries(TRACK_BUCKETS)) {
         if (r.o[b] || elapsedH < h) continue;
-        let ret = null;
-        if (pair == null) ret = -1;
-        else if (Number.isFinite(price) && r.f.priceUsd > 0) ret = price / r.f.priceUsd - 1;
-        else continue; // price glitch — retry next run
+        // a skipped cron run must not file a 9h reading as an h4 outcome and
+        // silently poison the bucket. mirrors the grace window that
+        // updateOutcomes already applies to the journal.
+        if (elapsedH > h * 1.5) {
+          r.o[b] = { missed: true, elapsedH: +elapsedH.toFixed(1) };
+          console.error(`  ${r.symbol || mint.slice(0, 8)} ${b}: window missed (${elapsedH.toFixed(1)}h) — excluded from patterns`);
+          continue;
+        }
+        if (ret == null) continue; // price glitch — retry next run
         r.o[b] = {
           ret: +ret.toFixed(4),
           liqUsd: pair?.liquidity?.usd ?? null,
@@ -886,6 +920,25 @@ function cmdPatterns(bucketArg) {
     const ratio = f.buys1h / Math.max(1, f.sells1h);
     return ratio >= 1.5 ? "buy pressure" : ratio <= 0.67 ? "sell pressure" : "balanced";
   });
+
+  // path section: answers the questions a fixed-horizon ret cannot. only
+  // rows tracked since peak sampling shipped (2026-08-26) carry r.p, so this
+  // stays quiet until the dataset has some.
+  const withPath = rows.filter((r) => r.p && r.p.samples > 1);
+  if (withPath.length) {
+    console.log(`── path (n=${withPath.length} with peak sampling) ──`);
+    const peaks = withPath.map((r) => r.p.peakRet);
+    const hit2x = withPath.filter((r) => r.p.peakRet >= 1);
+    const ended = hit2x.filter((r) => r.o[horizon].ret < 1).length;
+    console.log(`  median peak     ${fmtPct(median(peaks))}   (lower bound — sampled hourly)`);
+    console.log(`  touched 2x      ${hit2x.length}/${withPath.length}, of which ${ended} gave it all back by ${horizon}`);
+    // the stop-loss question from STUDY.md: how many tokens that ended up
+    // profitable had already breached -50% first?
+    const stopped = withPath.filter((r) => r.p.troughRet <= -0.5);
+    const recovered = stopped.filter((r) => r.p.peakRet >= 1).length;
+    console.log(`  breached -50%   ${stopped.length}/${withPath.length}, of which ${recovered} later touched 2x+ (cost of the stop)`);
+    console.log("");
+  }
   console.log(`read this as: which discovery profile actually pumped — feed conclusions back into RULES`);
 }
 

@@ -2,7 +2,7 @@
 
 Solana memecoin research system. Owner plays $10/position, short-term (hours to a
 few days, exit at 2-5x). Zero-dependency Node CLI (`coin.js`), runs unattended on
-GitHub Actions every 4h (track → update → scan → commit → watch).
+GitHub Actions hourly (track → update → scan → commit → watch).
 
 ## Architecture decisions (settled — don't relitigate)
 

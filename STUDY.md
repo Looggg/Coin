@@ -43,3 +43,86 @@ Polycat score 62 (vol/liq 84x), CVXV666 score 73 (vol/liq 58x) — wash-trade wa
 5. stop loss -50% ควรมีหรือไม่ควรมี?
 
 ดูคำตอบ: `node coin.js patterns d1` (รอข้อมูลสะสม ~1 สัปดาห์)
+
+---
+
+## 2026-08-26 — RULES change #1: minLiquidityUsd 30k → 50k
+
+**Dataset:** tracking.json, n=138 tracked, 130 with h4 outcome, 30 with d1, 0 with d3.
+journal.json ยังว่าง → ตัวเลขทั้งหมดเป็น paper ไม่ใช่ realized
+
+**หลักฐาน** (`node coin.js patterns h4|d1` + cut เพิ่มเอง):
+
+```
+liquidity @h4        n     median   win%          liquidity @d1    n    median   rug%
+  $30-50k            26    -28.2%    16%            $30-50k         7   -68.6%   29%
+  $50-150k           39     -6.9%    ~30%           $50-150k        6   -21.8%    0%
+  >$150k             65     -1.9%    37%            >$150k         17    -8.4%    0%
+```
+
+ทดสอบซ้ำด้วย EV sim ที่ clamp return เข้ากับ exit rules จริง (+200% take-profit /
+-50% stop) เพื่อไม่ให้ median ลงโทษ tail ที่กลยุทธ์นี้กินอยู่แล้ว:
+
+```
+liq 30-50k   EV -22.3% @h4,  -44.4% @d1
+liq >150k    EV  +0.5% @h4,   -0.4% @d1
+```
+
+โซน 30-50k ติดลบแม้ให้เครดิต winner เต็มที่ (ในโซนนี้มี +139% หนึ่งตัว, นับเข้าไปแล้ว)
+
+**ข้อควรระวังที่บันทึกไว้:**
+- fdv `<300k` ดูแย่พอกัน (median -25.6%@h4) แต่ **ไม่ใช่หลักฐานอิสระ** — overlap
+  25/26 rows กับ liq `<50k` เป็น cluster เดียวกัน ห้ามนับเป็นสองสัญญาณ
+- การขยับนี้ตัด winner จริงทิ้งหนึ่งตัว (liq 40k → +139%@h4) EV ยังคุ้มจึงเดินหน้า
+  แต่ถ้าอนาคตโซนนี้ให้ winner อีก 2-3 ตัว ให้ทบทวนใหม่
+
+**เปลี่ยน 1 ตัวแปรตามกฎ:** `minLiquidityUsd` 30000 → 50000 (verdict floor เท่านั้น)
+
+แยก `minTrackLiquidityUsd: 30000` ออกมาเป็น scan pre-filter ต่างหาก โดยเจตนา:
+โซน 30-50k **ยังถูก scan/score/track ต่อ** (ในฐานะ FAIL) ไม่งั้น dataset จะหยุด
+เก็บหลักฐานที่ใช้หักล้างการเปลี่ยนครั้งนี้ในอนาคต
+
+**ผลถ้า re-label dataset เดิมด้วย floor ใหม่** (4/15 PASS ถูกลดชั้น):
+```
+PASS @d1  floor เดิม:  median -39.4%  rug 27%  (n=15)
+PASS @d1  floor ใหม่:  median -23.5%  rug 18%  (n=11)
+```
+ดีขึ้นแต่ **ยังแย่กว่า FAIL** (-7.9%, rug 0%) — filter ยังไม่ได้เลือกของดี
+อย่าอ่านการเปลี่ยนนี้ว่าแก้ปัญหาแล้ว
+
+**ยังไม่แก้ (หลักฐานไม่พอ):**
+- vol/liq: bucket 5-10x เป็นกลุ่มเดียวที่ EV บวก (+14.9%@h4, +15.5%@d1) แต่ n=10/4
+  ยังแยก signal จาก noise ไม่ได้ — และ `washVolLiqRatio: 10` ลงโทษ *เหนือ* 10x
+  อยู่แล้ว จึงไม่ได้ทำร้ายช่วงนี้ ตอบข้อ 2 ข้างบนยังไม่ได้
+- insiderPct `>15%` ให้ 2x+ 20% / rug 0% @d1 ซึ่งขัดทิศทาง `maxInsiderPct` — n เล็ก จับตาต่อ
+- buy/sell 1h ไม่มีสัญญาณ ทุก bucket -2% ถึง -5% เท่ากันหมด (ตอบข้อ 4: ไม่ได้)
+
+## 2026-08-26 — เพิ่ม peak/trough sampling (ตอบข้อ 5 ได้เป็นครั้งแรก)
+
+**ช่องโหว่:** tracking เก็บแค่ ret ณ snapshot h4/d1/d3 → **path-blind**
+token ที่โชว์ -99%@d1 อาจแตะ 3x ระหว่างทาง แต่กลยุทธ์คือ exit 2-5x ไม่ใช่ hold ถึง d1
+บันทึกด้านบนเองก็เจอ -89%/-97% ก่อน 31x/92x → **คำถามข้อ 5 (stop loss -50%)
+และ takeProfitX ตอบไม่ได้เลยด้วยข้อมูลที่เก็บอยู่** และย้อนเก็บไม่ได้
+
+**แก้:** `cmdTrack` เปลี่ยนจาก poll เฉพาะแถวที่มี bucket ครบกำหนด → poll **ทุกแถว
+ที่ยังไม่ archive ทุกรอบ cron** (รายชั่วโมง) แล้วเก็บ `r.p = {peakRet, troughRet,
+peakH, samples}`
+
+ข้อจำกัดที่ต้องจำ: sample รายชั่วโมง → **`peakRet` เป็น lower bound** ของ exit ที่ดี
+ที่สุดที่มีจริง ไม่ใช่ค่าแท้ อย่าเอาไปคำนวณผลตอบแทนตรงๆ
+
+`patterns` เพิ่ม section "path": median peak, กี่ตัวแตะ 2x แล้วคืนหมด,
+และกี่ตัวที่ทะลุ -50% ลงไปก่อนแล้วค่อยแตะ 2x (= ต้นทุนของ stop loss)
+เงียบไว้จนกว่าจะมีข้อมูล — แถวเก่าไม่มี `r.p`
+
+## 2026-08-26 — bug fix: h4 label drift
+
+12/130 rows ติด label `h4` ทั้งที่วัดจริงที่ 6-8.7h (max 8.7h) เพราะ `cmdTrack`
+ไม่มี missed-window guard แบบที่ `updateOutcomes` มีอยู่แล้วสำหรับ journal —
+รอบ cron ที่ GitHub skip ทำให้อ่านค่าช้าแต่ยังบันทึกใต้ bucket เดิม
+
+แก้: `elapsedH > h * 1.5` → บันทึก `{missed: true}` แทน (patterns กรองออกอยู่แล้ว
+เพราะเช็ค `Number.isFinite(ret)`) ตอนนี้ cron เป็นรายชั่วโมง drift จะเหลือ ~1-2h
+
+**หมายเหตุ:** ตัวเลข h4 ทั้งหมดที่อ้างในบันทึกวันนี้เก็บ*ก่อน* guard นี้ จึงยังมี
+12 rows ที่ปนอยู่ — ทิศทางไม่น่าเปลี่ยน แต่ให้ re-run เทียบเมื่อ dataset สะอาดโตพอ
