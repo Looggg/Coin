@@ -1230,6 +1230,12 @@
     "liqUsd": 3919269.08,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.0539,
+    "liqUsd": 3830801.3,
+    "elapsedH": 25,
+    "dead": false
    }
   }
  },
@@ -4624,7 +4630,14 @@
    "failReason": null,
    "score": 92
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.2015,
+    "liqUsd": 72362.52,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "2WbTSrJHr1hNCtmYBjuSetZNdsZWZ2eZTuK9GjNPpump": {
   "symbol": "Pistacia",
@@ -4651,7 +4664,14 @@
    "failReason": null,
    "score": 72
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.4513,
+    "liqUsd": 29635.39,
+    "elapsedH": 4.2,
+    "dead": false
+   }
+  }
  },
  "CvjSaRcTmcrfutekYzrBEEdTWx1RmRTWDToqtXmCpump": {
   "symbol": "LaPeace",
