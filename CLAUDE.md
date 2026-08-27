@@ -10,8 +10,14 @@ GitHub Actions hourly (track → update → scan → commit → watch).
   on-chain numbers so every threshold change can be re-run against frozen
   snapshots. LLM's place: reading contract code (future), and the weekly
   analysis ritual below.
-- **Filter caps downside; nothing here predicts winners.** Edge = cutting
-  garbage fast + exit discipline + learning loop.
+- **Two tracks, one dataset.** The `safety` track caps downside; it does not
+  predict winners and every measurement so far says it cannot. The `momentum`
+  track (added 2026-08-27, `momMinVolLiq`) keeps the same safety verdict and
+  age/liquidity floors but selects on vol/liq instead of cleanliness, because
+  the owner wants candidates that can grow, not merely survive. It is
+  **unproven and paper-only** — `patterns` prints a `momentum gate` table;
+  delete the gate if MOMENTUM has not beaten `PASS, quiet` on peak-2x by
+  ~20-30 tokens. Edge is still cutting garbage fast + exit discipline.
 - **journal.json is ground truth** for human decisions; tracking.json is the
   auto-collected research dataset (every scanned token, PASS and FAIL, with
   outcomes at 4h/1d/3d). Never hand-edit either casually; both are committed.

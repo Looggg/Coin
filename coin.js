@@ -87,6 +87,41 @@ const RULES = {
   // and stays strict if the verdict floor is ever lowered again.
   alertMinAgeHours: 24,
   alertCooldownHours: 72, // do not re-alert the same mint inside this window
+
+  // `momentum` notification track — a SECOND gate, parallel to the one above,
+  // added 2026-08-27. The safety gate answers "is this unlikely to rug"; every
+  // measurement so far says that is uncorrelated with going up, which surfaces
+  // tokens that survive without growing. This gate answers a different
+  // question: "is anyone actually trading this right now".
+  //
+  // It keeps the full safety verdict (candidates.json only ever holds PASS) and
+  // the age + liquidity floors, then selects on attention instead of cleanliness
+  // by DROPPING alertMinScore, alertMaxInsiderPct, alertMaxFdv and the chg24h
+  // band — those three are exactly what excluded every token that ran:
+  //
+  //   hit-2x rate, n=145 tracked, win = peakRet >= 1 (the 2x the play targets)
+  //     vol/liq >= 5   n=66  9%        vol/liq < 5   n=79  1%
+  //
+  // That single feature is the whole basis. Measured on the EXACT cut this gate
+  // makes — safety PASS included, which the line above does not require — the
+  // sample is far thinner and does NOT yet support the gate:
+  //
+  //     MOMENTUM     n=13  peak-2x 1 (PANTS +271%)  d1 median -18.2%  rug 0%
+  //     PASS, quiet  n=29  peak-2x 0                d1 median  -9.0%  rug 0%
+  //
+  // 1-of-13 against 0-of-29 is not a result, and on d1 return the selected cell
+  // is the WORSE of the two — the case rests entirely on peak path, which is
+  // what the 2-5x play actually exits into, on one token. The age floor is kept
+  // because the winners here are second-wave pumps on established pools (PANTS
+  // at 131h, Sue at 586h, Zoe at 189h), not launch snipes, so this gate does not
+  // fight minAgeHours.
+  //
+  // UNPROVEN, and deliberately shipped anyway: nothing in the safety track was
+  // ever going to surface these, so there is no forward sample to argue over
+  // until something does. Paper only. `patterns` prints the `momentum gate`
+  // table that settles it; revisit at ~20-30 tokens, and delete this gate if the
+  // MOMENTUM cell has not beaten `PASS, quiet` on peak-2x by then.
+  momMinVolLiq: 5, // the only new threshold; everything else is reused above
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
   alertDowntrendChg6h: -10, // below this, say so instead of "enter at market"
 
@@ -991,6 +1026,14 @@ function cmdPatterns(bucketArg) {
   table("liquidity", (f) =>
     f.liqUsd == null ? null : f.liqUsd < 50000 ? "$30-50k" : f.liqUsd < 150000 ? "$50-150k" : ">$150k"
   );
+  // forward-evaluation table for the momentum track: the same cut the gate
+  // makes, so `patterns d1` is what decides whether it ever earns real money
+  table("momentum gate", (f) => {
+    if (f.liqUsd == null || f.vol24h == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
+    if (!f.pass) return "not PASS";
+    if (!(f.liqUsd >= RULES.minLiquidityUsd && f.ageHours >= RULES.minAgeHours)) return "below floors";
+    return f.vol24h / f.liqUsd >= RULES.momMinVolLiq ? "MOMENTUM" : "PASS, quiet";
+  });
   table("1h momentum", (f) => {
     if (f.buys1h == null || f.sells1h == null) return null;
     const t = f.buys1h + f.sells1h;
@@ -1241,7 +1284,32 @@ function alertQualifies(c, sent, now) {
   return true;
 }
 
-function alertBody(c) {
+// The momentum gate. Deliberately NOT a relaxation of alertQualifies: it
+// reuses the hard floors (safety PASS, liquidity, age, freshness, cooldown) and
+// then selects on attention rather than on absence of red flags.
+function momentumQualifies(c, sent, now) {
+  const R = RULES;
+  // candidates.json only ever holds tokens that passed runChecklist, so the
+  // rug protection is already applied before anything here runs
+  if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
+  if (!(c.ageHours >= R.minAgeHours)) return false;
+  if (c.vol24h == null || !(c.liqUsd > 0)) return false;
+  if (c.vol24h / c.liqUsd < R.momMinVolLiq) return false;
+  if (!(c.priceUsd > 0)) return false;
+  // same staleness rule as the safety gate: never quote a price this scan did
+  // not fetch (`discovery scan` is continue-on-error)
+  const seenAt = c.checkedAt ? new Date(c.checkedAt).getTime() : NaN;
+  if (!Number.isFinite(seenAt) || now - seenAt > 2 * 3.6e6) return false;
+  // shared dedup with the safety track: same phone, same mint, one buzz
+  if (c.mint in sent) {
+    const last = new Date(sent[c.mint]).getTime();
+    if (!Number.isFinite(last)) return false;
+    if (now - last < R.alertCooldownHours * 3.6e6) return false;
+  }
+  return true;
+}
+
+function alertBody(c, track) {
   const P = c.priceUsd;
   const R = RULES;
   // the knife check comes FIRST. it used to sit behind the pullback branch,
@@ -1257,14 +1325,17 @@ function alertBody(c) {
   } else {
     entry = `เข้าแถว **${fmtPrice(P)}** ได้`;
   }
+  const volLiq = c.liqUsd > 0 && c.vol24h != null ? (c.vol24h / c.liqUsd).toFixed(1) + "x" : "?";
   return [
-    `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}`,
+    track === "momentum"
+      ? `### ${c.symbol || c.mint.slice(0, 8)} — vol/liq ${volLiq} · score ${c.score}`
+      : `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}`,
     "",
     "```",
     c.mint,
     "```",
     "",
-    `liq ${fmtUsd(c.liqUsd)} · FDV ${fmtUsd(c.fdv)} · vol24h ${fmtUsd(c.vol24h)} · insider ${c.insiderPct}% · อายุ ${c.ageHours}h`,
+    `liq ${fmtUsd(c.liqUsd)} · FDV ${fmtUsd(c.fdv)} · vol24h ${fmtUsd(c.vol24h)} (${volLiq} ของ liq) · insider ${c.insiderPct}% · อายุ ${c.ageHours}h`,
     `chg 1h ${c.chg1h ?? "?"}% · 6h ${c.chg6h ?? "?"}% · 24h ${c.chg24h}%`,
     "",
     `- **เข้า:** ${entry}`,
@@ -1288,23 +1359,50 @@ function cmdAlert(commitSent) {
   const sent = loadAlertsSent();
   const now = Date.now();
   const hits = candidates.filter((c) => alertQualifies(c, sent, now));
-  if (!hits.length) {
-    console.error(`alert: ${candidates.length} candidate(s), none clear the notification gate`);
+  // safety wins a tie: a token clearing both gates is reported once, under the
+  // track whose entry advice is the more conservative of the two
+  const safeMints = new Set(hits.map((c) => c.mint));
+  const momHits = candidates.filter(
+    (c) => !safeMints.has(c.mint) && momentumQualifies(c, sent, now)
+  );
+  if (!hits.length && !momHits.length) {
+    console.error(`alert: ${candidates.length} candidate(s), none clear either notification gate`);
     process.exit(3);
   }
 
-  console.log(
-    [
-      hits.map(alertBody).join("\n\n---\n\n"),
+  const out = [];
+  if (hits.length) {
+    out.push("## 🛡 safety — ผ่าน filter ครบ ไม่มี red flag", "");
+    out.push(hits.map((c) => alertBody(c, "safety")).join("\n\n---\n\n"));
+  }
+  if (momHits.length) {
+    if (out.length) out.push("", "---", "");
+    out.push("## 🔥 momentum — มีคนเทรดจริงตอนนี้ (track ทดลอง)", "");
+    out.push(
+      `ผ่าน safety filter + floor liq/อายุ เท่าเดิม แต่คัดด้วย **vol/liq ≥ ${RULES.momMinVolLiq}x** ` +
+        "แทนคะแนนความสะอาด.",
       "",
-      "---",
-      "",
-      "ตัวเลขเข้า/ออกคำนวณจาก exit rules ใน RULES ตรงๆ ไม่ใช่คำทำนาย — filter กัน downside เท่านั้น.",
-      "$10 ต่อไม้คือ stop loss ตัวจริง.",
-      "",
-      "ดูแล้วบันทึก: `node coin.js log <mint> buy|skip \"reason\"` — skip ก็เป็น data",
-    ].join("\n")
+      "> ⚠️ **track นี้ยังไม่มีหลักฐานรองรับ** — บน cut เดียวกันนี้ใน tracking ปัจจุบัน",
+      "> แตะ 2x 1 ใน 13 ตัว (PANTS) เทียบ 0 ใน 29 ของฝั่งเงียบ และ **d1 median แย่กว่า**",
+      "> (-18.2% เทียบ -9.0%) มีไว้เก็บ forward sample เท่านั้น",
+      ">",
+      "> **paper ก่อน** — `log <mint> skip` ก็นับเป็น data. อย่าใส่เงินจริงกับ track นี้",
+      "> จนกว่าตาราง `momentum gate` ใน `node coin.js patterns d1` จะสะสมได้ 20-30 ตัว",
+      ""
+    );
+    out.push(momHits.map((c) => alertBody(c, "momentum")).join("\n\n---\n\n"));
+  }
+  out.push(
+    "",
+    "---",
+    "",
+    "ตัวเลขเข้า/ออกคำนวณจาก exit rules ใน RULES ตรงๆ ไม่ใช่คำทำนาย.",
+    "safety track กัน downside; momentum track เลือกความสนใจ ไม่ใช่ความปลอดภัยที่มากกว่า.",
+    "$10 ต่อไม้คือ stop loss ตัวจริง.",
+    "",
+    "ดูแล้วบันทึก: `node coin.js log <mint> buy|skip \"reason\"` — skip ก็เป็น data"
   );
+  console.log(out.join("\n"));
 
   // The dedup write is opt-in. A bare `node coin.js alert` on the laptop is a
   // preview: if it recorded the mints, the next cloud run would go quiet for
@@ -1312,7 +1410,7 @@ function cmdAlert(commitSent) {
   // workflow's revert branch exists to prevent, entered through the front door.
   // Only the workflow, which actually creates the issue, passes --commit-sent.
   if (commitSent) {
-    for (const c of hits) sent[c.mint] = new Date(now).toISOString();
+    for (const c of [...hits, ...momHits]) sent[c.mint] = new Date(now).toISOString();
     // prune anything long past the cooldown so this file cannot grow forever
     const cutoff = now - RULES.alertCooldownHours * 3.6e6 * 4;
     for (const [m, t] of Object.entries(sent)) {
@@ -1323,7 +1421,11 @@ function cmdAlert(commitSent) {
   } else {
     console.error("(preview — alerts-sent.json not written; pass --commit-sent to record)");
   }
-  console.error(`alert: ${hits.length} token(s) — ${hits.map((c) => c.symbol).join(", ")}`);
+  const say = (label, list) =>
+    list.length ? `${label} ${list.length} (${list.map((c) => c.symbol).join(", ")})` : null;
+  console.error(
+    "alert: " + [say("safety", hits), say("momentum", momHits)].filter(Boolean).join(" · ")
+  );
 }
 
 async function main() {

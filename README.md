@@ -2,7 +2,10 @@
 
 เครื่องมือคัดกรอง memecoin (Solana) แบบ safety-first พร้อม journal สำหรับ eval ว่าระบบเราชนะ baseline จริงไหม
 
-**หลักการ:** token ใหม่ส่วนใหญ่ไปศูนย์ — edge อยู่ที่คัดขยะออกเร็ว ไม่ใช่ทำนายผู้ชนะ
+**หลักการ:** token ใหม่ส่วนใหญ่ไปศูนย์ — edge อยู่ที่คัดขยะออกเร็ว
+
+`alert` มีสอง track: **safety** (กัน downside ไม่ทำนายผู้ชนะ) และ **momentum**
+(คัดด้วย vol/liq — ยังไม่พิสูจน์ paper เท่านั้น ดูตาราง `momentum gate` ใน `patterns`)
 
 ## ใช้งาน
 
