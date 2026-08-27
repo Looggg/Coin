@@ -40,7 +40,22 @@ const RULES = {
   maxTop10Pct: 30, // top-10 holders (excl. LP/CEX) combined %
   minLpLockedPct: 80, // LP locked/burned percentage
   washVolLiqRatio: 10, // vol24h > N x liquidity => wash suspicion
-  minAgeHours: 24, // younger than this => extra risk warning
+  // verdict floor, raised 24 -> 48 and promoted from soft warning to hard FAIL
+  // on 2026-08-27. Measured MARGINALLY, against a baseline that already applies
+  // minLiquidityUsd (an uncontrolled baseline credits this floor for rows change
+  // #1 removes): over PASS rows with liq >= 50k the floor moves EV -10.7% ->
+  // -7.9% (+2.8pp, n 55 -> 42) and rug 11% -> 0%, net of the two winners it cuts.
+  //
+  // the EV half of that is NOT statistically separated: the 13 cut rows are
+  // EV -19.8% with a 18.7pp stderr, ~0.6 sigma from the kept rows. what carries
+  // this change is the downside half — rug 11% -> 0%, and the rug gradient in
+  // `patterns d1` (<6h 33%, 6-24h 36%, >3d 0%) — which is what the filter is
+  // for. do not cite it as an EV improvement. see STUDY.md.
+  //
+  // deliberately NOT mirrored by a minTrackAgeHours: the scan pre-filter is
+  // liquidity-only, so young tokens keep getting scanned and tracked as FAIL and
+  // the dataset keeps the evidence that would let us walk this change back.
+  minAgeHours: 48,
   maxDevPct: 5, // creator wallet holdings
   maxInsiderPct: 25, // supply held by detected insider/bundle networks
   minHolders: 100, // too few holders => one exit kills the price
@@ -67,6 +82,9 @@ const RULES = {
   // below the 5-10x band patterns flags as interesting, so it only removes
   // the dead.
   alertMinVolLiq: 1,
+  // non-binding while minAgeHours (48) is higher — alertQualifies takes the max
+  // of the two. kept so the alert gate still reads as a complete spec on its own
+  // and stays strict if the verdict floor is ever lowered again.
   alertMinAgeHours: 24,
   alertCooldownHours: 72, // do not re-alert the same mint inside this window
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
@@ -300,13 +318,17 @@ function runChecklist(s) {
   const dangers = (s.rugRisks || []).filter((r) => r.level === "danger");
   for (const d of dangers) fails.push(`rugcheck danger: ${d.name}`);
 
+  // last on purpose: trackFeatures records only fails[0], so putting this ahead
+  // of the older rules would relabel young-AND-concentrated tokens as age
+  // failures and put a fake step in any failure-mode clustering across 2026-08-27
+  if (s.ageHours != null && s.ageHours < RULES.minAgeHours)
+    fails.push(`token only ${s.ageHours.toFixed(1)}h old (< ${RULES.minAgeHours}h) — highest-risk window`);
+
   if (s.lpLockedPct == null) warns.push("LP lock % unknown — verify manually on rugcheck.xyz");
   if (s.top10Pct == null) warns.push("holder concentration unknown — verify manually");
   if (s.insiderPct == null) warns.push("bundle/insider data unavailable — check bubblemaps.io manually");
   else if (s.insiderPct > 10)
     warns.push(`insider networks hold ${s.insiderPct.toFixed(1)}% across ${s.insiderCount ?? "?"} wallets`);
-  if (s.ageHours != null && s.ageHours < RULES.minAgeHours)
-    warns.push(`token only ${s.ageHours.toFixed(1)}h old — highest-risk window`);
   if (s.vol24h != null && s.liqUsd != null && s.liqUsd > 0 && s.vol24h / s.liqUsd > RULES.washVolLiqRatio)
     warns.push(`vol/liq ratio ${(s.vol24h / s.liqUsd).toFixed(1)}x — possible wash trading`);
   const warnRisks = (s.rugRisks || []).filter((r) => r.level === "warn");
@@ -344,9 +366,8 @@ function scoreCandidate(s) {
   if (s.devPct != null) penalize(Math.min(15, s.devPct * 2), `dev ${s.devPct.toFixed(1)}%`);
   // concentration beyond a comfortable spread
   if (s.top10Pct != null) penalize(Math.min(15, Math.max(0, s.top10Pct - 15)), `top10 ${s.top10Pct.toFixed(0)}%`);
-  // the first day is where most rugs happen
-  if (s.ageHours != null && s.ageHours < RULES.minAgeHours)
-    penalize(((RULES.minAgeHours - s.ageHours) / RULES.minAgeHours) * 15, `age ${s.ageHours.toFixed(0)}h`);
+  // no age term: scoreCandidate only runs on tokens that already PASSED, and
+  // minAgeHours is a hard FAIL, so everything scored here is already past it
   // thin books cost real money on a $10 round trip
   if (s.liqUsd != null && s.liqUsd < 100000)
     penalize(((100000 - s.liqUsd) / 100000) * 10, `liq ${fmtUsd(s.liqUsd)}`);
@@ -947,7 +968,19 @@ function cmdPatterns(bucketArg) {
   console.log("");
   table("verdict", (f) => (f.pass ? "PASS" : "FAIL"));
   table("age at discovery", (f) =>
-    f.ageHours == null ? null : f.ageHours < 6 ? "<6h" : f.ageHours < 24 ? "6-24h" : f.ageHours < 72 ? "1-3d" : ">3d"
+    // 24-48h is split out so the zone minAgeHours cuts stays visible here —
+    // this table is the reversal check for RULES change #2
+    f.ageHours == null
+      ? null
+      : f.ageHours < 6
+        ? "<6h"
+        : f.ageHours < 24
+          ? "6-24h"
+          : f.ageHours < 48
+            ? "24-48h"
+            : f.ageHours < 72
+              ? "2-3d"
+              : ">3d"
   );
   table("safety score", (f) =>
     !f.pass ? "FAIL" : f.score == null ? null : f.score >= 80 ? "80-100" : f.score >= 60 ? "60-79" : "<60"
@@ -1190,7 +1223,7 @@ function alertQualifies(c, sent, now) {
   if (c.chg24h <= R.alertMinChg24h) return false;
   if (c.vol24h == null || !(c.liqUsd > 0) || c.vol24h / c.liqUsd < R.alertMinVolLiq)
     return false;
-  if (!(c.ageHours >= R.alertMinAgeHours)) return false;
+  if (!(c.ageHours >= Math.max(R.alertMinAgeHours, R.minAgeHours))) return false;
   if (!(c.priceUsd > 0)) return false;
   // never quote a price the scan did not just fetch: `discovery scan` is
   // continue-on-error, so a failed scan leaves the previous run's
