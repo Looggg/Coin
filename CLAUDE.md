@@ -4,20 +4,36 @@ Solana memecoin research system. Owner plays $10/position, short-term (hours to 
 few days, exit at 2-5x). Zero-dependency Node CLI (`coin.js`), runs unattended on
 GitHub Actions hourly (track → update → scan → commit → watch).
 
+## Goal (owner-stated 2026-08-27 — this is the point of the project)
+
+**คัดเหรียญที่มีโอกาสพุ่งมาให้ซื้อ โดยเรียนรู้ pattern ของเหรียญที่เคยพุ่ง.**
+Select coins with a real chance to pump, by learning the patterns of coins
+that pumped — not coins that merely survive without growing. The safety
+filter, the age/liquidity floors, and exit discipline exist to protect
+capital *in service of that goal*; they are the floor, not the mission.
+
+Honesty constraint that goes with it: as of 2026-08-27 no measured feature
+reliably predicts pumps (best so far: vol/liq >= 5, hit-2x 9% vs 1%, thin n).
+The learning loop (tracking.json → `patterns` → RULES changes logged in
+STUDY.md) is the mechanism for closing that gap. Never fake progress toward
+the goal by loosening rules without data; never redefine the goal back to
+"downside only" — the owner has explicitly rejected that framing.
+
 ## Architecture decisions (settled — don't relitigate)
 
 - **No LLM in the decision pipeline.** Rules are deterministic if-else over
   on-chain numbers so every threshold change can be re-run against frozen
   snapshots. LLM's place: reading contract code (future), and the weekly
   analysis ritual below.
-- **Two tracks, one dataset.** The `safety` track caps downside; it does not
-  predict winners and every measurement so far says it cannot. The `momentum`
-  track (added 2026-08-27, `momMinVolLiq`) keeps the same safety verdict and
-  age/liquidity floors but selects on vol/liq instead of cleanliness, because
-  the owner wants candidates that can grow, not merely survive. It is
+- **Two tracks, one dataset.** The `momentum` track (added 2026-08-27,
+  `momMinVolLiq`) is the track that serves the project goal: same safety
+  verdict and age/liquidity floors, but selects on vol/liq (attention)
+  instead of cleanliness. The `safety` track caps downside; it does not
+  predict winners and every measurement so far says it cannot. Momentum is
   **unproven and paper-only** — `patterns` prints a `momentum gate` table;
   delete the gate if MOMENTUM has not beaten `PASS, quiet` on peak-2x by
-  ~20-30 tokens. Edge is still cutting garbage fast + exit discipline.
+  ~20-30 tokens, and replace it with a better pump-pattern candidate rather
+  than abandoning the goal.
 - **journal.json is ground truth** for human decisions; tracking.json is the
   auto-collected research dataset (every scanned token, PASS and FAIL, with
   outcomes at 4h/1d/3d). Never hand-edit either casually; both are committed.
