@@ -1049,7 +1049,7 @@ function cmdPatterns(bucketArg) {
         ? `${Math.round((withPath.filter((r) => r.p.peakRet >= 0.5).length / withPath.length) * 100)}`.padStart(3) + "%"
         : "  -";
       console.log(
-        `  ${g.padEnd(14)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  pk2x ${pk2x}  pk50 ${pk50} (path n=${withPath.length})`
+        `  ${g.padEnd(18)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  pk2x ${pk2x}  pk50 ${pk50} (path n=${withPath.length})`
       );
     }
     console.log("");
@@ -1084,6 +1084,16 @@ function cmdPatterns(bucketArg) {
   // forward-evaluation table for the momentum track: the same cut the gate
   // makes, so `patterns d1` is what decides whether it ever earns real money
   //
+  // MEASUREMENT ONLY — this table does not gate or alert anything; it just
+  // prices what requiring safety PASS costs the pump goal. floors (liquidity,
+  // age) apply to everyone FIRST, then the safety verdict splits each
+  // attention cell in two, so "MOMENTUM, not-PASS" sits right next to
+  // "MOMENTUM" with matching liq/age/vol-liq. rug sits beside it as the
+  // counter-argument: if "MOMENTUM, not-PASS" keeps winning on pump metrics
+  // (pk2x/pk50) without a correspondingly ugly rug rate, the next debate is
+  // whether the insider/top10 rules are too strict for THIS track specifically
+  // — argued from this data, as its own RULES change, not decided here.
+  //
   // primary decision metric for this track is pk2x — the pre-registered
   // kill criterion is peak-2x, not the fixed-horizon return. pk50 is
   // pre-registered NOW, before anyone peeks at accumulating data, as the
@@ -1092,9 +1102,10 @@ function cmdPatterns(bucketArg) {
   // (Fisher exact p is roughly 0.1 at 2-vs-0).
   table("momentum gate", (f) => {
     if (f.liqUsd == null || f.vol24h == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
-    if (!f.pass) return "not PASS";
     if (!(f.liqUsd >= RULES.minLiquidityUsd && f.ageHours >= RULES.minAgeHours)) return "below floors";
-    return f.vol24h / f.liqUsd >= RULES.momMinVolLiq ? "MOMENTUM" : "PASS, quiet";
+    const attention = f.vol24h / f.liqUsd >= RULES.momMinVolLiq;
+    if (attention) return f.pass ? "MOMENTUM" : "MOMENTUM, not-PASS";
+    return f.pass ? "PASS, quiet" : "FAIL, quiet";
   });
   table("1h momentum", (f) => {
     if (f.buys1h == null || f.sells1h == null) return null;
