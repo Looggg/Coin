@@ -661,6 +661,31 @@ async function fetchGeckoPools(kind, pages) {
   return out;
 }
 
+// Hours since the last logged scan, or null if that can't be determined
+// (missing/empty/corrupt log — a first-ever run is one such case, and must
+// stay silent rather than warn). Cron is hourly and GitHub Actions schedules
+// are best-effort, so gaps happen; cmdScan uses this to flag runs that
+// followed a long silent stretch, because tracking's peak/attention sampling
+// (r.p/r.s, and therefore how tight peakRet's lower bound really is) depends
+// on scans landing close to hourly.
+function scanGapHours(logPath) {
+  try {
+    if (!fs.existsSync(logPath)) return null;
+    const lines = fs
+      .readFileSync(logPath, "utf8")
+      .split("\n")
+      .filter((l) => l.trim().length);
+    if (!lines.length) return null;
+    const lastTs = lines[lines.length - 1].split(/\s+/)[0];
+    const prev = new Date(lastTs).getTime();
+    if (!Number.isFinite(prev)) return null;
+    return (Date.now() - prev) / 3.6e6;
+  } catch {
+    // a corrupt/unreadable scans.log must not block scanning; just skip the note
+    return null;
+  }
+}
+
 async function cmdScan(fullCheckCap) {
   console.log("fetching trending + new pools from GeckoTerminal...");
   const pools = [
@@ -772,9 +797,23 @@ async function cmdScan(fullCheckCap) {
       path.join(__dirname, "candidates-history.jsonl"),
       passed.map((p) => JSON.stringify(p)).join("\n") + "\n"
     );
+  // Scheduled GitHub Actions runs are best-effort, not guaranteed hourly; a
+  // long silent stretch means tracking's once-per-run price sample can miss
+  // a pump peak entirely, so flag it here rather than let it pass unnoticed.
+  const scansLogPath = path.join(__dirname, "scans.log");
+  const gapH = scanGapHours(scansLogPath);
+  // the marker goes AFTER the timestamp, never before it: scanGapHours reads
+  // the first whitespace token of the last line as the date, so prefixing the
+  // line would make the next run unable to parse it — one gap would blind the
+  // detector to every gap after it
+  let gapMark = "";
+  if (Number.isFinite(gapH) && gapH > 3) {
+    gapMark = ` GAP=${gapH.toFixed(1)}h path-sampling-degraded`;
+    console.error(`⚠ last scan was ${gapH.toFixed(1)}h ago (expected ~hourly) — path sampling degraded`);
+  }
   fs.appendFileSync(
-    path.join(__dirname, "scans.log"),
-    `${new Date().toISOString()} scanned=${list.length} passed=${passed.length}` +
+    scansLogPath,
+    `${new Date().toISOString()}${gapMark} scanned=${list.length} passed=${passed.length}` +
       (http429s ? ` rate429=${http429s}` : "") +
       (passed.length ? ` [${passed.map((p) => `${p.symbol}:${p.mint}`).join(" ")}]` : "") +
       "\n"
