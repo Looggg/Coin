@@ -42,7 +42,7 @@
    "peakRet": 0,
    "troughRet": -0.9924,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "ApZuxdpzMrbEYTGEzeY9afh5pj9d6qPRJCTgQYiipbKg": {
@@ -86,9 +86,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.583,
+   "troughRet": -0.592,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "66ZEoQSgY3g5KEijP8ZUucth9ZmrxwYg8ngzwgP6pump": {
@@ -134,7 +134,7 @@
    "peakRet": 0,
    "troughRet": -0.9893,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump": {
@@ -180,7 +180,7 @@
    "peakRet": 0.8175,
    "troughRet": 0,
    "peakH": 45.9,
-   "samples": 5
+   "samples": 6
   }
  },
  "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv": {
@@ -226,7 +226,7 @@
    "peakRet": 0,
    "troughRet": -0.0791,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "GUmbtfjSZkybSFgPibBcvwExEBdXwewJHR5PkTjzpump": {
@@ -272,7 +272,7 @@
    "peakRet": 0.1401,
    "troughRet": -0.363,
    "peakH": 53.5,
-   "samples": 5
+   "samples": 6
   }
  },
  "C3bajJW843KN9Uu441JkXN7zVMs4VM2HvdAGyGiBpump": {
@@ -316,9 +316,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9259,
+   "troughRet": -0.9502,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Ab1sTFNv2tV5DX1XpriwNehXgiJhdq2RQ5LtD5BXpump": {
@@ -362,9 +362,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.6718,
+   "troughRet": -0.6931,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "B4iCqVsAZv9dBiBVv58GJiBxWGmwkwbtPTn4sUQTpump": {
@@ -410,7 +410,7 @@
    "peakRet": 1.3221,
    "troughRet": 0,
    "peakH": 45.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump": {
@@ -456,7 +456,7 @@
    "peakRet": 0.2399,
    "troughRet": 0,
    "peakH": 52.9,
-   "samples": 5
+   "samples": 6
   }
  },
  "7fmHqRpJLgpVsJFTvrv24CEjkz9c4o5uVX4Zdur1hz35": {
@@ -502,7 +502,7 @@
    "peakRet": 0,
    "troughRet": -0.6642,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6": {
@@ -548,7 +548,7 @@
    "peakRet": 0,
    "troughRet": -0.4211,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn": {
@@ -594,7 +594,7 @@
    "peakRet": 0,
    "troughRet": -0.0499,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2": {
@@ -640,7 +640,7 @@
    "peakRet": 0,
    "troughRet": -0.1075,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN": {
@@ -686,7 +686,7 @@
    "peakRet": 0,
    "troughRet": -0.1325,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "EpXtn6xGoZ4Y45vRjiDUHSCGbBoJD5FaEqZbF98YswH1": {
@@ -732,7 +732,7 @@
    "peakRet": 0.0462,
    "troughRet": -0.2295,
    "peakH": 45.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "GUt3ebbJm6SJCvpa8SfFzZe132a78qZDyc2yXAP1pump": {
@@ -778,7 +778,7 @@
    "peakRet": 0,
    "troughRet": -0.998,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "E3i7sTY5QYEBh3itepnomZQt7Eh5kzmHFk1vkm2pump": {
@@ -822,9 +822,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2417,
+   "troughRet": -0.3813,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "GeSfrQiscfsEv4Hx2TKaB9Nfid12qND1YYRYS1vSpump": {
@@ -870,7 +870,7 @@
    "peakRet": 0,
    "troughRet": -0.9972,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "FtateF34Xzawa91bpbVNdX72hZYo9cymRDYqBreHHbJi": {
@@ -913,10 +913,10 @@
    }
   },
   "p": {
-   "peakRet": 0.4133,
+   "peakRet": 2.707,
    "troughRet": -0.0328,
-   "peakH": 49,
-   "samples": 5
+   "peakH": 54.3,
+   "samples": 6
   }
  },
  "8XtRWb4uAAJFMP4QQhoYYCWR6XXb7ybcCdiqPwz9s5WS": {
@@ -962,7 +962,7 @@
    "peakRet": 0,
    "troughRet": -0.1237,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "A13oRB9FFaiUjfi6LdCg6p9ka1u8SfGkUFs4SKvPpump": {
@@ -1008,7 +1008,7 @@
    "peakRet": 0,
    "troughRet": -0.2587,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk": {
@@ -1051,10 +1051,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0229,
    "troughRet": -0.0342,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 54.3,
+   "samples": 6
   }
  },
  "9HHTQ7YMx82E987cNqF9KczyZrfKgqvKNyA2yHSVpump": {
@@ -1100,7 +1100,7 @@
    "peakRet": 0,
    "troughRet": -0.8373,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "9Y3fY1kwYUTgLwBU7DZKkEwCsZYj3BrXQNP74ZNEpump": {
@@ -1146,7 +1146,7 @@
    "peakRet": 0,
    "troughRet": -0.8732,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6Hebn672FvMSq61mo4HYq86QgLHgBUm6y8A9bXGppump": {
@@ -1190,9 +1190,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.8335,
+   "troughRet": -0.8945,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "CGmBrG4GRiMvFSGaEiB7cwEd9uDYiqrXzkoyR2Qa3KrC": {
@@ -1235,10 +1235,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0755,
    "troughRet": -0.4446,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 46.1,
+   "samples": 6
   }
  },
  "D9qNfYpFtP9E3YpjBJDCD5PuWoD3445cC9K6PMX5pump": {
@@ -1284,7 +1284,7 @@
    "peakRet": 0,
    "troughRet": -0.9922,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump": {
@@ -1327,10 +1327,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0181,
    "troughRet": -0.2114,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 42.1,
+   "samples": 6
   }
  },
  "9firESEtMrb4hqFxtb7xCAXp4jAuoW8mz5MZwjJ2pump": {
@@ -1376,7 +1376,7 @@
    "peakRet": 0,
    "troughRet": -0.8284,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr": {
@@ -1422,7 +1422,7 @@
    "peakRet": 0,
    "troughRet": -0.0793,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2AF7CqwieUjUPALL7icuZtL3X7wENdjUjGBMmfV2pump": {
@@ -1466,9 +1466,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2043,
+   "troughRet": -0.2062,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "7MYegHoqDGhWdvrnxeuiAEndgG6qcs1N3W5v6SXspump": {
@@ -1514,7 +1514,7 @@
    "peakRet": 0.2579,
    "troughRet": -0.0164,
    "peakH": 26.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "JE8zmsKRivXggZsJxXHBdCkako85YawNtU5hqS4upump": {
@@ -1560,7 +1560,7 @@
    "peakRet": 0.1659,
    "troughRet": -0.0258,
    "peakH": 23.7,
-   "samples": 5
+   "samples": 6
   }
  },
  "39fNg98hhpyiRTGD8Gf8y5MwFVgJJZEnDyTMKdDZpump": {
@@ -1604,9 +1604,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7786,
+   "troughRet": -0.8676,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "CgnQ8a1u99Gk7qoySMd2wrGPMPm9bdcSJNhqMEkYpump": {
@@ -1652,7 +1652,7 @@
    "peakRet": 0,
    "troughRet": -0.4149,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2NffKvfZTcFj2tyoY1Ev84PkqxA7DZnstyv6EwELpump": {
@@ -1696,9 +1696,9 @@
   },
   "p": {
    "peakRet": 2.9349,
-   "troughRet": 0,
+   "troughRet": -0.1085,
    "peakH": 19.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "7n8kRipxAQBfpGQtcGA2AbkM2HASSVCzqZ5F3QEopump": {
@@ -1744,7 +1744,7 @@
    "peakRet": 2.7524,
    "troughRet": 0,
    "peakH": 21.7,
-   "samples": 5
+   "samples": 6
   }
  },
  "EjAuFtMEP6LQDgLb11JU9bkcskhFYbgd9Q5NRXJppump": {
@@ -1790,7 +1790,7 @@
    "peakRet": 0.4136,
    "troughRet": -0.259,
    "peakH": 27,
-   "samples": 5
+   "samples": 6
   }
  },
  "6b7KQsXqb6JR5Nmeer5zGRmo51dwDfttM5b5Nu2rpump": {
@@ -1834,9 +1834,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7643,
+   "troughRet": -0.8077,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "BCdwQBAn8dYB5YjTsoB6TdHAWokxv28k2oZUodERpump": {
@@ -1879,10 +1879,10 @@
    }
   },
   "p": {
-   "peakRet": 0.2562,
+   "peakRet": 0.292,
    "troughRet": 0,
-   "peakH": 27,
-   "samples": 5
+   "peakH": 32.3,
+   "samples": 6
   }
  },
  "8Jx8AAHj86wbQgUTjGuj6GTTL5Ps3cqxKRTvpaJApump": {
@@ -1925,10 +1925,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0184,
    "troughRet": -0.1593,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.3,
+   "samples": 6
   }
  },
  "5dkPngQmeqTUN57RqhxdA6xCaz7AKdzQoHLdk9xhpump": {
@@ -1974,7 +1974,7 @@
    "peakRet": 0,
    "troughRet": -0.9187,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump": {
@@ -2017,10 +2017,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0835,
+   "peakRet": 0.3323,
    "troughRet": 0,
-   "peakH": 27,
-   "samples": 5
+   "peakH": 32.3,
+   "samples": 6
   }
  },
  "DtR4D9FtVoTX2569gaL837ZgrB6wNjj6tkmnX9Rdk9B2": {
@@ -2066,7 +2066,7 @@
    "peakRet": 0.5553,
    "troughRet": -0.0506,
    "peakH": 27,
-   "samples": 5
+   "samples": 6
   }
  },
  "BcHEaaTCvycPwwsJ9yQTXdHP9X2gCLkznDbZ8VySpump": {
@@ -2112,7 +2112,7 @@
    "peakRet": 0,
    "troughRet": -0.2947,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "AP8Wnu37Gf9RHgugPKGvpHe6LcTE2yp5GDy7pL5Upump": {
@@ -2156,9 +2156,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7398,
+   "troughRet": -0.7734,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "XSTuo1fV7HHMhs4BYiwtrWSLsMCJNrooH2AssWTYZqP": {
@@ -2202,9 +2202,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.5688,
+   "troughRet": -0.721,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "RmtMAYVTTFv2iK9muMrXEoAnSSsZPPgRPbqZCKwNDYk": {
@@ -2248,9 +2248,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1556,
+   "troughRet": -0.2126,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6NwarBvDkXhByqVp2Qkq5i9XbtA2B3Bwe8SWGu9vpump": {
@@ -2293,10 +2293,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0324,
+   "peakRet": 0.0607,
    "troughRet": -0.0388,
-   "peakH": 24.4,
-   "samples": 5
+   "peakH": 32.3,
+   "samples": 6
   }
  },
  "DRWnf86Z2MjdMGLq7LFSF875iK9Ajo94RVtjK4owpump": {
@@ -2340,9 +2340,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.854,
+   "troughRet": -0.9136,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6ehEcTMCc85aNF4x9CWx8HuvWGhxQtvKdhKVf2HDpump": {
@@ -2388,7 +2388,7 @@
    "peakRet": 0.0693,
    "troughRet": 0,
    "peakH": 21.7,
-   "samples": 5
+   "samples": 6
   }
  },
  "FeMbDoX7R1Psc4GEcvJdsbNbZA3bfztcyDCatJVJpump": {
@@ -2434,7 +2434,7 @@
    "peakRet": 0.1411,
    "troughRet": -0.0424,
    "peakH": 19.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "4AjvPXMn8YZG9saAVJvcWspg73oTFf2JmU4in4Xgpump": {
@@ -2480,7 +2480,7 @@
    "peakRet": 1.0004,
    "troughRet": 0,
    "peakH": 24.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp": {
@@ -2523,10 +2523,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0116,
    "troughRet": -0.0742,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.3,
+   "samples": 6
   }
  },
  "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
@@ -2572,7 +2572,7 @@
    "peakRet": 0.0511,
    "troughRet": 0,
    "peakH": 19.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "7nLukVng5teXze14rum9v57juXLjUp7JJnCveko1pump": {
@@ -2618,7 +2618,7 @@
    "peakRet": 0.1826,
    "troughRet": -0.2887,
    "peakH": 20.1,
-   "samples": 5
+   "samples": 6
   }
  },
  "zj1jpp7QMveWHLs61vL9KMZf254KvW7j4AAmBF8ry2k": {
@@ -2664,7 +2664,7 @@
    "peakRet": 0.2459,
    "troughRet": -0.0455,
    "peakH": 27,
-   "samples": 5
+   "samples": 6
   }
  },
  "DQnkBM4eYYMnVE8Qy2K3BB7uts1fh2EwBVktEz6jpump": {
@@ -2710,7 +2710,7 @@
    "peakRet": 0,
    "troughRet": -0.2277,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "488SaFq6wHF2z2k6NLSD3PtoSkXDNZaPkJwxze11pump": {
@@ -2754,9 +2754,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.5283,
+   "troughRet": -0.5411,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "63zfjPfH4uaX3TQZoD35WqUrqiuCQQWndMTxQHsJpump": {
@@ -2800,9 +2800,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.2124,
+   "troughRet": -0.3306,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm": {
@@ -2845,10 +2845,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0305,
+   "peakRet": 0.0879,
    "troughRet": 0,
-   "peakH": 19.4,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5": {
@@ -2894,7 +2894,7 @@
    "peakRet": 0,
    "troughRet": -0.0506,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump": {
@@ -2940,7 +2940,7 @@
    "peakRet": 0,
    "troughRet": -0.0498,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2qEHjDLDLbuBgRYvsxhc5D6uDWAivNFZGan56P1tpump": {
@@ -2986,7 +2986,7 @@
    "peakRet": 0,
    "troughRet": -0.0498,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2ZvFgTyLMrgyLmoPHtD5KsTyALh14ffzxJoni4oPpump": {
@@ -3032,7 +3032,7 @@
    "peakRet": 0,
    "troughRet": -0.1489,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "74SBV4zDXxTRgv1pEMoECskKBkZHc2yGPnc7GYVepump": {
@@ -3075,10 +3075,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0436,
+   "peakRet": 0.0456,
    "troughRet": 0,
-   "peakH": 27,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "3nTmaNvUd12oEd52rsjc8hZLqSjRm1yoEtCnZBDRpump": {
@@ -3121,10 +3121,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0113,
    "troughRet": -0.1686,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump": {
@@ -3170,7 +3170,7 @@
    "peakRet": 0.0893,
    "troughRet": 0,
    "peakH": 24.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump": {
@@ -3216,7 +3216,7 @@
    "peakRet": 0.1228,
    "troughRet": 0,
    "peakH": 21.7,
-   "samples": 5
+   "samples": 6
   }
  },
  "J3NKxxXZcnNiMjKw9hYb2K4LUxgwB6t1FtPtQVsv3KFr": {
@@ -3259,10 +3259,10 @@
    }
   },
   "p": {
-   "peakRet": 0.065,
+   "peakRet": 0.1504,
    "troughRet": -0.0217,
-   "peakH": 27,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "EkcTa8n14fXcHdfvZqCg72cTCutJnnKb19vcHwKTpump": {
@@ -3305,10 +3305,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.1798,
    "troughRet": -0.2177,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump": {
@@ -3354,7 +3354,7 @@
    "peakRet": 0,
    "troughRet": -0.0301,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "HBoNJ5v8g71s2boRivrHnfSB5MVPLDHHyVjruPfhGkvL": {
@@ -3397,10 +3397,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0298,
    "troughRet": -0.1081,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "7rSpKgASuXN5hfw3jsKNZN6ysNCR1Eixb2PD2Nd9pump": {
@@ -3446,7 +3446,7 @@
    "peakRet": 0,
    "troughRet": -0.2585,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "9AvytnUKsLxPxFHFqS6VLxaxt5p6BhYNr53SD2Chpump": {
@@ -3489,10 +3489,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.1045,
    "troughRet": -0.086,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "nWnDYs4dR57Cek8nsK1W8iWEqKiKZE1hW1CLvP3pump": {
@@ -3538,7 +3538,7 @@
    "peakRet": 0.129,
    "troughRet": -0.2388,
    "peakH": 19.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "DKu9kykSfbN5LBfFXtNNDPaX35o4Fv6vJ9FKk7pZpump": {
@@ -3584,7 +3584,7 @@
    "peakRet": 0,
    "troughRet": -0.0652,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx": {
@@ -3630,7 +3630,7 @@
    "peakRet": 0.5672,
    "troughRet": 0,
    "peakH": 27,
-   "samples": 5
+   "samples": 6
   }
  },
  "AMUgSjmdFsS8Y3JeL32u7A45Fpt8YF9xKaiwW5uGHdXk": {
@@ -3673,10 +3673,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0681,
+   "peakRet": 0.1057,
    "troughRet": -0.0948,
-   "peakH": 24.3,
-   "samples": 5
+   "peakH": 32.2,
+   "samples": 6
   }
  },
  "H8xQ6poBjB9DTPMDTKWzWPrnxu4bDEhybxiouF8Ppump": {
@@ -3722,7 +3722,7 @@
    "peakRet": 0,
    "troughRet": -0.2112,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6f8ZQhxqfigdv7UszZ1rirbV7Sgv83s3rxv1N2Zopump": {
@@ -3768,7 +3768,7 @@
    "peakRet": 0,
    "troughRet": -0.2213,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "HxQhDGYqyjorgogMJx7YbBHADEDxuHhLnMMmr6VYpyn": {
@@ -3814,7 +3814,7 @@
    "peakRet": 0.2301,
    "troughRet": 0,
    "peakH": 27,
-   "samples": 5
+   "samples": 6
   }
  },
  "52ZzDVDPk8S4T1rfKNWSvtDnzhLN8omMK1xLCBBWpump": {
@@ -3860,7 +3860,7 @@
    "peakRet": 0,
    "troughRet": -0.9906,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "7fDdLy2rmQKsPCkqUXEd1mN7yDfEzArc4VrctWmfkJBK": {
@@ -3904,9 +3904,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1918,
+   "troughRet": -0.2074,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "GPzpoXpD74E2C4CJNayuoyBqPQJEsPtdse3nhntrpump": {
@@ -3950,9 +3950,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.4903,
+   "troughRet": -0.5595,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "94Sm8joZMSRzpQmcNVn5zZpgnRLN2DBesJYDXwuNpump": {
@@ -3996,9 +3996,9 @@
   },
   "p": {
    "peakRet": 0.078,
-   "troughRet": -0.0905,
+   "troughRet": -0.1403,
    "peakH": 19.2,
-   "samples": 5
+   "samples": 6
   }
  },
  "Tqj8yFmagrg7oorpQkVGYR52r96RFTamvWfth9bpump": {
@@ -4044,7 +4044,7 @@
    "peakRet": 0,
    "troughRet": -0.1311,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "DMUzXdincSucnKTMLtVFBCBcAwuNehoqyrmbYi5hpump": {
@@ -4088,9 +4088,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.6505,
+   "troughRet": -0.7042,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "7V4vYUApSWg1CWBHSxaEWZ8irJAU4q8pPmpZS3mJpump": {
@@ -4136,7 +4136,7 @@
    "peakRet": 0,
    "troughRet": -0.3491,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "J8PSdNP3QewKq2Z1JJJFDMaqF7KcaiJhR7gbr5KZpump": {
@@ -4182,7 +4182,7 @@
    "peakRet": 0,
    "troughRet": -0.1033,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6ybRJGfWpArsP5bWDmUcrqakiSeUR8P581C8H9CUpump": {
@@ -4226,9 +4226,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9494,
+   "troughRet": -0.9595,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "GCr352ouzNZkNQd3KZqs6jFuQb8LiYnWsEJSUpSfpump": {
@@ -4274,7 +4274,7 @@
    "peakRet": 0.317,
    "troughRet": -0.1733,
    "peakH": 18.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "Hos282xmdMJHwMjhni91fNqdjDsgWjgSckxuGc1Bpump": {
@@ -4320,7 +4320,7 @@
    "peakRet": 0,
    "troughRet": -0.5905,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "HgBRWfYxEfvPhtqkaeymCQtHCrKE46qQ43pKe8HCpump": {
@@ -4363,10 +4363,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0029,
+   "peakRet": 0.0713,
    "troughRet": -0.077,
-   "peakH": 25.2,
-   "samples": 5
+   "peakH": 30.4,
+   "samples": 6
   }
  },
  "x95HN3DWvbfCBtTjGm587z8suK3ec6cwQwgZNLbWKyp": {
@@ -4409,10 +4409,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0646,
+   "peakRet": 0.163,
    "troughRet": -0.0183,
-   "peakH": 22.5,
-   "samples": 5
+   "peakH": 30.4,
+   "samples": 6
   }
  },
  "HiY4qx8j5QuVh5UFnKyFq1DvzzDNgFkgyyhEeDXhpump": {
@@ -4458,7 +4458,7 @@
    "peakRet": 0.3171,
    "troughRet": 0,
    "peakH": 25.2,
-   "samples": 5
+   "samples": 6
   }
  },
  "5mH155ePpNWJb2GktpftLJbcTvoxFaUrv7XkZPDtpump": {
@@ -4501,10 +4501,10 @@
    }
   },
   "p": {
-   "peakRet": 0.4685,
+   "peakRet": 0.5497,
    "troughRet": 0,
-   "peakH": 18.3,
-   "samples": 5
+   "peakH": 30.4,
+   "samples": 6
   }
  },
  "8x5VqbHA8D7NkD52uNuS5nnt3PwA8pLD34ymskeSo2Wn": {
@@ -4547,10 +4547,10 @@
    }
   },
   "p": {
-   "peakRet": 0.0075,
+   "peakRet": 0.012,
    "troughRet": -0.0108,
-   "peakH": 25.2,
-   "samples": 5
+   "peakH": 30.4,
+   "samples": 6
   }
  },
  "CcLd8HTAKLWtQHatqPwBQjtuCA72FNB9E1ckRTEzpump": {
@@ -4596,7 +4596,7 @@
    "peakRet": 0.1391,
    "troughRet": 0,
    "peakH": 17.5,
-   "samples": 5
+   "samples": 6
   }
  },
  "y1AZt42vceCmStjW4zetK3VoNarC1VxJ5iDjpiupump": {
@@ -4639,10 +4639,10 @@
    }
   },
   "p": {
-   "peakRet": 0,
+   "peakRet": 0.0254,
    "troughRet": -0.1207,
-   "peakH": 0,
-   "samples": 5
+   "peakH": 30.4,
+   "samples": 6
   }
  },
  "9Pfync3ejPC9eHqVzq3nYQJAhyhjqpnB9UsaSfLxpump": {
@@ -4688,7 +4688,7 @@
    "peakRet": 0.3238,
    "troughRet": 0,
    "peakH": 18.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "98sMhvDwXj1RQi5c5Mndm3vPe9cBqPrbLaufMXFNMh5g": {
@@ -4734,7 +4734,7 @@
    "peakRet": 0.0044,
    "troughRet": -0.0069,
    "peakH": 25.2,
-   "samples": 5
+   "samples": 6
   }
  },
  "DXXcq4tY5e4PbXybyBMnxZjHVmzv1GVrAXoW5TcC5kbu": {
@@ -4778,9 +4778,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1823,
+   "troughRet": -0.3532,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R": {
@@ -4826,7 +4826,7 @@
    "peakRet": 0,
    "troughRet": -0.0606,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "GfjJ5MLzVcXtkrB4A5pV3G1nd4dMNekgPzvc7Fujpump": {
@@ -4870,9 +4870,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.676,
+   "troughRet": -0.8125,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "DLhzqAWwE2YkPLdYvvWNMZ71vxZJQD2FByMfWFHppump": {
@@ -4916,9 +4916,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.1547,
+   "troughRet": -0.3479,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "EVpszSRyQok4M6Fo5wTdC58WBJpx65y5VZGmmjm4pump": {
@@ -4962,9 +4962,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9542,
+   "troughRet": -0.9622,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "FZqdw6oSDCbHtKYxmhnfbi97SnyVy8jaYpdCoMrrjKa2": {
@@ -5010,7 +5010,7 @@
    "peakRet": 5.4317,
    "troughRet": 0,
    "peakH": 17.3,
-   "samples": 5
+   "samples": 6
   }
  },
  "46vV3ZpFNLZn1CDRYnAvqPsdW5ejEYn9GK9kPcZFpump": {
@@ -5056,7 +5056,7 @@
    "peakRet": 0,
    "troughRet": -0.2652,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "49nkLrXi8nCZBVKsShDNasEtPe4Vn1mx9Xbr3kTa8pTL": {
@@ -5102,7 +5102,7 @@
    "peakRet": 0.8243,
    "troughRet": -0.2172,
    "peakH": 21.5,
-   "samples": 5
+   "samples": 6
   }
  },
  "7MQSupJTpY31HGChEHUAsS1pQhLSrHS5CCsB9bnaN3eS": {
@@ -5148,7 +5148,7 @@
    "peakRet": 0,
    "troughRet": -0.3696,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "CxThkADKK4DDYqB8GBPaEAgRBzwxyPyUhFcBUmiAzN6N": {
@@ -5182,13 +5182,19 @@
     "liqUsd": 24294.07,
     "elapsedH": 4.1,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.3931,
+    "liqUsd": 24384.42,
+    "elapsedH": 28.4,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
    "troughRet": -0.4783,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "ukHH6c7mMyiWCf1b9pnWe25TSpkDDt3H5pQZgZ74J82": {
@@ -5222,13 +5228,19 @@
     "liqUsd": 16476151.11,
     "elapsedH": 4.1,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.041,
+    "liqUsd": 16626432.69,
+    "elapsedH": 28.4,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
    "troughRet": -0.0624,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "6xbZRQ1New1bHvVjk9GwY2JFNCZwd4HuVGWGgwjEpump": {
@@ -5262,13 +5274,19 @@
     "liqUsd": 33555.75,
     "elapsedH": 4.4,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.6594,
+    "liqUsd": 19924.9,
+    "elapsedH": 27.4,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.6293,
+   "troughRet": -0.6594,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "AY6dVdZ7DQUGnh3BBhpoXmTvaRGQgsppKkPkfucppump": {
@@ -5302,13 +5320,19 @@
     "liqUsd": 36153.45,
     "elapsedH": 4.5,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.8039,
+    "liqUsd": 52830.92,
+    "elapsedH": 25.8,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
    "troughRet": -0.9809,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2sLKA6PzFVjeTUaiKBCkDbDiS8MuoZAeXxZMgs9Apump": {
@@ -5342,13 +5366,19 @@
     "liqUsd": 28632.53,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.9415,
+    "liqUsd": 15868.16,
+    "elapsedH": 24.4,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
    "troughRet": -0.9422,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "4kqEkiDmkkyQWayzQB5B3dUP6whgAL3becLH5jexpump": {
@@ -5382,13 +5412,19 @@
     "liqUsd": 30078.65,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.8327,
+    "liqUsd": 14294.08,
+    "elapsedH": 24.4,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7057,
+   "troughRet": -0.8327,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "BbF6bnegMqFfEA9yuwBeDWgoWPnL82rtQRiBLUKApump": {
@@ -5422,13 +5458,19 @@
     "liqUsd": null,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.9673,
+    "liqUsd": 5806.31,
+    "elapsedH": 24.3,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7944,
+   "troughRet": -0.9673,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "G1iBvjhZ9wpGUZdQcvhRSqjow3x6xetsnmEBBMm1pump": {
@@ -5462,13 +5504,19 @@
     "liqUsd": 56499.49,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.3315,
+    "liqUsd": 46771.76,
+    "elapsedH": 24.3,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.3219,
+   "troughRet": -0.3315,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Fe58Mj6xJq2p5Aiu6VbaMdQivAwoeionX4VtuYzRyhya": {
@@ -5502,13 +5550,19 @@
     "liqUsd": null,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.6019,
+    "liqUsd": 0.01,
+    "elapsedH": 24.3,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 5.1921,
    "troughRet": -1,
    "peakH": 16.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "61V8vBaqAGMpgDQi4JcAwo1dmBGHsyhzodcPqnEVpump": {
@@ -5542,13 +5596,19 @@
     "liqUsd": 4482096.01,
     "elapsedH": 4.2,
     "dead": false
+   },
+   "d1": {
+    "ret": -0.0365,
+    "liqUsd": 4510307.35,
+    "elapsedH": 24.3,
+    "dead": false
    }
   },
   "p": {
    "peakRet": 0,
    "troughRet": -0.0527,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "547tWxWhym8U7Y7DvhGJktpkcs5eHeywvSYnhwvdpump": {
@@ -5586,9 +5646,9 @@
   },
   "p": {
    "peakRet": 0.4736,
-   "troughRet": -0.6732,
+   "troughRet": -0.8574,
    "peakH": 10.1,
-   "samples": 5
+   "samples": 6
   }
  },
  "4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz": {
@@ -5628,7 +5688,7 @@
    "peakRet": 0,
    "troughRet": -0.605,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "kwmFrypdhdGvcGduaBWwMwPy5qa3v6TTkX7VJc7pump": {
@@ -5668,7 +5728,7 @@
    "peakRet": 0,
    "troughRet": -0.9984,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2wMTr4ZttVr5tmS4wLStee59wi8f9QQfMtT2Hoispump": {
@@ -5708,7 +5768,7 @@
    "peakRet": 0.3484,
    "troughRet": -0.1228,
    "peakH": 8.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "FPfi9q1AixdUeWQVPFHJMJQ7a43S78dm6UZ4fzN4pump": {
@@ -5748,7 +5808,7 @@
    "peakRet": 0,
    "troughRet": -0.1806,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "DaPayqzdCXcrmvgz9Wx7MySipXxcSofGPtkMgVdqpump": {
@@ -5788,7 +5848,7 @@
    "peakRet": 0,
    "troughRet": -0.4884,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "Ce2gx9KGXJ6C9Mp5b5x1sn9Mg87JwEbrQby4Zqo3pump": {
@@ -5825,10 +5885,10 @@
    }
   },
   "p": {
-   "peakRet": 0.1426,
+   "peakRet": 0.1993,
    "troughRet": 0,
-   "peakH": 8.5,
-   "samples": 5
+   "peakH": 19.1,
+   "samples": 6
   }
  },
  "3N5imznFARN7MYo5cpv8mMCfPwsC769S9sYMbrcUpump": {
@@ -5866,9 +5926,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7811,
+   "troughRet": -0.9788,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "pepo1CFNU2RXf7yXX7HNXazXwxsq8WrPvDHpHriwoLY": {
@@ -5908,7 +5968,7 @@
    "peakRet": 0,
    "troughRet": -0.4319,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2WbTSrJHr1hNCtmYBjuSetZNdsZWZ2eZTuK9GjNPpump": {
@@ -5946,9 +6006,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.9845,
+   "troughRet": -0.9876,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "CvjSaRcTmcrfutekYzrBEEdTWx1RmRTWDToqtXmCpump": {
@@ -5986,9 +6046,9 @@
   },
   "p": {
    "peakRet": 0.2001,
-   "troughRet": -0.0909,
+   "troughRet": -0.41,
    "peakH": 3.4,
-   "samples": 5
+   "samples": 6
   }
  },
  "FzJ1Cm4kwEjiPmfna8WXWwjC7i41KnB9oi9wz3nHpump": {
@@ -6028,7 +6088,7 @@
    "peakRet": 0,
    "troughRet": -0.9892,
    "peakH": 0,
-   "samples": 5
+   "samples": 6
   }
  },
  "2c1KjiyQow66QfsnCtoyuqfo3AuxgpBMEoAq5oiiXqdu": {
@@ -6068,7 +6128,7 @@
    "peakRet": 0.7287,
    "troughRet": 0,
    "peakH": 7.5,
-   "samples": 5
+   "samples": 6
   }
  },
  "5ncPV6YVUXxuK9NVphwC7UkLd1gQZuGhdfEaDNxUpump": {
@@ -6106,9 +6166,9 @@
   },
   "p": {
    "peakRet": 0.5014,
-   "troughRet": -0.1024,
+   "troughRet": -0.2232,
    "peakH": 4.8,
-   "samples": 5
+   "samples": 6
   }
  },
  "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs": {
@@ -6148,7 +6208,7 @@
    "peakRet": 0.0122,
    "troughRet": -0.0076,
    "peakH": 10.1,
-   "samples": 5
+   "samples": 6
   }
  },
  "CcgRSw62atZK9EEAQVGyTcsshgtGJxtLHK2ZGwZ7pump": {
@@ -6186,7 +6246,7 @@
    "peakRet": 0.1654,
    "troughRet": -0.4284,
    "peakH": 1.9,
-   "samples": 5
+   "samples": 6
   }
  },
  "EBnA9HbJkhRTP1n1ZCkZzNCGjLssRWTetBFL9nzPpump": {
@@ -6224,9 +6284,9 @@
   },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.7295,
+   "troughRet": -0.7976,
    "peakH": 0,
-   "samples": 3
+   "samples": 4
   }
  },
  "7KkXNCoJA1uNVahThhuFsBqVqtwm7BsCvWRyrtvUpump": {
@@ -6266,7 +6326,7 @@
    "peakRet": 0,
    "troughRet": -0.8756,
    "peakH": 0,
-   "samples": 2
+   "samples": 3
   }
  },
  "CsVBNQijeDY28yG4GLkeGE5p3Nic1BPv5M4mX6wTpump": {
@@ -6306,7 +6366,7 @@
    "peakRet": 0,
    "troughRet": -0.9881,
    "peakH": 0,
-   "samples": 2
+   "samples": 3
   }
  },
  "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump": {
@@ -6343,10 +6403,10 @@
    }
   },
   "p": {
-   "peakRet": 0.1181,
+   "peakRet": 0.1832,
    "troughRet": 0,
-   "peakH": 5.3,
-   "samples": 2
+   "peakH": 10.6,
+   "samples": 3
   }
  },
  "SZibz132Qazsm6N65CJTSt3drq8dTjDGraTA6pEQPL9": {
@@ -6386,7 +6446,7 @@
    "peakRet": 0,
    "troughRet": -1,
    "peakH": 0,
-   "samples": 2
+   "samples": 3
   }
  },
  "chW54CyEagZq9YveNV3sKNFwbe7wp1Tebc7HmZipump": {
@@ -6414,12 +6474,17 @@
    "failReason": "liquidity $37.6k (< $50.0k) — slippage will eat a $10 position",
    "score": null
   },
-  "o": {},
+  "o": {
+   "h4": {
+    "missed": true,
+    "elapsedH": 7.9
+   }
+  },
   "p": {
    "peakRet": 0,
-   "troughRet": -0.5105,
+   "troughRet": -0.6229,
    "peakH": 0,
-   "samples": 1
+   "samples": 2
   }
  },
  "9sfCHMLWSVy6MD6zr7pR1gD3qbT7C6K1E3dMf2ZBpump": {
@@ -6447,12 +6512,17 @@
    "failReason": "bundled/insider wallets hold 26.3% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {},
+  "o": {
+   "h4": {
+    "missed": true,
+    "elapsedH": 7.9
+   }
+  },
   "p": {
    "peakRet": 0.0286,
-   "troughRet": 0,
+   "troughRet": -0.0897,
    "peakH": 2.6,
-   "samples": 1
+   "samples": 2
   }
  },
  "3vSD9xyKCfRBpP3uDEUJaPyWGNWZDFkv4C4qHbjLpump": {
@@ -6480,7 +6550,20 @@
    "failReason": "bundled/insider wallets hold 41.9% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8519,
+    "liqUsd": 48753.19,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.8519,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "EiH6bmhNPBzqaCCx5sawA4aRB9Mz5e3bW4FHo2aKwiYG": {
   "symbol": "MUFFIN",
@@ -6507,7 +6590,20 @@
    "failReason": "top-10 holders own 73.0% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.7427,
+    "liqUsd": 66707.54,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.7427,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "BsQF48AptZgLsCJXccUZhhimdH4UL8tEJa3eb9xdjGTA": {
   "symbol": "GTAVI",
@@ -6534,7 +6630,20 @@
    "failReason": "bundled/insider wallets hold 105.5% (> 25%) — coordinated dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.1118,
+    "liqUsd": 126711.51,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.1118,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump": {
   "symbol": "GATO",
@@ -6561,7 +6670,20 @@
    "failReason": "top-10 holders own 35.0% (> 30%) — dump risk",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.1961,
+    "liqUsd": 104385.51,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0.1961,
+   "troughRet": 0,
+   "peakH": 5.2,
+   "samples": 1
+  }
  },
  "FWuSmM21ZdwtVw6swS7GMQrAUrPKHP6BaesJyda3pump": {
   "symbol": "LEEK",
@@ -6588,7 +6710,20 @@
    "failReason": "liquidity $47.3k (< $50.0k) — slippage will eat a $10 position",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.574,
+    "liqUsd": 31465.43,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.574,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "HmiYC7GJkieX77Ad8FbfzvKZLV8mUPFErT4iihjApump": {
   "symbol": "DOGGYSTYLE",
@@ -6615,7 +6750,20 @@
    "failReason": null,
    "score": 26
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.3719,
+    "liqUsd": 53388.69,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.3719,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "2f2vJQzG1TXCDJ45r8ALGYXvBkQSsow1X4XPUL21pump": {
   "symbol": "ASTRO",
@@ -6642,7 +6790,20 @@
    "failReason": null,
    "score": 89
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.5689,
+    "liqUsd": 77277.18,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0.5689,
+   "troughRet": 0,
+   "peakH": 5.2,
+   "samples": 1
+  }
  },
  "FR3fLGui4CNGWX6f544aFuDnAykAhi65K5GD11YMpump": {
   "symbol": "Quake",
@@ -6669,7 +6830,20 @@
    "failReason": "liquidity $46.3k (< $50.0k) — slippage will eat a $10 position",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": -0.8493,
+    "liqUsd": null,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.8493,
+   "peakH": 0,
+   "samples": 1
+  }
  },
  "KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS": {
   "symbol": "KMNO",
@@ -6696,7 +6870,20 @@
    "failReason": "LP locked only 0% (< 80%) — rug pull possible",
    "score": null
   },
-  "o": {}
+  "o": {
+   "h4": {
+    "ret": 0.0679,
+    "liqUsd": 1566501.29,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0.0679,
+   "troughRet": 0,
+   "peakH": 5.2,
+   "samples": 1
+  }
  },
  "VJdpSDDLof7HuZiNmsRUSL4YCncsk1FGiVoHyAJpump": {
   "symbol": "BREAKING",
@@ -6722,6 +6909,100 @@
    "pass": true,
    "failReason": null,
    "score": 93
+  },
+  "o": {
+   "h4": {
+    "ret": -0.5027,
+    "liqUsd": 380503.23,
+    "elapsedH": 5.2,
+    "dead": false
+   }
+  },
+  "p": {
+   "peakRet": 0,
+   "troughRet": -0.5027,
+   "peakH": 0,
+   "samples": 1
+  }
+ },
+ "CTPoyCwkjMvoJwU4xvZZqoD8tiYk6yDchySiN5gGpump": {
+  "symbol": "fone",
+  "firstSeenAt": "2026-08-27T02:49:12.870Z",
+  "f": {
+   "priceUsd": 0.003072,
+   "liqUsd": 189906.43,
+   "vol24h": 12721925.4,
+   "vol1h": 1863419.16,
+   "buys1h": 8426,
+   "sells1h": 8301,
+   "chg1h": 233,
+   "chg6h": 7351,
+   "chg24h": 7351,
+   "ageHours": 2.8,
+   "fdv": 3042098,
+   "top10Pct": 12.5,
+   "insiderPct": 3.3,
+   "devPct": 0,
+   "totalHolders": 14423,
+   "lpLockedPct": 100,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 55
+  },
+  "o": {}
+ },
+ "KENJSUYLASHUMfHyy5o4Hp2FdNqZg1AsUPhfH2kYvEP": {
+  "symbol": "GRIFFAIN",
+  "firstSeenAt": "2026-08-27T02:49:56.191Z",
+  "f": {
+   "priceUsd": 0.01199,
+   "liqUsd": 1652995.75,
+   "vol24h": 187828.63,
+   "vol1h": 939.97,
+   "buys1h": 23,
+   "sells1h": 23,
+   "chg1h": -0.4,
+   "chg6h": 2.14,
+   "chg24h": 0.7,
+   "ageHours": 15890.4,
+   "fdv": 11992370,
+   "top10Pct": 47.3,
+   "insiderPct": 6.6,
+   "devPct": 0,
+   "totalHolders": 178688,
+   "lpLockedPct": 98.3399999999816,
+   "launchpad": "unknown",
+   "pass": false,
+   "failReason": "top-10 holders own 47.3% (> 30%) — dump risk",
+   "score": null
+  },
+  "o": {}
+ },
+ "5zCETicUCJqJ5Z3wbfFPZqtSpHPYqnggs1wX7ZRpump": {
+  "symbol": "SPARK",
+  "firstSeenAt": "2026-08-27T02:50:10.403Z",
+  "f": {
+   "priceUsd": 0.0001837,
+   "liqUsd": 112248.87,
+   "vol24h": 246741.43,
+   "vol1h": 769.9,
+   "buys1h": 7,
+   "sells1h": 13,
+   "chg1h": 1.58,
+   "chg6h": 3.59,
+   "chg24h": 55.92,
+   "ageHours": 9282.9,
+   "fdv": 183710,
+   "top10Pct": 15.3,
+   "insiderPct": 0.2,
+   "devPct": 0,
+   "totalHolders": 50151,
+   "lpLockedPct": 99.99727295479363,
+   "launchpad": "Pump.Fun",
+   "pass": true,
+   "failReason": null,
+   "score": 99
   },
   "o": {}
  }
