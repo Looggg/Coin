@@ -307,6 +307,15 @@ async function buildSnapshot(mint) {
     chg1h: pair.priceChange?.h1 ?? null,
     chg6h: pair.priceChange?.h6 ?? null,
     chg24h: pair.priceChange?.h24 ?? null,
+    // 5m attention — separates "arriving right now" from vol24h/chg24h left
+    // over from a move that already ended, the known weakness of those as a
+    // pump signal
+    chg5m: pair.priceChange?.m5 ?? null,
+    vol5m: pair.volume?.m5 ?? null,
+    buys5m: pair.txns?.m5?.buys ?? null,
+    sells5m: pair.txns?.m5?.sells ?? null,
+    // creator wallet — enables repeat-dev history offline as the dataset grows
+    creator: rug?.creator ?? null,
     fdv: pair.fdv ?? null,
     ageHours: pair.pairCreatedAt ? hoursSince(pair.pairCreatedAt) : null,
     top10Pct,
@@ -838,6 +847,15 @@ function trackFeatures(s, verdict, score) {
     chg1h: s.chg1h,
     chg6h: s.chg6h,
     chg24h: s.chg24h,
+    // 5m attention path — see buildSnapshot comment; a pump learner needs
+    // "arriving right now" separated from stale 24h volume
+    chg5m: s.chg5m,
+    vol5m: s.vol5m,
+    buys5m: s.buys5m,
+    sells5m: s.sells5m,
+    creator: s.creator,
+    // cheapest possible market-regime control (SOL up/down days affect all memecoins)
+    solPriceUsd: s.solPriceUsd != null ? +s.solPriceUsd.toFixed(2) : null,
     ageHours: s.ageHours != null ? +s.ageHours.toFixed(1) : null,
     fdv: s.fdv,
     top10Pct: s.top10Pct != null ? +s.top10Pct.toFixed(1) : null,
@@ -944,6 +962,24 @@ async function cmdTrack() {
         if (ret < r.p.troughRet) {
           r.p.troughRet = +ret.toFixed(4);
           r.p.troughH = +elapsedH.toFixed(1);
+        }
+
+        // attention path — volume and order flow over time, sampled once per
+        // cron pass. a pump is a change in attention, not just price; a single
+        // discovery snapshot can't express that, but the batch response already
+        // carries these fields every poll, so keeping them costs nothing.
+        // capped at 100 samples (a row lives ~72 hourly polls to d3) purely as
+        // a safety net against a row that somehow never finishes and archives.
+        r.s = r.s || [];
+        if (r.s.length < 100) {
+          r.s.push({
+            h: +elapsedH.toFixed(1),
+            ret: +ret.toFixed(4),
+            liq: pair.liquidity?.usd != null ? Math.round(pair.liquidity.usd) : null,
+            v1: pair.volume?.h1 != null ? Math.round(pair.volume.h1) : null,
+            b1: pair.txns?.h1?.buys ?? null,
+            s1: pair.txns?.h1?.sells ?? null,
+          });
         }
       }
 
