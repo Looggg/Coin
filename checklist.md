@@ -7,23 +7,25 @@
 | Mint authority | ยัง active | dev พิมพ์เหรียญเพิ่มได้ไม่จำกัด |
 | Freeze authority | ยัง active | dev freeze wallet เราได้ ขายไม่ออก |
 | LP locked | < 80% | dev ถอนสภาพคล่องหนี = rug |
-| Liquidity | < $30k | slippage กิน position $10 |
+| Liquidity | < $50k | slippage กิน position $10 (ขยับจาก 30k 2026-08-26) |
 | Top-10 holders | > 30% | dump ทีเดียวราคาพัง |
 | Honeypot pattern | buy เยอะแต่ sell = 0 | ซื้อได้ขายไม่ได้ |
+| **อายุ pool** | < 48h | โซนนี้ rug 6/13 เทียบ 0/42 ของตัวที่แก่กว่า (2026-08-27) |
 | Rugcheck danger risks | มี | ตาม rugcheck.xyz |
 | **Dev wallet** | ถือ > 5% | dev คนเดียวตัดสินใจ dump ได้ |
 | **Bundle/insider** | wallet ที่ fund จากแหล่งเดียวกันถือ > 25% | dev กระจาย wallet หลบการตรวจ |
 | **Holders** | < 100 คน | ไม่มี distribution จริง |
 | **Rugged flag** | rugcheck ตีตราว่า rug แล้ว | จบ ไม่ต้องดูต่อ |
 
-WARN (ไม่ตัดทิ้งแต่ต้องรู้): อายุ < 24h, vol/liq > 10x (wash), ข้อมูล LP/holder หาไม่ได้
+WARN (ไม่ตัดทิ้งแต่ต้องรู้): vol/liq > 10x (wash), ข้อมูล LP/holder หาไม่ได้
 
 **ข้อจำกัดที่ต้องรู้:** เหรียญใหญ่ (WIF, BONK) จะ FAIL top-10 เพราะ holder ใหญ่คือ CEX wallet — rule นี้ออกแบบมาสำหรับเหรียญใหม่ที่เราเล่นจริง
 
 ## Score (จัดลำดับว่าดูตัวไหนก่อน)
 
 `scan` ให้คะแนน 0-100 กับตัวที่ PASS แล้ว — **ไม่ใช่สัญญาณซื้อ** แค่บอกว่าควรเสียเวลาดูตัวไหนก่อน
-หักคะแนนจาก: vol/liq ratio (wash), insider %, dev %, top10 %, อายุน้อย, liquidity ตื้น, rugScore
+หักคะแนนจาก: vol/liq ratio (wash), insider %, dev %, top10 %, liquidity ตื้น, rugScore
+(ไม่มีเทอมอายุแล้ว — อายุกลายเป็น hard FAIL ตัวที่ score ได้จึงผ่าน floor มาแล้วเสมอ)
 คะแนนสูง = red flag อ่อนน้อย ไม่ได้แปลว่าจะขึ้น
 
 ## ต้องดูเองด้วยมือ (script ยังไม่ทำ)
