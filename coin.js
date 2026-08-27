@@ -1018,6 +1018,14 @@ async function cmdTrack() {
             v1: pair.volume?.h1 != null ? Math.round(pair.volume.h1) : null,
             b1: pair.txns?.h1?.buys ?? null,
             s1: pair.txns?.h1?.sells ?? null,
+            // the 5m fields matter more than the 1h ones here: sampling is
+            // hourly, so h1 aggregates blur an attention burst across the
+            // whole hour, and a burst is the thing an early pump signature
+            // would look like. same response, no extra call.
+            c5: pair.priceChange?.m5 ?? null,
+            v5: pair.volume?.m5 != null ? Math.round(pair.volume.m5) : null,
+            b5: pair.txns?.m5?.buys ?? null,
+            s5: pair.txns?.m5?.sells ?? null,
           });
         }
       }
@@ -1075,20 +1083,31 @@ function cmdPatterns(bucketArg) {
       const rets = rowsInGroup.map((r) => r.o[horizon].ret);
       const twoX = rets.filter((x) => x >= 1).length;
       const dead = rets.filter((x) => x <= -0.9).length;
-      // pk2x/pk50: did the token ever TOUCH 2x / 1.5x, not what it read at
-      // this fixed horizon. peakRet is a lower bound (sampled hourly, see
-      // ~line 926), so these percentages undercount and must never be read
-      // as exact — only require >=3 samples so a single lucky poll doesn't
-      // masquerade as a real peak read.
+      // lifePk2x/lifePk50: did the token ever TOUCH 2x / 1.5x at ANY point in
+      // its tracked life. These are deliberately NOT horizon-scoped, and the
+      // name says so — an earlier draft called them pk2x/pk50 and printed them
+      // under an "outcome @ d1" heading, which read as "peaked within 24h"
+      // when in fact every one of the 19 rows then counted peaked after h4 and
+      // 11 of them after h24.
+      //
+      // Two distinct errors live in these columns; both understate nothing and
+      // overstate variably, so never quote them as exact:
+      //   1. sampling rate — one poll per cron pass, so an intra-poll spike is
+      //      invisible and peakRet is a lower bound (see the sampler comment).
+      //   2. observation window — peak sampling shipped 2026-08-26, so an
+      //      older row's peak is only known over the slice of its life that
+      //      was actually watched. A cell holding longer-observed rows gets a
+      //      higher lifePk for free. Compare cells only at d3, where the
+      //      windows are closest, exactly as the path section below does.
       const withPath = rowsInGroup.filter((r) => r.p && r.p.samples >= 3);
-      const pk2x = withPath.length
+      const lifePk2x = withPath.length
         ? `${Math.round((withPath.filter((r) => r.p.peakRet >= 1).length / withPath.length) * 100)}`.padStart(3) + "%"
         : "  -";
-      const pk50 = withPath.length
+      const lifePk50 = withPath.length
         ? `${Math.round((withPath.filter((r) => r.p.peakRet >= 0.5).length / withPath.length) * 100)}`.padStart(3) + "%"
         : "  -";
       console.log(
-        `  ${g.padEnd(18)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  pk2x ${pk2x}  pk50 ${pk50} (path n=${withPath.length})`
+        `  ${g.padEnd(18)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  lifePk2x ${lifePk2x}  lifePk50 ${lifePk50} (path n=${withPath.length})`
       );
     }
     console.log("");
@@ -1133,12 +1152,24 @@ function cmdPatterns(bucketArg) {
   // whether the insider/top10 rules are too strict for THIS track specifically
   // — argued from this data, as its own RULES change, not decided here.
   //
-  // primary decision metric for this track is pk2x — the pre-registered
-  // kill criterion is peak-2x, not the fixed-horizon return. pk50 is
-  // pre-registered NOW, before anyone peeks at accumulating data, as the
-  // secondary metric: at roughly 8%-vs-0% base rates a 20-30 token sample
-  // yields about 2 hits vs 0, and pk2x alone can't separate that from noise
-  // (Fisher exact p is roughly 0.1 at 2-vs-0).
+  // The decision metric for this track is peak-2x (lifePk2x), read at d3 —
+  // the pre-registered kill criterion, not the fixed-horizon return.
+  //
+  // CORRECTION 2026-08-28: an earlier draft of this comment claimed Fisher
+  // exact p is "roughly 0.1 at 2-vs-0" for a 20-30 token sample and used that
+  // to add lifePk50 as a co-primary. Both halves were wrong. Computed exactly,
+  // 2-vs-0 two-tailed is p = 0.487 at 20-vs-20, 0.490 at 25-vs-25, 0.492 at
+  // 30-vs-30. (0.091 is the 13-vs-29 shape the cells happen to have today,
+  // not the checkpoint's.) The honest reading is that the 20-30 token
+  // checkpoint is UNDERPOWERED, not that a second metric fixes it — and a
+  // second metric that can independently declare success only raises the
+  // false-positive rate of the kill test.
+  //
+  // So: lifePk50 is descriptive context, NOT a success criterion. A gate that
+  // fails on lifePk2x is not rescued by lifePk50. If the checkpoint arrives
+  // underpowered, the correct outcome is "inconclusive, keep collecting" or
+  // "kill it for lack of evidence" — decided by the owner, not by reaching
+  // for whichever number happens to look better.
   table("momentum gate", (f) => {
     if (f.liqUsd == null || f.vol24h == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
     if (!(f.liqUsd >= RULES.minLiquidityUsd && f.ageHours >= RULES.minAgeHours)) return "below floors";
