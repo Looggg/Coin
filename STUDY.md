@@ -37,7 +37,7 @@ Polycat score 62 (vol/liq 84x), CVXV666 score 73 (vol/liq 58x) — wash-trade wa
 ## คำถามที่ tracking dataset จะตอบ (สะสมอัตโนมัติทุกชั่วโมง)
 
 1. อายุตอนเจอช่วงไหน (`<6h` / `6-24h` / `1-3d`) ให้ median return ดีสุด?
-2. vol/liq สูง = สัญญาณพุ่ง หรือสัญญาณ rug กันแน่?
+2. vol/liq สูง = สัญญาณพุ่ง หรือสัญญาณ rug กันแน่? — **ยังไม่ปิด แต่ change #3 เดิมพันกับฝั่ง "สัญญาณพุ่ง" แบบ paper**
 3. token ที่ FAIL filter พุ่งบ่อยแค่ไหน (ค่าเสียโอกาสของ filter)?
 4. buy pressure 1h แรกทำนายอะไรได้ไหม?
 5. stop loss -50% ควรมีหรือไม่ควรมี? — **ตอบแล้ว 2026-08-27: เก็บไว้**
@@ -342,3 +342,97 @@ FAIL  age>=72h   n=52   EV +0.3%
 - **หนี้ reproducibility:** ตาราง EV ทั้งหมดในบันทึกนี้มาจาก script เฉพาะกิจที่ไม่ได้
   commit ไว้ `patterns` โชว์ median/rug/2x ได้แต่ไม่มี EV sim — ทิศทางตรวจซ้ำได้จาก
   `patterns d1` แต่ตัวเลข EV เป๊ะๆ ยังสร้างใหม่จากคำสั่งใน repo ไม่ได้
+
+---
+
+## 2026-08-27 — RULES change #3: momentum track (`momMinVolLiq: 5`)
+
+**นี่ไม่ใช่การจูน threshold แต่เป็นการขยาย thesis ของโปรเจค** เจ้าของบอกตรงๆ ว่า
+อยากได้เหรียญที่ *มีโอกาสพุ่ง* ไม่ใช่เหรียญที่ *ไม่ตายแต่ไม่โต* — และ data
+ยืนยันว่าที่ผ่านมาระบบให้อย่างหลังจริง
+
+### ทำไมของเดิมให้ตัวที่ไม่โต
+
+ทุกอย่างที่วัดได้จนถึงวันนี้เป็น downside ล้วน ไม่มีตัวแปรไหนแยก winner ออกมาได้:
+
+```
+PASS  age>=72h   EV -6.2%
+FAIL  age>=72h   EV +0.3%
+```
+
+15 ตัวที่ peak>=50% กระจายทั่วทุก bucket ทั้ง PASS ทั้ง FAIL score 59-95
+อายุ 2h ถึง 19,606h — safety score ไม่ได้ทำนายอะไรเลย
+
+และ alert gate เดิมกัน profile ที่พุ่งออกอย่างเป็นระบบ:
+- `washVolLiqRatio: 10` หักคะแนน vol/liq สูง → Sue score 67, Polycat 62
+- `alertMinScore: 80` เลยกรองพวกนี้ทิ้ง — **ตัวที่พุ่งไม่เคยถูกเตือนเลยสักตัว**
+- `alertMaxChg24h: 100` ตัด already-pumped ซึ่งเป็น 5 ใน 7 ของตัวที่ hit 2x
+
+### หลักฐาน
+
+feature เดียวที่แยกได้ในระดับบนสุด (n=145, win = `peakRet >= 1`):
+
+```
+vol/liq >= 5   n=66  hit2x 9%        vol/liq < 5   n=79  hit2x 1%
+```
+
+**แต่บน cut ที่ gate นี้ตัดจริง** (บังคับ safety PASS ด้วย ซึ่งบรรทัดบนไม่ได้บังคับ)
+n เล็กลงมากและ **ยังไม่รองรับ gate**:
+
+```
+MOMENTUM     n=13  peak-2x 1 (PANTS +271%)  d1 median -18.2%  rug 0%
+PASS, quiet  n=29  peak-2x 0                d1 median  -9.0%  rug 0%
+```
+
+**1 ใน 13 เทียบ 0 ใน 29 ไม่ใช่ผลลัพธ์** และบน d1 return ฝั่งที่เลือกยัง**แย่กว่า**
+เคสทั้งหมดยืนอยู่บน peak path (ซึ่งเป็นสิ่งที่ exit 2-5x ขายเข้าไปจริง) ของ token ตัวเดียว
+
+**ทำไมยัง ship ทั้งที่หลักฐานอ่อน:** safety track ไม่มีทางเก็บ forward sample ของ
+profile นี้ได้เอง — ไม่ปล่อยให้มันยิงก่อน ก็จะไม่มีข้อมูลมาเถียงกันตลอดไป
+ต้นทุนของการผิดคือ attention ไม่ใช่เงิน (paper only)
+
+### สิ่งที่แก้
+
+**ตัวแปรใหม่ตัวเดียว:** `momMinVolLiq: 5` — floor liq/อายุ, cooldown, freshness
+และ safety verdict ใช้ของเดิมทั้งหมด
+
+`momentumQualifies` เก็บ hard floor ครบ แล้ว **ทิ้ง** `alertMinScore` /
+`alertMaxInsiderPct` / `alertMaxFdv` / chg24h band — 4 ตัวที่กันตัวพุ่งออก
+**ไม่ใช่การผ่อน `alertQualifies`** เป็น gate คนละตัวที่วิ่งขนาน
+
+- dedup ใช้ `alerts-sent.json` ร่วมกัน (โทรศัพท์เครื่องเดียว mint เดียว = buzz เดียว)
+- ตัวที่ผ่านทั้งสอง gate รายงานครั้งเดียวใต้ safety (คำแนะนำเข้าซื้อ conservative กว่า)
+- `alert` exit 3 เมื่อ **ทั้งสอง** gate ว่างเท่านั้น
+- `patterns` เพิ่มตาราง `momentum gate` ที่ตัดตรงกับ gate เป๊ะ → **สิ่งที่ตัดสินชะตา
+  track นี้เป็นคำสั่งที่ commit ไว้แล้ว** ไม่ใช่ script นอก repo (เก็บหนี้
+  reproducibility ที่ค้างจาก change #2 ไปด้วยบางส่วน)
+
+### ไม่ชนกับ change #2
+
+winner ของ profile นี้เป็น **second-wave pump บน pool ที่ตั้งตัวแล้ว** ไม่ใช่ launch snipe:
+`PANTS` 131h (+271%), `Sue` 586h (+293%), `Zoe` 189h (+275%)
+→ age floor 48h ไม่ได้ตัดอะไรของ momentum track เลย
+
+เทียบสองฝั่งของ floor บน cut เดียวกัน (ยังไม่บังคับ PASS, n ใหญ่กว่า):
+```
+vl>=5 & liq>=50k & age>=48h   n=21  hit2x 10%  peak50 24%  rug  0%
+vl>=5 & liq>=50k & age<48h    n=18  hit2x 11%  peak50 17%  rug 33%
+```
+hit rate เท่ากัน แต่ฝั่งแก่กว่า rug 0% → เลือกฝั่งที่ไม่ต้องแลกกับ rug
+
+### เงื่อนไขฆ่าทิ้ง (เขียนไว้ใน CLAUDE.md ด้วย)
+
+**paper only** จนกว่าตาราง `momentum gate` ใน `node coin.js patterns d1` จะสะสม
+MOMENTUM ได้ 20-30 ตัว — ถ้าถึงตอนนั้น MOMENTUM ยังไม่ชนะ `PASS, quiet` บน peak-2x
+**ให้ลบ gate นี้ทิ้ง** ไม่ใช่จูน `momMinVolLiq` หนีไปเรื่อยๆ
+
+### ข้อจำกัด
+
+- 10% hit rate ไม่ได้แปลว่า EV บวก — ถ้าอีก 90% เฉลี่ย -20% ก็ยังขาดทุน
+  ยังไม่ได้รัน EV sim บน cut นี้เพราะ n=13 เล็กเกินกว่าจะมีความหมาย
+- `vol/liq` ยังเป็นคำถามเปิดข้อ 2 ที่ **ยังตอบไม่ได้** (ดูบันทึก change #2:
+  bucket 3-5x กับ 5-10x ให้ผลตรงข้ามกันที่ n=10 เท่ากัน) gate นี้ใช้เส้น 5x
+  ซึ่งอยู่ตรงรอยต่อนั้นพอดี — เป็นเหตุผลเพิ่มอีกข้อว่าทำไมต้อง paper ก่อน
+- momentum ยิง 6 ตัวในรอบแรก (จาก 29 candidates) — ถ้าดังเกินไปให้ขยับ
+  `momMinVolLiq` ขึ้น **หลังจาก**มี data ไม่ใช่เพราะรำคาญ
+- ทุกอย่างยัง paper: journal.json ยังว่าง d3 ยังว่าง
