@@ -52,6 +52,8 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           alert_failed=0
+          push_failed=0
+          action_needed=0
 
           commit_cycle() {
             rm -f alert-body.md # scratch, never commit it
@@ -60,7 +62,10 @@ jobs:
               echo "  no changes"
               return 0
             fi
-            git commit -q -m "auto: update + scan $(date -u +%FT%H:%M)"
+            if ! git commit -q -m "auto: update + scan $(date -u +%FT%H:%M)"; then
+              echo "::warning::git commit failed"
+              return 1
+            fi
             # a local push landing mid-run makes the rebase conflict; retry,
             # and never leave the runner stuck mid-rebase
             for i in 1 2 3; do
@@ -71,7 +76,16 @@ jobs:
               git rebase --abort 2>/dev/null || true
               sleep 5
             done
-            echo "::warning::cycle failed to push (likely a rebase conflict); retrying next cycle"
+            # A conflict against the owner's local push is deterministic, so
+            # replaying it next cycle fails identically — and each cycle would
+            # stack another unpushed commit onto the same conflict, wedging the
+            # run for its remaining hours and losing everything when the runner
+            # dies. Drop this cycle's commit and rejoin origin: the data is
+            # regenerable (the next track/update re-polls it), a wedged run is
+            # not. Flagged so the job still ends red, as it did before the loop.
+            echo "::warning::push failed 3x — resetting to origin/main and dropping this cycle"
+            push_failed=1
+            git fetch -q origin && git reset -q --hard origin/main
             return 1
           }
 
@@ -107,16 +121,32 @@ jobs:
             started=$(date +%s)
             echo "── cycle $cycle  $(date -u +%FT%H:%M:%SZ) ──"
 
-            # data collection first — a failure here must not block the commit
-            node coin.js track || echo "::warning::track failed"
-            node coin.js update || echo "::warning::update failed"
+            # data collection first — a failure here must not block the commit.
+            # timeout: getJson has no AbortSignal, so a merely *slow* upstream
+            # (undici waits ~300s per request, ~90 tokens per scan) could run a
+            # single cycle for hours; the loop only checks its deadline between
+            # cycles, so nothing else would stop it before the job is killed.
+            timeout 600 node coin.js track || echo "::warning::track failed"
+            timeout 600 node coin.js update || echo "::warning::update failed"
 
             if [ $(( (cycle - 1) % SCAN_EVERY )) -eq 0 ]; then
-              node coin.js scan || echo "::warning::scan failed"
+              timeout 900 node coin.js scan || echo "::warning::scan failed"
               run_alert
             fi
 
             commit_cycle || true
+
+            # Open positions hold real money; tracking rows do not. Checking
+            # them once per 5.5h while polling research data every 10 minutes
+            # is backwards, so watch runs every cycle. It exits non-zero only
+            # when a position needs a decision — surface that immediately by
+            # ending the run red (GitHub emails on a failed job) rather than
+            # sitting on it for hours. Collection resumes on the next run.
+            if ! node coin.js watch; then
+              echo "::error::an open position needs a decision — see the watch output above"
+              action_needed=1
+              break
+            fi
 
             # hold the cadence steady regardless of how long the cycle took, and
             # never start a cycle we cannot finish inside the run's budget
@@ -132,18 +162,19 @@ jobs:
             if [ "$nap" -gt 0 ]; then sleep "$nap"; fi
           done
 
-          # a notification path that silently fails forever is the failure the
-          # alert step exists to prevent, so surface it — but only after the
-          # loop has committed everything it collected
-          if [ "$alert_failed" = "1" ]; then
-            echo "::error::at least one alert cycle failed to notify"
-            exit 1
+          # Anything that must reach a human ends the job red, since a failed
+          # job is the only notification channel this workflow has. Reported
+          # only after the loop has committed everything it collected.
+          rc=0
+          if [ "$action_needed" = "1" ]; then
+            echo "::error::an open position needs a decision"; rc=1
           fi
-
-      # LAST on purpose: exits non-zero when a position needs action, so the
-      # job goes red and GitHub emails. An alert nobody is told about is not
-      # monitoring. always(): runs even if the loop above ended red, so a
-      # failed notification never hides an open position that needs a decision.
-      - name: watch open positions
-        if: always()
-        run: node coin.js watch
+          if [ "$alert_failed" = "1" ]; then
+            echo "::error::at least one alert cycle failed to notify"; rc=1
+          fi
+          # a run whose data never landed must go red, not silently vanish —
+          # the pre-loop workflow treated this as fatal and so does this one
+          if [ "$push_failed" = "1" ]; then
+            echo "::error::at least one cycle could not push its data"; rc=1
+          fi
+          exit $rc

@@ -853,7 +853,11 @@ function loadTracking() {
 
 function saveTracking(t) {
   const tmp = TRACKING_PATH + ".tmp";
-  fs.writeFileSync(tmp, JSON.stringify(t, null, 1));
+  // compact, not indent 1: the file is rewritten and committed every 10 minutes
+  // now, and raising the attention-sample cap to 450 multiplies the dominant
+  // term. Measured at ~93 B/sample indented vs ~57 B compact — a 39% cut on the
+  // part that grows. Nothing reads this by eye; `patterns` and `stats` do.
+  fs.writeFileSync(tmp, JSON.stringify(t));
   fs.renameSync(tmp, TRACKING_PATH);
 }
 
@@ -1007,10 +1011,14 @@ async function cmdTrack() {
         // cron pass. a pump is a change in attention, not just price; a single
         // discovery snapshot can't express that, but the batch response already
         // carries these fields every poll, so keeping them costs nothing.
-        // capped at 100 samples (a row lives ~72 hourly polls to d3) purely as
-        // a safety net against a row that somehow never finishes and archives.
+        // Capped purely as a safety net against a row that somehow never
+        // finishes and archives. The old cap of 100 assumed ~72 hourly polls
+        // to d3; the workflow now polls every 10 minutes, which fills 100 in
+        // 16.7h and would leave the d1->d3 window — where the stop-loss and
+        // take-profit questions actually live — with no attention samples.
+        // 6/h * 72h = 432, so 450 covers a full row with a little slack.
         r.s = r.s || [];
-        if (r.s.length < 100) {
+        if (r.s.length < 450) {
           r.s.push({
             h: +elapsedH.toFixed(1),
             ret: +ret.toFixed(4),
