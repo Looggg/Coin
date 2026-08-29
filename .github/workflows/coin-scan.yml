@@ -2,7 +2,9 @@ name: coin-scan
 
 on:
   schedule:
-    - cron: "0 * * * *" # hourly (UTC) — scheduled runs are best-effort, expect some skipped
+    # :37 not :00 — GitHub drops scheduled runs hardest at the top of the hour,
+    # which was costing 6-12h gaps and degrading tracking's peak/attention sampling
+    - cron: "37 * * * *" # hourly (UTC) — scheduled runs are best-effort, expect some skipped
   workflow_dispatch: {} # manual run button in the Actions tab
 
 permissions:
