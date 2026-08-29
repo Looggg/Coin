@@ -2,9 +2,11 @@ name: coin-scan
 
 on:
   schedule:
-    # :37 not :00 — GitHub drops scheduled runs hardest at the top of the hour,
-    # which was costing 6-12h gaps and degrading tracking's peak/attention sampling
-    - cron: "37 * * * *" # hourly (UTC) — scheduled runs are best-effort, expect some skipped
+    # GitHub throttles this repo's scheduled runs to ~2-3/day regardless of the
+    # minute (measured 2026-08-29: gaps of 5.2, 10.8, 9.9, 9.1, 12.0, 6.4h, and
+    # moving :00 -> :37 changed nothing). We can't win more runs, so each run
+    # now stays alive and polls on a loop instead — see the collect step below.
+    - cron: "37 * * * *" # best-effort; expect most of these to be dropped
   workflow_dispatch: {} # manual run button in the Actions tab
 
 permissions:
@@ -13,12 +15,17 @@ permissions:
 
 concurrency:
   group: coin-scan
-  cancel-in-progress: false
+  # true, not false: runs are long-lived now, so a fresh scheduled run should
+  # replace a stale one rather than queue behind it (queued runs get dropped).
+  # Each cycle commits its own data, so cancelling only loses the current cycle.
+  cancel-in-progress: true
 
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # GitHub's hosted-runner ceiling is 360; leave slack so the loop's own
+    # LOOP_MINUTES budget is what ends the run, not a hard kill mid-commit.
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v5
 
@@ -26,87 +33,117 @@ jobs:
         with:
           node-version: 22
 
-      # data collection first — a failure here must not block the commit
-      - name: track scanned-token outcomes
-        continue-on-error: true
-        run: node coin.js track
-
-      - name: update outcomes
-        continue-on-error: true
-        run: node coin.js update
-
-      - name: discovery scan
-        continue-on-error: true
-        run: node coin.js scan
-
-      # Phone notification path. GitHub's mobile app pushes on issue assignment,
-      # so a qualifying candidate becomes an assigned issue. Deterministic:
-      # `alert` is plain arithmetic over candidates.json, no model involved.
-      # exit 3 = nothing cleared the gate, which is the normal, quiet case.
-      # NOT continue-on-error: a notification path that silently fails forever
-      # is the failure this step exists to prevent (same reasoning as `watch`
-      # below). The commit step below is `if: always()` precisely so this one
-      # can go red without discarding the hour's scan and tracking data.
-      - name: alert on notable candidates
+      - name: collect on a loop
         env:
           GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          # ~5.5h of polling per run. Tune down if the idle runner time is a
+          # concern; even 120 gives ~12 poll cycles against the old 1.
+          LOOP_MINUTES: 330
+          # Path sampling is the binding constraint: peak/trough/attention were
+          # landing ~1 sample per 6h, far too coarse to locate an entry or exit.
+          POLL_MINUTES: 10
+          # Discovery is the expensive call (GeckoTerminal paginates at 2.1s/req)
+          # and the trending list barely moves in 10 minutes, so scan hourly.
+          SCAN_EVERY: 6
         run: |
-          set +e
-          node coin.js alert --commit-sent > alert-body.md
-          rc=$?
-          set -e
-          if [ $rc -eq 3 ]; then
-            echo 'nothing clears the alert gate'; rm -f alert-body.md; exit 0
-          fi
-          if [ $rc -ne 0 ]; then
-            echo "::error::coin.js alert failed with exit $rc"; rm -f alert-body.md; exit 1
-          fi
-          # if the issue cannot be created, drop alerts-sent.json so the next
-          # run retries instead of silently swallowing the alert forever
-          if ! gh issue create \
-                --title "[Coin] candidate(s) $(date -u +%F\ %H:%M) UTC" \
-                --body-file alert-body.md \
-                --assignee ${{ github.repository_owner }}; then
-            echo '::error::gh issue create failed — reverting alerts-sent.json so the next run retries'
-            git checkout -- alerts-sent.json 2>/dev/null || rm -f alerts-sent.json
-            rm -f alert-body.md
-            exit 1
-          fi
-          rm -f alert-body.md
-
-      # always(): a red alert step above must not cost us the hour's data
-      - name: commit results
-        if: always()
-        run: |
+          set -uo pipefail
           git config user.name "coin-bot"
           git config user.email "actions@users.noreply.github.com"
-          # -A . stages whatever exists; naming journal.json explicitly would
-          # abort the whole step until the first decision is logged
-          rm -f alert-body.md # scratch, never commit it
-          git add -A .
-          if git diff --cached --quiet; then
-            echo "no changes"
-          else
-            git commit -m "auto: update + scan $(date -u +%FT%H:%M)"
+
+          alert_failed=0
+
+          commit_cycle() {
+            rm -f alert-body.md # scratch, never commit it
+            git add -A .
+            if git diff --cached --quiet; then
+              echo "  no changes"
+              return 0
+            fi
+            git commit -q -m "auto: update + scan $(date -u +%FT%H:%M)"
             # a local push landing mid-run makes the rebase conflict; retry,
             # and never leave the runner stuck mid-rebase
-            pushed=0
             for i in 1 2 3; do
-              if git pull --rebase && git push; then
-                echo "pushed"; pushed=1; break
+              if git pull --rebase -q && git push -q; then
+                echo "  pushed"
+                return 0
               fi
               git rebase --abort 2>/dev/null || true
               sleep 5
             done
-            # a run whose data never landed must go red, not silently vanish
-            if [ "$pushed" != "1" ]; then
-              echo "::error::failed to push scan results after 3 attempts (likely a rebase conflict)"
-              exit 1
+            echo "::warning::cycle failed to push (likely a rebase conflict); retrying next cycle"
+            return 1
+          }
+
+          run_alert() {
+            set +e
+            node coin.js alert --commit-sent > alert-body.md
+            rc=$?
+            set -e
+            if [ $rc -eq 3 ]; then
+              echo "  nothing clears the alert gate"; rm -f alert-body.md; return 0
             fi
+            if [ $rc -ne 0 ]; then
+              echo "::error::coin.js alert failed with exit $rc"
+              rm -f alert-body.md; alert_failed=1; return 0
+            fi
+            # if the issue cannot be created, drop alerts-sent.json so the next
+            # cycle retries instead of silently swallowing the alert forever
+            if ! gh issue create \
+                  --title "[Coin] candidate(s) $(date -u +%F\ %H:%M) UTC" \
+                  --body-file alert-body.md \
+                  --assignee "$OWNER"; then
+              echo '::error::gh issue create failed — reverting alerts-sent.json so the next cycle retries'
+              git checkout -- alerts-sent.json 2>/dev/null || rm -f alerts-sent.json
+              alert_failed=1
+            fi
+            rm -f alert-body.md
+          }
+
+          deadline=$(( $(date +%s) + LOOP_MINUTES * 60 ))
+          cycle=0
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            cycle=$((cycle + 1))
+            started=$(date +%s)
+            echo "── cycle $cycle  $(date -u +%FT%H:%M:%SZ) ──"
+
+            # data collection first — a failure here must not block the commit
+            node coin.js track || echo "::warning::track failed"
+            node coin.js update || echo "::warning::update failed"
+
+            if [ $(( (cycle - 1) % SCAN_EVERY )) -eq 0 ]; then
+              node coin.js scan || echo "::warning::scan failed"
+              run_alert
+            fi
+
+            commit_cycle || true
+
+            # hold the cadence steady regardless of how long the cycle took, and
+            # never start a cycle we cannot finish inside the run's budget
+            elapsed=$(( $(date +%s) - started ))
+            remaining=$(( deadline - $(date +%s) ))
+            nap=$(( POLL_MINUTES * 60 - elapsed ))
+            # if-blocks, not `[ ] && ...`: GitHub runs this step under `bash -e`,
+            # where a trailing test that evaluates false would end the whole run
+            if [ "$nap" -lt 0 ]; then nap=0; fi
+            if [ "$remaining" -le "$nap" ]; then
+              echo "budget spent after $cycle cycles"; break
+            fi
+            if [ "$nap" -gt 0 ]; then sleep "$nap"; fi
+          done
+
+          # a notification path that silently fails forever is the failure the
+          # alert step exists to prevent, so surface it — but only after the
+          # loop has committed everything it collected
+          if [ "$alert_failed" = "1" ]; then
+            echo "::error::at least one alert cycle failed to notify"
+            exit 1
           fi
 
       # LAST on purpose: exits non-zero when a position needs action, so the
       # job goes red and GitHub emails. An alert nobody is told about is not
-      # monitoring. Runs after the commit so it never blocks saving data.
+      # monitoring. always(): runs even if the loop above ended red, so a
+      # failed notification never hides an open position that needs a decision.
       - name: watch open positions
+        if: always()
         run: node coin.js watch
