@@ -42,6 +42,15 @@ jobs:
           LOOP_MINUTES: 330
           # Path sampling is the binding constraint: peak/trough/attention were
           # landing ~1 sample per 6h, far too coarse to locate an entry or exit.
+          #
+          # FROZEN — must stay in sync with POLL_CADENCE_MIN in coin.js, which is
+          # stamped onto every tracking row. Changing this re-partitions the
+          # dataset into another incomparable era: `p.peakRet` is a sampled
+          # running max, so poll count alone moves the peak-2x rate (7.8% at
+          # 8-30 samples/row -> 16.5% at 100+). That artifact produced a
+          # confident and wrong finding on 2026-08-31; see STUDY.md. Change it
+          # only as a deliberate logged decision, never as a tuning knob, and
+          # expect to discard comparisons across the boundary.
           POLL_MINUTES: 10
           # Discovery is the expensive call (GeckoTerminal paginates at 2.1s/req)
           # and the trending list barely moves in 10 minutes, so scan hourly.

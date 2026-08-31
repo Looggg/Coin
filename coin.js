@@ -20,6 +20,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const JOURNAL_PATH = path.join(__dirname, "journal.json");
 const WSOL_MINT = "So11111111111111111111111111111111111111112";
@@ -122,6 +123,32 @@ const RULES = {
   // table that settles it; revisit at ~20-30 tokens, and delete this gate if the
   // MOMENTUM cell has not beaten `PASS, quiet` on peak-2x by then.
   momMinVolLiq: 5, // the only new threshold; everything else is reused above
+
+  // MEASUREMENT ONLY — deliberately NOT wired into momentumQualifies, alert,
+  // or any buy path. Added 2026-08-31 as a pre-registered candidate after an
+  // audit that refuted the session's headline finding but left this one
+  // standing. chg24h at discovery is the only gate that survived every
+  // stratification tried: both polling eras (p=0.057 sparse / p=0.044 dense),
+  // archived-finished-only rows (34.6% vs 6.7%, p=0.0003), and a realizable
+  // definition of "pumped" that throws out peaks printed on dead liquidity
+  // (20.0% vs 7.5%, p=0.019). Marginal: 27.5% peak-2x (n=40) vs 7.0% (n=171).
+  //
+  // Why it is only a table and not a gate:
+  //   - NOT multiplicity-clean. A permutation min-p test over a 322-gate grid
+  //     puts the family-wise adjusted p at 0.116; clearing FWER 0.05 needed
+  //     raw p <= 5.6e-4 and nothing reached it. This is the best of many
+  //     thresholds tried, which is not the same as a real one.
+  //   - 11 pumpers carry the whole result.
+  //   - It selects 50-62% rug (definition-dependent) against a ~20% baseline.
+  //   - It is ~90% collinear with age < 7d, so it MUST be read inside age
+  //     strata or it just re-derives that confound under a new name.
+  //
+  // PRE-REGISTERED AT 1000. The grid's own optimum was 1637; re-tuning to it
+  // would be fitting the noise this threshold exists to test. Do not move this
+  // number to make the table look better — that is the failure mode the
+  // 2026-08-31 audit was written to prevent. Judge it on forward rows only,
+  // stamped with an entry-filter version, at n >= 30 in the current era.
+  momMinChg24h: 1000,
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
   alertDowntrendChg6h: -10, // below this, say so instead of "enter at market"
 
@@ -131,6 +158,54 @@ const RULES = {
   lpDrainPct: 50, // LP fell this % below entry => exit immediately
   stopLossPct: 50, // price down this % => position is dead money
 };
+
+// ---------- dataset provenance ----------
+// Added 2026-08-31 after an audit refuted a headline finding that had looked
+// solid at n=280. Two invisible regime changes produced it:
+//
+//   1. `f.pass` is not one label. minLiquidityUsd went 30k -> 50k (ac2b67a) and
+//      minAgeHours 24 -> 48 (30eb0c0) mid-dataset. 37 of 106 pass=true rows
+//      would FAIL today's rules, so any table grouping on `pass` was averaging
+//      three different filters and calling the result one effect.
+//   2. `p.peakRet` is a sampled running max — a LOWER BOUND that tightens with
+//      poll count. Polling went hourly -> 10-minute on 2026-08-27, and median
+//      samples/row went 12 -> 275. Every feature that correlates with being
+//      discovered late also correlates with being sampled more, which
+//      manufactures peak-2x differences out of nothing.
+//
+// Neither was recoverable from tracking.json — it took `git log` and a
+// per-era stratification to find them. Stamping both on the row at discovery
+// is what makes `f.pass` and `p.peakRet` comparable across time. Rows written
+// before this date carry no `v` and must be treated as their own era.
+const ENTRY_FILTER_KEYS = [
+  "minLiquidityUsd",
+  "minTrackLiquidityUsd",
+  "maxTop10Pct",
+  "minLpLockedPct",
+  "minAgeHours",
+  "maxDevPct",
+  "maxInsiderPct",
+  "minHolders",
+];
+// derived, not hand-maintained: editing any threshold above changes this hash
+// on the next scan with no one having to remember to bump a version number
+const ENTRY_FILTER_VERSION = crypto
+  .createHash("sha1")
+  .update(JSON.stringify(ENTRY_FILTER_KEYS.map((k) => [k, RULES[k]])))
+  .digest("hex")
+  .slice(0, 8);
+
+// The workflow's POLL_MINUTES. FROZEN: changing it re-partitions the dataset
+// into another incomparable era, which is exactly the mistake above. Change it
+// only as a deliberate, logged decision, never as a tuning knob — and expect
+// to discard cross-era comparisons when you do. Stamped per row so a future
+// change is at least visible in the data instead of only in git.
+const POLL_CADENCE_MIN = 10;
+
+// what gets written onto every new tracking row
+function provenance() {
+  return { ef: ENTRY_FILTER_VERSION, pollMin: POLL_CADENCE_MIN };
+}
 
 // ---------- helpers ----------
 // process-wide 429 tally — every API call funnels through getJson, so this
@@ -732,6 +807,10 @@ async function cmdScan(fullCheckCap) {
         tracking[mint] = {
           symbol: s.symbol || null,
           firstSeenAt: new Date().toISOString(),
+          // entry-filter hash + poll cadence — see the dataset provenance block.
+          // without these, `f.pass` and `p.peakRet` are not comparable across
+          // time and `patterns` silently averages incompatible eras.
+          v: provenance(),
           f: trackFeatures(s, verdict, verdict.pass ? scoreCandidate(s).score : null),
           o: {},
         };
@@ -1065,6 +1144,65 @@ async function cmdTrack() {
   console.log("tracking outcomes saved");
 }
 
+// median gap between consecutive path samples — the cadence the row was
+// ACTUALLY observed at, which is not the configured one whenever the runner
+// was throttled or the process died mid-window
+function observedCadenceMin(r) {
+  if (!r.s || r.s.length < 3) return null;
+  const hs = r.s.map((x) => x.h).sort((a, b) => a - b);
+  const gaps = [];
+  for (let i = 1; i < hs.length; i++) gaps.push((hs[i] - hs[i - 1]) * 60);
+  return median(gaps);
+}
+
+// Header for every `patterns` run. The tables below compare cells against each
+// other; that comparison is only meaningful if the cells were produced by the
+// same entry filter and watched at the same rate. When they were not, the
+// difference between two cells can be entirely an artifact of when their rows
+// were collected — which is exactly how the refuted 2026-08-31 `pass` finding
+// happened. Print the partition first so it is impossible to read the tables
+// without seeing it.
+function printProvenance(rows) {
+  const eras = {};
+  for (const r of rows) {
+    const key = r.v?.ef || "pre-versioning";
+    (eras[key] = eras[key] || []).push(r);
+  }
+  const keys = Object.keys(eras).sort((a, b) => eras[b].length - eras[a].length);
+  console.log(`\n── dataset provenance (n=${rows.length}) ──`);
+  for (const k of keys) {
+    const g = eras[k];
+    const cadences = g.map(observedCadenceMin).filter((x) => x != null);
+    const obs = cadences.length ? `${median(cadences).toFixed(0)}min observed` : "no path samples";
+    const cfg = g[0].v?.pollMin != null ? `${g[0].v.pollMin}min configured` : "cadence unrecorded";
+    const samples = g.map((r) => r.p?.samples || 0).sort((a, b) => a - b);
+    console.log(
+      `  entry filter ${k.padEnd(14)} n=${String(g.length).padStart(3)}  ${cfg}, ${obs}  median samples/row ${samples[Math.floor(samples.length / 2)]}`
+    );
+  }
+  if (keys.length > 1) {
+    console.log(
+      `\n  ⚠ ${keys.length} entry-filter versions in one dataset. Rows under different`
+    );
+    console.log(
+      `    versions had DIFFERENT thresholds decide their \`pass\`, so every table`
+    );
+    console.log(
+      `    below that groups on verdict/score is averaging incompatible filters.`
+    );
+    console.log(
+      `    Sample counts differing across versions do the same to lifePk2x, which`
+    );
+    console.log(
+      `    is a sampled lower bound and rises with poll count on its own.`
+    );
+    console.log(
+      `    Stratify by era before citing any cell as evidence — see STUDY.md 2026-08-31.`
+    );
+  }
+  console.log("");
+}
+
 // aggregate the tracking dataset: what did the ones that pumped look like at
 // discovery, versus the ones that died? deterministic bucket tables.
 function cmdPatterns(bucketArg) {
@@ -1078,6 +1216,8 @@ function cmdPatterns(bucketArg) {
   );
   if (!rows.length)
     return console.log(`no tracked outcomes at ${horizon} yet — the cron fills these in automatically`);
+
+  printProvenance(rows);
 
   const table = (label, groupFn) => {
     const groups = {};
@@ -1184,6 +1324,20 @@ function cmdPatterns(bucketArg) {
     const attention = f.vol24h / f.liqUsd >= RULES.momMinVolLiq;
     if (attention) return f.pass ? "MOMENTUM" : "MOMENTUM, not-PASS";
     return f.pass ? "PASS, quiet" : "FAIL, quiet";
+  });
+  // Pre-registered candidate (RULES.momMinChg24h), MEASUREMENT ONLY — nothing
+  // gates or alerts on this. Split INSIDE age strata on purpose: chg24h is
+  // ~90% collinear with age < 7d, so an unstratified table would show the age
+  // effect wearing a chg24h label and read as confirmation. The comparison
+  // that matters is hot-vs-cold WITHIN a row of this table, never across rows.
+  //
+  // What would retire it: no separation inside either stratum once the current
+  // entry-filter era reaches n >= 30. What would NOT promote it: a good-looking
+  // number at a threshold other than 1000 (see the RULES note).
+  table("chg24h gate x age", (f) => {
+    if (f.chg24h == null || f.ageHours == null) return null;
+    const hot = f.chg24h > RULES.momMinChg24h;
+    return (f.ageHours < 168 ? "young " : "old   ") + (hot ? "hot" : "cold");
   });
   table("1h momentum", (f) => {
     if (f.buys1h == null || f.sells1h == null) return null;

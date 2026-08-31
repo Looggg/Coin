@@ -12,12 +12,24 @@ that pumped — not coins that merely survive without growing. The safety
 filter, the age/liquidity floors, and exit discipline exist to protect
 capital *in service of that goal*; they are the floor, not the mission.
 
-Honesty constraint that goes with it: as of 2026-08-27 no measured feature
-reliably predicts pumps (best so far: vol/liq >= 5, hit-2x 9% vs 1%, thin n).
-The learning loop (tracking.json → `patterns` → RULES changes logged in
-STUDY.md) is the mechanism for closing that gap. Never fake progress toward
-the goal by loosening rules without data; never redefine the goal back to
-"downside only" — the owner has explicitly rejected that framing.
+Honesty constraint that goes with it: as of 2026-08-31 no measured feature
+reliably predicts pumps. Best candidates: chg24h > 1000 (peak-2x 27.5% n=40 vs
+7.0% n=171) and vol/liq >= 5 (15.5% vs 7.6%) — neither is multiplicity-clean
+(FWER-adjusted p = 0.116 over the threshold grid actually searched) and both
+select 40-60% rug. The learning loop (tracking.json → `patterns` → RULES
+changes logged in STUDY.md) is the mechanism for closing that gap. Never fake
+progress toward the goal by loosening rules without data; never redefine the
+goal back to "downside only" — the owner has explicitly rejected that framing.
+
+**Before citing any `patterns` cell as evidence** (added 2026-08-31, after an
+audit refuted that session's headline finding — full autopsy in STUDY.md):
+`p.peakRet` is a sampled lower bound that rises with poll count, and `f.pass`
+means different things in different eras because the thresholds moved. Every
+row now carries `v: {ef, pollMin}`; `patterns` prints the era partition as its
+header. A finding must report (a) how many pumpers carry it — the n that counts
+is events, not rows, (b) an FWER-adjusted p if any threshold was searched,
+(c) whether it survives stratifying by `v.ef` and by sample count. Cross-era
+comparisons in the pre-2026-08-31 data are dead, not merely reweightable.
 
 ## Architecture decisions (settled — don't relitigate)
 

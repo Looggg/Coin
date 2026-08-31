@@ -622,3 +622,200 @@ pump"** รอบนี้แก้ instrument กับการเก็บ da
 - `journal.json` ยังว่าง 0 entries ต่อ alert ที่ยิงไปแล้ว 11 ใบ → ครึ่งมนุษย์ของ loop
   ยังไม่เคยถูกใช้ ทุกตัวเลขในบันทึกทั้งหมดยังเป็น paper
 - d3 เพิ่งเริ่มมีข้อมูลวันนี้ (n=16) ยังเล็กเกินสรุปอะไร
+
+## 2026-08-31 — finding ที่ถูก refute: "safety verdict เป็น anti-signal"
+
+**ไม่มี RULES change รอบนี้ นี่คือบันทึกว่าอะไรพัง และเปลี่ยน instrument อะไรบ้าง**
+
+### ที่อ้างไว้ (ผิด)
+
+วิเคราะห์ tracking dataset (live 90 + archive 190 = 280 unique rows, pumper
+`peakRet >= 1` 33 ตัว = base rate 11.8%) แล้วสรุปว่า safety filter คัดผิดทาง:
+
+```
+pass=true   n=106  peak-2x  6.6%
+pass=false  n=174  peak-2x 14.9%     Fisher p=0.037
+```
+
+ข้อสรุปตอนนั้น: `pass` กรอง pumper ทิ้ง ควรเลิกใช้เป็นเกณฑ์คัดเข้า เหลือไว้เป็น
+rug filter อย่างเดียว **ข้อสรุปนี้ผิด** independent audit ตีตกด้วย 4 เหตุผลอิสระ
+แต่ละข้อพอฆ่ามันได้เอง
+
+### ทำไมถึงผิด
+
+**1. `f.pass` ไม่ใช่ label เดียว — กฎเปลี่ยนกลางชุดข้อมูล**
+
+`ac2b67a` ขึ้น minLiquidityUsd 30k→50k, `30eb0c0` ขึ้น minAgeHours 24→48
+**37 จาก 106 แถว pass=true จะ FAIL กฎวันนี้** (min liq ใน pass=true วันที่ 08-25
+คือ $30,286 min age 1h) ตาราง group ด้วย `pass` จึงเฉลี่ย filter สามตัวรวมกัน
+แล้วเรียกว่า effect เดียว **5 จาก 7 pumper ที่ pass=true อยู่ในแถวที่กฎวันนี้ปฏิเสธ**
+
+**2. `p.peakRet` เป็น sampled lower bound ที่แน่นขึ้นตามจำนวน poll**
+
+poll เปลี่ยน hourly → 10-min วันที่ 08-27 median samples/row ตามวันที่เจอ:
+8, 12, 14, **175, 277, 274**, 125 peak-2x rate ตามจำนวน sample:
+7.8% (8-30 samples) → 12.5% (30-100) → **16.5% (100+)**
+
+ทุก "predictor" co-linear กับสิ่งนี้ — median samples: pass=true **12.5** vs
+pass=false **69**; chg24h>1000 59 vs 14; vol/liq>=5 47 vs 12; age<7d 69 vs 12
+bucket ถูก sample **ไม่เท่ากัน** ความต่างจึงถูกผลิตขึ้นมาเอง
+
+stratify ตาม era:
+
+```
+                   sparse (<08-27)         dense (>=08-27)
+pass=true    7.6% vs  9.2%  p=0.78    3.7% vs 19.4%  p=0.072
+age<168h    11.5% vs  6.4%  p=0.37   23.9% vs  5.6%  p=0.006
+vol/liq>=5  12.3% vs  4.9%  p=0.15   18.7% vs 12.0%  p=0.46
+chg24h>1000 21.1% vs  6.6%  p=0.057  33.3% vs 12.5%  p=0.044   <- รอดทั้งสอง era
+```
+
+จำกัดเฉพาะแถวที่วัด peak บน window เทียบกันได้:
+
+- **archived/finished only:** pass 7.9% vs 12.9%, **p=0.34**
+- **rowAge >= 80h:** pass 8.0% vs 9.7%, **p=0.80** — เอฟเฟกต์หายเกลี้ยง
+
+**3. นิยาม "pump" นับ peak ที่ซื้อขายไม่ได้จริง**
+
+ใน 33 pumper: UMIA `liqUsd=38.25`, Martians `liqUsd=0.02` — ซื้อไม่ได้ตอนเจอ
+PONS (72.7x), UMIA-archive (23.1x), ROCKSTAR — sample ที่ใกล้ `peakH` ที่สุดมี
+**liq = 0** คือ price print ที่ไม่มีตลาด 3 ตัวไม่มี sample ที่ >=2x เลย, 11 ตัวมี <=1
+
+ใช้นิยามที่ realizable (มี sample ที่ `ret>=1` **และ** `liq>=5000`) → 33 เหลือ **26**:
+
+```
+                REALIZABLE peak          จำกัด liq0>=50k (floor จริง)
+pass=true    5.7% vs 11.5% p=0.137   4.7% vs 10.5% p=0.197
+chg24h>1000 20.0% vs  7.5% p=0.019  18.9% vs  5.8% p=0.015
+vol/liq>=5  12.8% vs  5.3% p=0.038  12.8% vs  4.8% p=0.043
+age<168h    13.6% vs  5.4% p=0.023  14.9% vs  4.4% p=0.015
+```
+
+claim ตายที่นิยาม pump อย่างเดียว ก่อนถึง control อื่น
+
+**4. confound: ตัวที่คัด pumper ทิ้งคือ floors ไม่ใช่ safety verdict**
+
+```
+age<7d :  pass=true 10.0% (n=40)  vs pass=false 21.7% (n=92)   p=0.14
+age>=7d:  pass=true  4.5% (n=66)  vs pass=false  7.3% (n=82)   p=0.73
+```
+
+ไม่มี stratum ไหน significant Mantel-Haenszel OR 0.465
+
+แยกคมกว่านั้น — ผ่า pass=false ด้วยว่าผ่าน floors ของระบบเองไหม (liq>=50k, age>=48h):
+
+```
+pass=true                     7/106 =  6.6%
+pass=false, ผ่าน floors       6/ 77 =  7.8%    <- Fisher p=0.78 เทียบ pass=true
+pass=false, ไม่ผ่าน floors   20/ 97 = 20.6%
+```
+
+**signal ทั้งหมดอยู่ในแถวที่ floors ปฏิเสธอยู่แล้ว** — เหรียญที่เด็กหรือบางเกินกว่าจะ
+ซื้อได้ภายใต้ rule set ใดก็ตามที่ยังมี floors ในกลุ่มที่ซื้อได้จริง `pass` เป็นการโยนหัวก้อย
+(6.6% vs 7.8%) safety **verdict** ไม่ใช่ตัวที่จ่ายค่า pumper — **floors** ต่างหาก
+ซึ่งเป็น trade-off คนละเรื่องและบันทึกไว้แล้วที่ 2026-08-27 ข้อ 5
+
+### multiplicity
+
+permutation min-p test บน grid 322 gate (18 feature x decile x สองทิศ — ประเมิน
+แบบอนุรักษ์นิยมของสิ่งที่ค้นจริง ยังไม่นับ two-way combo):
+
+- gate ดีสุดที่สังเกตได้: `chg24h>1637` raw p=1.5e-3
+- **family-wise adjusted p = 0.116**
+- raw p ที่ต้องได้เพื่อผ่าน FWER 0.05 คือ **5.6e-4** — ไม่มี gate ไหนถึง
+
+logistic regression: ใส่ `pass + log(samples)` → pass coefficient p=0.098
+ใส่ age/chg24h/vol-liq ต่อ → p=0.17 และ **ไม่มี coefficient ไหน significant เดี่ยวๆ**
+(feature collinear กันหมด)
+
+### EV simulation — ทิ้ง
+
+sim walk `s` ตามเวลา exit ที่ -50% stop หรือ +100% TP ให้ EV ติดลบทุก gate
+**ห้ามอ้างตัวเลขชุดนี้**:
+
+```
+first-sample lag: median 25.0h
+แถวที่ <= -50% ตั้งแต่ observation แรก: 24.4%
+median s.length: 7
+stop-out 119 ครั้ง — 68 (57%) ยิงตั้งแต่ observation แรก
+```
+
+ยังตอบคำถาม stop-loss ในหัวข้อ "คำถามที่ tracking dataset จะตอบ" ไม่ได้ และ
+**cross-era comparison ในชุดข้อมูลนี้ให้ถือว่าตายแล้ว** ไม่ใช่แค่ต้องถ่วงน้ำหนักใหม่ —
+แถวเก่าซ่อมไม่ได้ `s` เพิ่งมีมาไม่นาน
+
+### ที่รอด audit
+
+| claim | verdict |
+|---|---|
+| 280 rows / 33 pumper / base 11.8% | CONFIRMED (0 overlap, 0 dup, `f.pass` เป็น boolean ครบทุกแถว) |
+| chg24h>1000 → 27.5% vs 7.0% | CONFIRMED — รอดทุก stratification, archived-only p=0.0003 |
+| vol/liq>=5 → 15.5% vs 7.6% | CONFIRMED (p=0.043) |
+| age<168h → 18.2% vs 6.1% | CONFIRMED เชิงตัวเลข แต่ confounded (p=0.37 ใน sparse era) |
+| pumper กับ rug คือประชากรเดียวกัน | CONFIRMED — baseline rug 19.6%, ทุก pump gate 33-50% |
+
+แก้บันทึกเดิม: 2026-08-27 เขียนว่า vol/liq>=5 ได้ 9% vs 1% ตอนนี้ 15.5% vs 7.6%
+"effect เล็กลง" จริงเฉพาะเป็น **ratio** (9x→2x) — **absolute gap 8pp เท่าเดิมทั้งสองครั้ง**
+
+### สิ่งที่เปลี่ยนรอบนี้ (instrument ไม่ใช่ RULES)
+
+**1. `provenance()` — stamp `v: {ef, pollMin}` ทุกแถวตอน discovery**
+
+`ef` = sha1 8 ตัวแรกของ `ENTRY_FILTER_KEYS` + ค่าปัจจุบัน — derive เอง ไม่ต้อง
+bump มือ แก้ threshold ไหนก็เปลี่ยนเอง `pollMin` = cadence ที่ตั้งไว้
+แถวก่อนวันนี้ไม่มี `v` → เป็น era ของตัวเอง ชื่อ `pre-versioning`
+
+**2. `patterns` พิมพ์ provenance header ก่อนทุกตาราง**
+
+แสดง n ต่อ entry-filter version, cadence ที่ตั้ง vs ที่**สังเกตได้จริง**
+(median gap ระหว่าง sample), median samples/row และเตือนเมื่อมี >1 version
+
+วัดครั้งแรกได้ผลที่ควรรู้: **cadence จริง 186 นาที ไม่ใช่ 10 นาทีที่ตั้งไว้** —
+GitHub throttle ทำให้ช่องว่างระหว่าง run กลืนความถี่ใน run ทิ้งหมด
+
+**3. `POLL_CADENCE_MIN` — FROZEN**
+
+เปลี่ยนได้เฉพาะเป็นการตัดสินใจที่บันทึกไว้ ไม่ใช่ปุ่มปรับจูน และเมื่อเปลี่ยนต้อง
+ยอมทิ้ง cross-era comparison
+
+**4. `RULES.momMinChg24h: 1000` — pre-registered, MEASUREMENT ONLY**
+
+ไม่ต่อเข้า `momentumQualifies`, alert, หรือ buy path ใดๆ มีแค่ตาราง
+`chg24h gate x age` ใน `patterns` — ผ่าใน age strata เพราะ chg24h collinear
+กับ age<7d ~90% ถ้าไม่ผ่าจะได้ age effect ที่ใส่ป้าย chg24h แล้วอ่านเป็นการยืนยัน
+
+**ตรึงที่ 1000 grid optimum คือ 1637 — การขยับไปหาคือ fit noise ที่ threshold นี้
+มีไว้ทดสอบ** ห้ามขยับเลขให้ตารางดูดีขึ้น นั่นคือ failure mode ที่บันทึกนี้เขียนมากัน
+
+ผลแรก (ยังเป็น pre-versioning era ทั้งหมด อ่านเป็น baseline ไม่ใช่หลักฐาน):
+
+```
+d1   young hot  n=33 lifePk2x 30%  rug 39%   |  young cold n= 82 lifePk2x 12%  rug 26%
+     old   hot  n= 4 lifePk2x 25%  rug 25%   |  old   cold n=128 lifePk2x  5%  rug  0%
+d3   young hot  n=22 lifePk2x 36%  rug 64%   |  young cold n= 55 lifePk2x  9%  rug 44%
+     old   hot  n= 4 lifePk2x 25%  rug 25%   |  old   cold n=109 lifePk2x  6%  rug  1%
+```
+
+แยกใน young stratum ได้จริง แต่ราคาคือ rug 26%→39% (d1), 44%→64% (d3)
+
+### ที่ยังไม่เปลี่ยน และเพราะอะไร
+
+- **ไม่แตะ `pass` ในฐานะเกณฑ์คัดเข้า** — premise ถูก refute สิ่งที่ data รองรับคือ
+  ข้อความที่อ่อนกว่ามาก: **`pass` ไม่มีข้อมูลเรื่อง pump ทั้งสองทาง** (6.6% vs 7.8%
+  ในกลุ่มที่ซื้อได้จริง) ไม่ใช่เหตุผลพอที่จะแก้ RULES ฝั่ง rug ก็อ่อน:
+  pass=true rug 20.8% vs 26.4% ไม่ significant
+- `journal.json` ยังว่าง 0 entries — ไม่มี realized trade เลย ทุกตัวเลขที่นี่เป็น
+  paper บน sampled lower bound ของ peak ไม่มี RULES change ไหนอ้าง return ได้
+- **momentum gate (`momMinVolLiq`) ยังตัดสินไม่ได้**: MOMENTUM n=19 lifePk2x 5%
+  vs PASS,quiet n=44 2% — เกณฑ์ตัดสินคือ 20-30 tokens ยังไม่ถึง และตอนนี้รู้แล้วว่า
+  ทั้งสอง cell ถูก sample ไม่เท่ากัน ต้องรอ n ในยุคที่ stamp `ef` แล้วเท่านั้น
+
+### บทเรียนเชิงวิธี (ข้อสำคัญที่สุดของรอบนี้)
+
+`pass=false` **ไม่ใช่ "ตลาด"** — มันคือ shortlist ที่ scan คัดมาแล้วตกด่านความปลอดภัย
+ข้อสรุปใดๆ เรื่องการเลิกใช้ `pass` generalize ได้แค่ภายใน shortlist นั้น
+
+และ: n=280 ดูเยอะพอจะเลิกเรียกว่า thin n ได้ แต่ pumper มีแค่ 33 ตัว — **n ที่นับ
+คือจำนวน event ไม่ใช่จำนวนแถว** ทุก finding ต่อจากนี้ต้องรายงาน (ก) จำนวน pumper
+ที่แบกผลนั้น (ข) FWER-adjusted p ถ้ามีการค้น threshold (ค) ผลหลัง stratify ตาม
+`v.ef` และ sample count ก่อนจะถูกอ้างเป็นหลักฐาน
