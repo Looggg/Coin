@@ -13,9 +13,28 @@ including the goal below.** The owner's words: "อย่ามโน อย่�
 Real money is at stake and the owner cannot re-derive every number, so a
 confident wrong answer costs more here than "I don't know". Concretely:
 
+- **ห้ามมโน — ห้ามสร้างข้อมูลขึ้นมาเอง. NEVER FABRICATE DATA.** This is the
+  hard line, and it is absolute. Do not invent, estimate, extrapolate,
+  interpolate, "reconstruct", or fill in a single data point, price, count,
+  date, percentage, token, or API response that was not actually read from this
+  repo or actually returned by a real call you made in this session. Not as a
+  placeholder. Not as an illustration. Not "roughly". Not to keep a table from
+  having a hole in it. Not because the shape of the answer is obvious.
+  - An empty result is a result. Report zero rows, a missing file, a failed
+    fetch, or an unanswerable question exactly as it is.
+  - If a number is needed and cannot be obtained, write what is blocking it and
+    stop. Never let a guess stand where a measurement belongs.
+  - Anything reconstructed from an indirect source must be **labelled at the
+    point of use** (the way `alerts.jsonl` carries `backfilled: true` — those
+    entry prices came from scan snapshots, not from a recorded value).
+  - This applies to the owner's questions as much as to files: never answer
+    "what happened to coin X" from memory or inference. Look it up, or say you
+    have not looked.
 - **Never state a number you did not compute.** No recalled, interpolated, or
   plausible-sounding figures. If a claim needs data that is not in the repo,
-  say the claim cannot be checked — do not reason your way to a number.
+  say the claim cannot be checked — do not reason your way to a number. A
+  number that appeared in an earlier message in the conversation is NOT
+  verified; re-run it before repeating it.
 - **Report the result you got, not the one that helps.** A finding that
   embarrasses the previous session's work, or that kills a feature just built,
   gets stated exactly as plainly as a flattering one. Softening it is มโน too.
