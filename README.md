@@ -1,11 +1,19 @@
-# Coin — Memecoin Safety Filter + Decision Journal + Eval
+# Coin — Memecoin Screener + Decision Journal + Eval
 
-เครื่องมือคัดกรอง memecoin (Solana) แบบ safety-first พร้อม journal สำหรับ eval ว่าระบบเราชนะ baseline จริงไหม
+เครื่องมือหาเหรียญ memecoin (Solana) ที่มีโอกาสพุ่ง โดยเรียนรู้จาก pattern ของเหรียญที่เคยพุ่ง
+พร้อม journal สำหรับ eval ว่าระบบชนะ baseline จริงไหม
 
-**หลักการ:** token ใหม่ส่วนใหญ่ไปศูนย์ — edge อยู่ที่คัดขยะออกเร็ว
+**เป้าหมาย:** คัดเหรียญที่มีโอกาสพุ่ง — ไม่ใช่เหรียญที่แค่รอดโดยไม่โต
+safety filter กับด่านอายุ/สภาพคล่องมีไว้ปกป้องเงินทุน **เพื่อรับใช้เป้าหมายนั้น**
+เป็นพื้น ไม่ใช่ภารกิจ
 
-`alert` มีสอง track: **safety** (กัน downside ไม่ทำนายผู้ชนะ) และ **momentum**
-(คัดด้วย vol/liq — ยังไม่พิสูจน์ paper เท่านั้น ดูตาราง `momentum gate` ใน `patterns`)
+**สถานะจริง (2026-09-02):** ยังไม่มี feature ไหนทำนาย pump ได้อย่างเชื่อถือได้
+และ `alert` gate ที่มีอยู่**สายโดยโครงสร้าง** — เหรียญที่ถูกเตือนและเคยแตะ 2x
+ส่วนใหญ่ถูกเตือนหลัง peak ไปแล้ว รายละเอียดใน STUDY.md อย่าอ่านผลลัพธ์จากไฟล์นี้
+ให้รัน `node coin.js patterns` เอา
+
+`alert` เหลือ track เดียวคือ **safety** — track `momentum` ถูกลบ 2026-09-01
+ตามเงื่อนไขฆ่าที่ตั้งไว้ตอนสร้าง (ไม่ชนะ `PASS, quiet` ที่ n=20)
 
 ## ใช้งาน
 

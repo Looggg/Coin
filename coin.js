@@ -1341,6 +1341,39 @@ function printProvenance(rows) {
     );
     console.log(`    check the distinct-mint count before treating n as n.`);
   }
+  // Re-entry stratum watch, added 2026-09-02 after an audit found the first
+  // wave of re-entries skewed hard to old, heavily-liquid tokens — the stratum
+  // with the LOWEST pump rate in the dataset (liq > $1M was 1/48 peak-2x; the
+  // 37 known pumpers have median liq $81k / FDV $562k / age 20h). If re-entry
+  // keeps readmitting that stratum, every forward sample drifts toward tokens
+  // that structurally cannot 2x inside the d3 window, and the PASS arm grows in
+  // the direction of "survives without growing" — the failure mode CLAUDE.md
+  // names as the thing this project is NOT for.
+  //
+  // Deliberately a MEASUREMENT, not a cap. At the time of writing the skew was
+  // one day old and the not-yet-re-entered eligible pool had median liquidity
+  // ~$92k, i.e. the skew was the first wave taking trending_pools' biggest
+  // permanent residents first, not a structural property of the mechanism.
+  // Capping on that evidence would be tuning a rule to one day of data. Watch
+  // this line instead: if re-entry median liquidity stays an order of magnitude
+  // above first-entry median once the first re-entry d3 outcomes land, THEN it
+  // is a RULES change with data behind it.
+  const reRows = rows.filter((r) => (r.entryNo || 1) > 1);
+  if (reRows.length) {
+    const firstRows = rows.filter((r) => (r.entryNo || 1) === 1);
+    const med = (a, f) => {
+      const v = a.map(f).filter((x) => x != null).sort((x, y) => x - y);
+      return v.length ? v[Math.floor(v.length / 2)] : null;
+    };
+    const line = (label, g) =>
+      console.log(
+        `    ${label.padEnd(12)} n=${String(g.length).padStart(3)}  median liq ${fmtUsd(med(g, (r) => r.f?.liqUsd)).padStart(8)}` +
+          `  FDV ${fmtUsd(med(g, (r) => r.f?.fdv)).padStart(8)}  age ${String(Math.round((med(g, (r) => r.f?.ageHours) || 0) / 24)).padStart(3)}d`
+      );
+    console.log(`\n  re-entry stratum watch (re-entries should not be a different asset class):`);
+    line("re-entries", reRows);
+    line("first entry", firstRows);
+  }
   if (splitEras) {
     console.log(
       `\n  ⚠ ${splitEras} era(s) above contain BOTH sparse and dense rows. \`lifePk2x\` is a`
@@ -1376,6 +1409,63 @@ function printProvenance(rows) {
   console.log("");
 }
 
+// What the entry floors cost the pump goal, computed rather than quoted.
+//
+// This block exists because on 2026-09-01 four numbers were written into a code
+// comment and into CLAUDE.md that NO shipped command could reproduce — they
+// mixed a trough-based rug definition with a table that prints a horizon-based
+// one, silently applied a density filter the table does not apply, and named a
+// cell ("above floors n=59") that collided with a printed cell meaning
+// something else. An unreproducible number in a project instruction file is
+// worse than no number: the next reader cannot tell it is stale or wrong.
+//
+// Conventions, stated because a figure without them has already misled once:
+//   - "dense" = p.samples >= DENSE_SAMPLE_MIN. peakRet is a SAMPLED lower bound
+//     that rises with poll count, so the two sides must be sample-matched; the
+//     median sample count of each side is printed so you can check that they are.
+//   - peak-2x = p.peakRet >= 1 at ANY point in the tracked life, not at a horizon.
+//   - BOTH rug definitions are printed: trough = p.troughRet <= -0.9 (the price
+//     ever fell 90%); d3ret = the d3 outcome return <= -90% (it was still down
+//     90% at d3). They are different questions and differ by ~10pp here.
+//   - n counts ENTRIES (mint+entryNo). Distinct mints is printed beside it,
+//     because repeat entries of one token are not independent samples.
+//   - No p-value is printed. The split shown is one of several that were looked
+//     at, so a raw p here would overstate; see STUDY.md for the tested claim.
+function printFloorsCost(allRows) {
+  const dense = allRows.filter(
+    (r) => (r.p?.samples || 0) >= DENSE_SAMPLE_MIN && r.f?.liqUsd > 0 && r.f?.ageHours != null
+  );
+  if (dense.length < 20) return; // too few to be worth printing at all
+  const below = (r) => !(r.f.liqUsd >= RULES.minLiquidityUsd && r.f.ageHours >= RULES.minAgeHours);
+  const pct = (k, n) => (n ? `${((100 * k) / n).toFixed(1).padStart(5)}%` : "    -");
+  const line = (label, g) => {
+    if (!g.length) return console.log(`  ${label.padEnd(20)} n=  0`);
+    const pk = g.filter((r) => (r.p.peakRet || 0) >= 1).length;
+    const trough = g.filter((r) => r.p.troughRet != null && r.p.troughRet <= -0.9).length;
+    const withD3 = g.filter((r) => r.o?.d3 && Number.isFinite(r.o.d3.ret));
+    const d3rug = withD3.filter((r) => r.o.d3.ret <= -0.9).length;
+    const s = g.map((r) => r.p.samples).sort((a, b) => a - b);
+    const mints = new Set(g.map((r) => r.mint).filter(Boolean)).size;
+    console.log(
+      `  ${label.padEnd(20)} n=${String(g.length).padStart(3)} (${String(mints).padStart(3)} mints)` +
+        `  peak-2x ${pct(pk, g.length)}  rug(trough) ${pct(trough, g.length)}` +
+        `  rug(d3ret) ${pct(d3rug, withD3.length)} of ${String(withD3.length).padStart(3)}` +
+        `  med samples ${String(s[Math.floor(s.length / 2)]).padStart(3)}`
+    );
+  };
+  console.log(`── floors cost (dense rows only, samples >= ${DENSE_SAMPLE_MIN}, n=${dense.length}) ──`);
+  line("below floors", dense.filter(below));
+  line("above floors", dense.filter((r) => !below(r)));
+  console.log("  which floor does it:");
+  line("  below: age only", dense.filter((r) => r.f.ageHours < RULES.minAgeHours && r.f.liqUsd >= RULES.minLiquidityUsd));
+  line("  below: liq only", dense.filter((r) => r.f.ageHours >= RULES.minAgeHours && r.f.liqUsd < RULES.minLiquidityUsd));
+  line("  below: both", dense.filter((r) => r.f.ageHours < RULES.minAgeHours && r.f.liqUsd < RULES.minLiquidityUsd));
+  console.log(
+    `\n  the floors trade pump exposure for rug protection; both columns are the price.\n` +
+      `  the age floor moves both at once, which is why it is not a loosening candidate.\n`
+  );
+}
+
 // aggregate the tracking dataset: what did the ones that pumped look like at
 // discovery, versus the ones that died? deterministic bucket tables.
 function cmdPatterns(bucketArg) {
@@ -1390,9 +1480,8 @@ function cmdPatterns(bucketArg) {
   const key = (mint, r) => `${mint}#${r.entryNo || 1}`;
   const byEntry = new Map(loadArchive().map((r) => [key(r.mint, r), r]));
   for (const [mint, r] of Object.entries(loadTracking())) byEntry.set(key(mint, r), { mint, ...r });
-  const rows = [...byEntry.values()].filter(
-    (r) => r.o?.[horizon] && Number.isFinite(r.o[horizon].ret)
-  );
+  const allRows = [...byEntry.values()];
+  const rows = allRows.filter((r) => r.o?.[horizon] && Number.isFinite(r.o[horizon].ret));
   if (!rows.length)
     return console.log(`no tracked outcomes at ${horizon} yet — the cron fills these in automatically`);
 
@@ -1466,29 +1555,23 @@ function cmdPatterns(bucketArg) {
   table("liquidity", (f) =>
     f.liqUsd == null ? null : f.liqUsd < 50000 ? "$30-50k" : f.liqUsd < 150000 ? "$50-150k" : ">$150k"
   );
-  // What the entry floors cost the pump goal. Replaces the `momentum gate`
-  // table on 2026-09-01: that table existed to settle whether vol/liq >= 5
-  // earned a live gate, it settled it (no), and the gate is gone — but the
-  // question underneath it is the project's central tension and still needs a
-  // standing view.
+  // What the entry floors cost the pump goal — the project's central tension,
+  // kept as a standing view after the `momentum gate` table was retired.
   //
-  // MEASUREMENT ONLY. Read this INSIDE one sampling-density stratum or not at
-  // all: "below floors" skews to the recent, densely-polled intake, and
-  // lifePk2x rises with poll count on its own. On the dense rows, where the two
-  // sides are sample-matched (median 231 vs 237 samples), 2026-09-01 measured:
+  // MEASUREMENT ONLY, and this table alone is NOT the evidence for that claim.
+  // Its `rug` column is the horizon return <= -90%, it applies no
+  // sampling-density filter, and it splits the above-floors group by the STORED
+  // `f.pass`, which is era-dependent (32 rows carry pass=true with age < 48h,
+  // written before minAgeHours was raised). All three make it the wrong
+  // instrument for a headline number. The `floors cost` block printed after
+  // the tables is the right one: dense rows only, both rug definitions
+  // labelled, over every tracked row rather than only those with an outcome at
+  // this horizon.
   //
-  //   below floors  n=99  peak-2x 21.2%  rug 49.5%
-  //   above floors  n=59  peak-2x  6.8%  rug  1.7%    p=0.012
-  //
-  // So the floors are removing roughly two thirds of the pump population, and
-  // ~all of the rug population, at the same time. That is the trade the owner
-  // is buying, stated as a number rather than assumed. Decomposed, the age
-  // floor is what does both (age<48h alone: 25.0% peak-2x on 60% rug), which is
-  // why it is NOT a candidate for loosening. The one cell where relaxing looked
-  // cheap — liq 30-50k with age >= 48h, 15.4% peak-2x on 0% rug — is n=13 and
-  // one of three cells inspected; it is a thing to WATCH accumulate, not
-  // evidence. Do not move minLiquidityUsd off this table until it has its own
-  // pre-registered forward sample.
+  // An earlier version of this comment quoted four figures this table cannot
+  // emit, and one of them ("above floors n=59") coincidentally equalled a
+  // printed cell that meant something else — a reader would have thought they
+  // had reproduced it. Numbers now live under the code that computes them.
   table("entry floors", (f) => {
     if (f.liqUsd == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
     const liqOk = f.liqUsd >= RULES.minLiquidityUsd;
@@ -1553,6 +1636,7 @@ function cmdPatterns(bucketArg) {
     console.log(`  breached -50%   ${stopped.length}/${withPath.length}, of which ${recovered} later touched 2x+ (cost of the stop)`);
     console.log("");
   }
+  printFloorsCost(allRows);
   console.log(`read this as: which discovery profile actually pumped — feed conclusions back into RULES`);
 }
 
@@ -1714,6 +1798,9 @@ async function cmdLog(mint, decision, reason, source) {
 // there is something to say; exits 3 when there is not, which is the normal
 // case and must not be read as a failure by the caller.
 const ALERTS_SENT_PATH = path.join(__dirname, "alerts-sent.json");
+// append-only history of every alert ever sent — see the write in cmdAlert for
+// why this exists separately from the pruned cooldown file above
+const ALERTS_LOG_PATH = path.join(__dirname, "alerts.jsonl");
 
 // 4 significant figures, never scientific notation: these are prices like
 // 0.0000007312 and a human has to paste them into a chart
@@ -1848,6 +1935,44 @@ function cmdAlert(commitSent) {
   // workflow's revert branch exists to prevent, entered through the front door.
   // Only the workflow, which actually creates the issue, passes --commit-sent.
   if (commitSent) {
+    // Permanent record FIRST, dedup state second. alerts-sent.json is a
+    // COOLDOWN file — it is pruned at 4x alertCooldownHours so it cannot grow
+    // forever — but it was also the only record anywhere of what the system had
+    // ever told the owner to buy. On 2026-09-02 an audit found the first
+    // entries (2026-08-26) were days from being pruned, which would have
+    // silently destroyed the ground truth for every alert-gate backtest. The
+    // append-only log is that ground truth; the pruned file stays a cache.
+    //
+    // Entry price is captured here, not looked up later: a backtest that
+    // recovers it from a scan snapshot afterwards is guessing at which snapshot
+    // the alert was built from, and that guess is what made two reconstructions
+    // of the same 39 alerts disagree by 15 percentage points.
+    const logLine = (c) =>
+      JSON.stringify({
+        mint: c.mint,
+        symbol: c.symbol,
+        alertedAt: new Date(now).toISOString(),
+        track: "safety",
+        priceUsd: c.priceUsd,
+        liqUsd: c.liqUsd,
+        fdv: c.fdv,
+        ageHours: c.ageHours,
+        chg24h: c.chg24h,
+        chg6h: c.chg6h,
+        score: c.score,
+        // the snapshot the levels were quoted off, so a backtest can align
+        // exactly instead of inferring
+        checkedAt: c.checkedAt,
+        firstSurfacedAt: c.firstSurfacedAt ?? null,
+        surfacedCount: c.surfacedCount ?? null,
+      });
+    try {
+      fs.appendFileSync(ALERTS_LOG_PATH, hits.map(logLine).join("\n") + "\n");
+    } catch (e) {
+      // never let the archive write block the dedup write: a failure here
+      // costs a history row, a failure there re-alerts the same mint for 72h
+      console.error(`(could not append to alerts.jsonl: ${e.message})`);
+    }
     for (const c of hits) sent[c.mint] = new Date(now).toISOString();
     // prune anything long past the cooldown so this file cannot grow forever
     const cutoff = now - RULES.alertCooldownHours * 3.6e6 * 4;

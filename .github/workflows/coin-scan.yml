@@ -33,6 +33,17 @@ jobs:
         with:
           node-version: 22
 
+      # Guards the provenance stamp that makes rows comparable across eras.
+      # Added to CI 2026-09-02: the test had been red since 2026-09-01 and
+      # nothing reported it, because nothing ran it. It must NOT block the
+      # collect step — a stale assertion is not a reason to stop gathering
+      # data on a schedule we already cannot get enough of — so it reports
+      # and continues, and the run is marked failed at the end.
+      - name: provenance checks
+        id: provenance
+        continue-on-error: true
+        run: node t-provenance.js
+
       - name: collect on a loop
         env:
           GH_TOKEN: ${{ github.token }}
@@ -185,5 +196,11 @@ jobs:
           # the pre-loop workflow treated this as fatal and so does this one
           if [ "$push_failed" = "1" ]; then
             echo "::error::at least one cycle could not push its data"; rc=1
+          fi
+          # reported last on purpose: the provenance test ran before the loop
+          # with continue-on-error, so its result must be re-raised here or a
+          # red test would once again pass unnoticed
+          if [ "${{ steps.provenance.outcome }}" = "failure" ]; then
+            echo "::error::t-provenance.js failed — the era stamp that makes rows comparable is unguarded"; rc=1
           fi
           exit $rc
