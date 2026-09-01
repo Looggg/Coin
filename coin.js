@@ -290,12 +290,16 @@ function hoursSince(ts) {
 }
 
 // ---------- data fetching ----------
-async function fetchDexScreener(mint) {
+async function fetchDexScreener(mint, chain = "solana") {
   const data = await getJson(`https://api.dexscreener.com/latest/dex/tokens/${mint}`);
   // the endpoint also returns pairs where the token is the QUOTE side —
-  // those carry the OTHER token's priceUsd/symbol, so require base === mint
+  // those carry the OTHER token's priceUsd/symbol, so require base === mint.
+  // chainId is also filtered, not assumed: the same address can exist on more
+  // than one chain, and reading another chain's pair would attach a wrong
+  // price and liquidity to this row.
+  const want = CHAINS[chain]?.ds || chain;
   const pairs = (data.pairs || []).filter(
-    (p) => p.chainId === "solana" && p.baseToken?.address === mint
+    (p) => p.chainId === want && sameAddress(p.baseToken?.address, mint)
   );
   if (pairs.length === 0) return null;
   // best pair = deepest liquidity
@@ -329,14 +333,18 @@ async function fetchSolPrice() {
 }
 
 // ---------- snapshot + checklist ----------
-async function buildSnapshot(mint) {
+async function buildSnapshot(mint, chain = "solana") {
+  const cfg = CHAINS[chain] || CHAINS.solana;
   const [pair, rug, solPriceUsd] = await Promise.all([
-    fetchDexScreener(mint),
-    fetchRugcheck(mint),
+    fetchDexScreener(mint, chain),
+    // rugcheck.xyz only indexes Solana. Calling it for another chain would
+    // spend a request to get a 404 and, worse, make the null result look like
+    // "checked and found nothing" rather than "never asked".
+    cfg.holderData ? fetchRugcheck(mint) : Promise.resolve(null),
     fetchSolPrice(),
   ]);
 
-  if (!pair) return { dead: true, solPriceUsd };
+  if (!pair) return { dead: true, chain, holderData: cfg.holderData, solPriceUsd };
 
   let top10Pct = null;
   let lpLockedPct = null;
@@ -401,6 +409,11 @@ async function buildSnapshot(mint) {
 
   return {
     dead: false,
+    chain,
+    // whether this chain can answer the holder/authority checks at all.
+    // runChecklist turns this into an explicit coverage record so a skipped
+    // check is never mistaken for a passed one.
+    holderData: cfg.holderData,
     symbol: pair.baseToken?.symbol,
     name: pair.baseToken?.name,
     dexId: pair.dexId,
@@ -447,8 +460,25 @@ async function buildSnapshot(mint) {
 function runChecklist(s) {
   const fails = [];
   const warns = [];
+  // Which safety questions this row could actually be ASKED. Every holder check
+  // below is guarded with `!= null`, which means a missing answer skips the
+  // check rather than failing it — fine when the data source is momentarily
+  // down, dangerous when a whole chain has no data source at all, because the
+  // row then passes a shorter exam and looks identical to one that passed the
+  // long exam. "full" = every check was answerable. "market-only" = the
+  // holder/authority half was never asked. Recorded on the row, printed in the
+  // shortlist, and required by the alert gate.
+  const coverage = s.holderData === false ? "market-only" : "full";
+  const unavailable = coverage === "market-only" ? [...HOLDER_CHECKS] : [];
 
-  if (s.dead) return { pass: false, fails: ["token has no active pair (dead/delisted)"], warns };
+  if (s.dead)
+    return {
+      pass: false,
+      fails: ["token has no active pair (dead/delisted)"],
+      warns,
+      coverage,
+      unavailable,
+    };
 
   if (s.mintAuthority) fails.push(`mint authority ACTIVE (${s.mintAuthority.slice(0, 8)}…) — dev can print supply`);
   if (s.freezeAuthority) fails.push(`freeze authority ACTIVE — dev can freeze your wallet`);
@@ -488,7 +518,15 @@ function runChecklist(s) {
   const warnRisks = (s.rugRisks || []).filter((r) => r.level === "warn");
   for (const w of warnRisks) warns.push(`rugcheck warn: ${w.name}`);
 
-  return { pass: fails.length === 0, fails, warns };
+  if (coverage === "market-only") {
+    // loud, and first in the list: this is the single most misleading thing
+    // that could sit unremarked on a passing row
+    warns.unshift(
+      `SAFETY COVERAGE INCOMPLETE on ${s.chain} — ${unavailable.length} checks could not be run (${unavailable.join(", ")}). PASS here means "no market-side red flag", NOT "no rug risk".`
+    );
+  }
+
+  return { pass: fails.length === 0, fails, warns, coverage, unavailable };
 }
 
 /**
@@ -752,22 +790,160 @@ function list() {
   }
 }
 
+// ---------- chains ----------
+// The screener is chain-agnostic by design (owner, 2026-09-02: "ไม่ fix ที่ chain
+// เดียว จะได้มองหาโอกาสเยอะๆ"). A chain is a config row, not a fork of the
+// project, and the shortlist ranks across chains rather than per chain.
+//
+// THE ONE THING THAT MUST NOT GO WRONG HERE. runChecklist guards every holder
+// check with `!= null`, so a chain with no holder data does not FAIL those
+// checks — it SKIPS them. Left alone, a Robinhood token would clear the
+// checklist having been asked ~3 questions where a Solana token is asked ~9,
+// and would then look equally safe in candidates.json and equally comparable in
+// `patterns`. Every cross-chain comparison would silently favour the chain we
+// know least about. So each chain declares which checks it can actually answer,
+// runChecklist records the unanswered ones as `unavailable` (never as passes),
+// and the alert gate refuses a chain with incomplete coverage until there is
+// data saying otherwise. Lifting that is a RULES change with evidence, not a
+// config tweak.
+const CHAINS = {
+  solana: {
+    gt: "solana", // GeckoTerminal network id
+    ds: "solana", // dexscreener chainId
+    dsBatch: "solana", // dexscreener /tokens/v1/{chain} segment
+    // rugcheck.xyz is Solana-only: mint/freeze authority, LP lock, top-10
+    // holders, insider networks, dev balance, holder count all come from it
+    holderData: true,
+    // discovery depth, per kind. GeckoTerminal's free tier is the binding
+    // resource for the whole scan (~30 req/min, and one page is one request),
+    // so this is a budget split between chains, not a per-chain preference.
+    pages: 10,
+    explorer: (m) => `https://dexscreener.com/solana/${m}`,
+    explorer2: (m) => `https://gmgn.ai/sol/token/${m}`,
+  },
+  robinhood: {
+    // Robinhood's own L2. Verified live 2026-09-01: GeckoTerminal carries the
+    // network (trending_pools median liquidity ~$678k, new_pools launching at
+    // ~$5k) and dexscreener returns full market data under chainId "robinhood"
+    // (price, liquidity, volume, txns, pairCreatedAt, fdv).
+    gt: "robinhood",
+    ds: "robinhood",
+    dsBatch: "robinhood",
+    // NO equivalent of rugcheck found for this chain. Until one exists, six of
+    // the nine safety checks cannot be answered here — see SAFETY_CHECKS.
+    holderData: false,
+    // SAMPLING ONLY — 2 pages, not 10 (owner's call, 2026-09-02, option ก).
+    //
+    // The reasoning, so nobody "fixes" this back up to 10 without meeting it:
+    // Robinhood tokens can NEVER be alerted right now, because 8 of the safety
+    // checks have no data source on this chain and alertQualifies refuses
+    // incomplete coverage. So the only thing this chain can contribute today is
+    // dataset — and 4 requests a scan buys enough of that to answer "do
+    // Robinhood tokens pump more or less often than Solana ones" within about a
+    // week, which is the question the owner actually asked.
+    //
+    // 20 pages would buy a slightly bigger sample at the cost of the Solana
+    // arm's intake, measured: adding a second chain at full depth 429'd
+    // GeckoTerminal on 2026-09-02 and returned this chain 0 pools while
+    // degrading the chain that CAN produce a recommendation. GitHub already
+    // throttles this workflow to ~2-3 runs/day; the request budget is real.
+    //
+    // Raise this when either (a) a holder-data source for the chain exists, so
+    // coverage can reach "full" and the gate opens on its own, or (b) the
+    // sampled rows show market-only PASS is not measurably worse. Both are
+    // RULES changes that must cite `patterns` output, per CLAUDE.md.
+    pages: 2,
+    explorer: (m) => `https://dexscreener.com/robinhood/${m}`,
+    explorer2: null,
+  },
+};
+// Chains the scan actually walks. Solana first so its candidates are
+// full-checked before the cap bites.
+const ACTIVE_CHAINS = ["solana", "robinhood"];
+
+// The checks that depend on holder/authority data, named so the coverage report
+// can list exactly what a chain could not ask rather than implying it passed.
+const HOLDER_CHECKS = [
+  "mint authority",
+  "freeze authority",
+  "LP locked %",
+  "top-10 concentration",
+  "dev wallet %",
+  "insider/bundle %",
+  "holder count",
+  "rugcheck risk flags",
+];
+
+function chainOf(row) {
+  // rows written before 2026-09-02 carry no chain and are all Solana
+  return row?.chain || "solana";
+}
+
+// Address equality that works on every chain we walk.
+//
+// EVM addresses are hex and carry an OPTIONAL checksum in their letter case:
+// GeckoTerminal returns them lowercased, dexscreener returns them checksummed
+// (0xf2915d1e3c1b… vs 0xf2915d1e3C1B…). A strict === between those two is
+// always false, which made a live Robinhood token with $288k of liquidity come
+// back `dead: true` — and `dead` is written into the dataset as ret = -1, so
+// the whole chain would have been recorded as rugging on contact.
+//
+// Solana mints are base58, where case IS significant and two addresses
+// differing only in case are genuinely different tokens. So the relaxation is
+// scoped to 0x-hex addresses and nothing else.
+function sameAddress(a, b) {
+  if (a == null || b == null) return false;
+  if (a === b) return true;
+  const hex = /^0x[0-9a-fA-F]{40}$/;
+  return hex.test(a) && hex.test(b) && a.toLowerCase() === b.toLowerCase();
+}
+
 // ---------- discovery scan ----------
-const GT_BASE = "https://api.geckoterminal.com/api/v2/networks/solana";
+const GT_BASE = "https://api.geckoterminal.com/api/v2/networks";
 const MAJORS = new Set([
   WSOL_MINT,
   "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
   "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", // USDT
 ]);
 
-async function fetchGeckoPools(kind, pages) {
+// Fetch discovery pages for one chain.
+//
+// The failure handling here is the whole point. This used to be
+// `.catch(() => null)` followed by `if (!data?.data?.length) break`, which
+// makes a rate-limited chain indistinguishable from an empty one: on
+// 2026-09-02 the second chain in the scan returned 0 pools purely because
+// GeckoTerminal 429'd after the first chain's 20 requests, and the log said
+// "0 candidates" as if the chain had nothing to offer. A source that stops
+// contributing must never look like a source with nothing to contribute —
+// that is the same failure that killed intake on 2026-08-31.
+//
+// So: retry with backoff, and if a page still fails, say so loudly and mark
+// the whole result partial rather than silently truncating.
+async function fetchGeckoPools(chain, kind, pages) {
+  const net = CHAINS[chain]?.gt || chain;
   const out = [];
+  let failed = 0;
   for (let p = 1; p <= pages; p++) {
-    const data = await getJson(`${GT_BASE}/${kind}?page=${p}`).catch(() => null);
-    if (!data?.data?.length) break;
+    let data = null;
+    let lastErr = null;
+    for (let attempt = 0; attempt < 3 && !data; attempt++) {
+      if (attempt) await sleep(4000 * attempt); // 4s, 8s
+      data = await getJson(`${GT_BASE}/${net}/${kind}?page=${p}`).catch((e) => {
+        lastErr = e;
+        return null;
+      });
+    }
+    if (!data) {
+      failed++;
+      console.error(`  ⚠ ${chain}/${kind} page ${p} failed after 3 tries (${lastErr?.message || "unknown"}) — this chain's intake is INCOMPLETE this run`);
+      break;
+    }
+    if (!data.data?.length) break; // genuinely out of pages
     out.push(...data.data);
-    await sleep(2100); // GeckoTerminal free tier: 30 req/min
+    await sleep(2100); // GeckoTerminal free tier: ~30 req/min
   }
+  if (failed && !out.length)
+    console.error(`  ⚠ ${chain}/${kind} collected NOTHING — treat this chain as unsampled this run, not as empty`);
   return out;
 }
 
@@ -797,32 +973,82 @@ function scanGapHours(logPath) {
 }
 
 async function cmdScan(fullCheckCap) {
-  console.log("fetching trending + new pools from GeckoTerminal...");
-  const pools = [
-    ...(await fetchGeckoPools("trending_pools", 10)),
-    ...(await fetchGeckoPools("new_pools", 10)),
-  ];
-
   const journal = loadJournal();
   const seen = new Set(journal.map((e) => e.mint));
   const candidates = new Map();
-  for (const pool of pools) {
-    const a = pool.attributes || {};
-    const id = pool.relationships?.base_token?.data?.id || "";
-    const mint = id.replace(/^solana_/, "");
-    if (!mint || MAJORS.has(mint) || seen.has(mint) || candidates.has(mint)) continue;
-    // cheap pre-filter on pool data before spending API calls on a full check
-    const liq = Number(a.reserve_in_usd);
-    if (!Number.isFinite(liq) || liq < RULES.minTrackLiquidityUsd) continue;
-    candidates.set(mint, { name: a.name });
+  let poolsSeen = 0;
+  // Chains are walked in ACTIVE_CHAINS order and candidates keep that order, so
+  // the full-check cap bites the last chain rather than an arbitrary slice of a
+  // shuffled pool. Solana is first because it is the only chain whose safety
+  // checks are complete.
+  for (const chain of ACTIVE_CHAINS) {
+    const pages = CHAINS[chain]?.pages ?? 10;
+    console.log(
+      `fetching trending + new pools from GeckoTerminal (${chain}, ${pages} page${pages === 1 ? "" : "s"}${pages < 10 ? " — sampling only" : ""})...`
+    );
+    const pools = [
+      ...(await fetchGeckoPools(chain, "trending_pools", pages)),
+      ...(await fetchGeckoPools(chain, "new_pools", pages)),
+    ];
+    poolsSeen += pools.length;
+    const net = CHAINS[chain]?.gt || chain;
+    let kept = 0;
+    for (const pool of pools) {
+      const a = pool.attributes || {};
+      const id = pool.relationships?.base_token?.data?.id || "";
+      const mint = id.replace(new RegExp(`^${net}_`), "");
+      if (!mint || MAJORS.has(mint) || seen.has(mint) || candidates.has(mint)) continue;
+      // cheap pre-filter on pool data before spending API calls on a full check
+      const liq = Number(a.reserve_in_usd);
+      if (!Number.isFinite(liq) || liq < RULES.minTrackLiquidityUsd) continue;
+      candidates.set(mint, { name: a.name, chain });
+      kept++;
+    }
+    console.log(`  ${pools.length} pools → ${kept} candidate(s) over ${fmtUsd(RULES.minTrackLiquidityUsd)}`);
   }
   console.log(
-    `${pools.length} pools seen → ${candidates.size} pass pre-filter (liq ≥ ${fmtUsd(RULES.minTrackLiquidityUsd)}, not majors, not already journaled)`
+    `${poolsSeen} pools seen → ${candidates.size} pass pre-filter (liq ≥ ${fmtUsd(RULES.minTrackLiquidityUsd)}, not majors, not already journaled)`
   );
 
-  const list = [...candidates.entries()].slice(0, fullCheckCap);
-  if (candidates.size > list.length)
-    console.log(`(full-checking first ${list.length} — raise with: node coin.js scan ${candidates.size})`);
+  // Round-robin across chains, NOT the first N of a concatenated list.
+  //
+  // Solana alone yields ~70 candidates a scan. Taken in order, it would spend
+  // the entire cap before the next chain is reached, and that chain would
+  // collect nothing — forever, silently, while the scan log looked healthy.
+  // That is exactly how the intake death of 2026-08-31 happened (a source
+  // stopped contributing and nothing said so), so it is worth not repeating in
+  // a new dimension one day later.
+  //
+  // Round-robin gives every chain a share of whatever cap it is given and
+  // degrades evenly when the cap is tight, instead of starving the tail. The
+  // per-chain counts are printed so starvation is visible if it ever happens.
+  const queues = new Map();
+  for (const [mint, meta] of candidates) {
+    const c = meta.chain || "solana";
+    if (!queues.has(c)) queues.set(c, []);
+    queues.get(c).push([mint, meta]);
+  }
+  const list = [];
+  for (let i = 0; list.length < fullCheckCap; i++) {
+    let added = false;
+    for (const q of queues.values()) {
+      if (i >= q.length) continue;
+      if (list.length >= fullCheckCap) break;
+      list.push(q[i]);
+      added = true;
+    }
+    if (!added) break; // every queue exhausted
+  }
+  const perChain = {};
+  for (const [, meta] of list) {
+    const c = meta.chain || "solana";
+    perChain[c] = (perChain[c] || 0) + 1;
+  }
+  console.log(
+    `full-checking ${list.length}/${candidates.size}: ` +
+      Object.entries(perChain).map(([c, n]) => `${c} ${n}`).join(", ") +
+      (candidates.size > list.length ? `  (raise with: node coin.js scan ${candidates.size})` : "")
+  );
   const tracking = loadTracking();
   // A token already archived was fully observed once. Re-entering it before its
   // outcome window has closed would double-count one observation; re-entering it
@@ -834,9 +1060,12 @@ async function cmdScan(fullCheckCap) {
   http429s = 0; // count only this scan's rate limiting
   for (const [mint, meta] of list) {
     i++;
-    process.stdout.write(`[${i}/${list.length}] ${(meta.name || mint.slice(0, 8)).padEnd(28)} `);
+    const chain = meta.chain || "solana";
+    process.stdout.write(
+      `[${i}/${list.length}] ${(chain === "solana" ? "" : chain.slice(0, 4) + ":")}${(meta.name || mint.slice(0, 8)).slice(0, 26).padEnd(28)} `
+    );
     try {
-      const s = await buildSnapshot(mint);
+      const s = await buildSnapshot(mint, chain);
       const verdict = runChecklist(s);
       // track every full-checked token, pass or fail — the pump-pattern
       // dataset needs the failures as its control group
@@ -846,6 +1075,9 @@ async function cmdScan(fullCheckCap) {
       if (!tracking[mint] && cooledDown && !s.dead) {
         tracking[mint] = {
           symbol: s.symbol || null,
+          // absent on rows written before 2026-09-02; chainOf() reads those as
+          // solana, which is what they are
+          chain,
           firstSeenAt: new Date().toISOString(),
           // 1 for a first-ever entry, 2+ for a re-entry after the cooldown.
           // `patterns` keys on mint+entryNo, so this is what keeps a repeat
@@ -864,6 +1096,11 @@ async function cmdScan(fullCheckCap) {
         console.log(`PASS ✓  score ${score}`);
         passed.push({
           mint,
+          chain,
+          // "full" or "market-only" — how many of the safety checks this chain
+          // could actually answer. NOT cosmetic: the alert gate reads it.
+          coverage: verdict.coverage,
+          unavailable: verdict.unavailable,
           symbol: s.symbol,
           name: s.name,
           score,
@@ -1107,6 +1344,13 @@ function trackFeatures(s, verdict, score) {
     lpLockedPct: s.lpLockedPct,
     launchpad: s.launchpad,
     pass: verdict.pass,
+    // duplicated from the row level on purpose: `patterns` groups on `r.f`,
+    // so a field only present on the row is invisible to every table
+    chain: s.chain || "solana",
+    // "full" | "market-only" — a PASS under market-only coverage answered
+    // fewer questions than a PASS under full coverage. `patterns` must never
+    // pool the two; the alert gate must never treat them as equivalent.
+    coverage: verdict.coverage,
     failReason: verdict.pass ? null : verdict.fails[0] || null,
     score: score ?? null,
   };
@@ -1145,21 +1389,41 @@ async function cmdTrack() {
     return Object.entries(TRACK_BUCKETS).some(([b, h]) => !r.o[b] && elapsedH >= h);
   }).length;
   console.log(`tracking: polling ${due.length} token(s), ${dueBuckets} with a bucket due`);
-  // batch endpoint: /tokens/v1/solana/{mints} takes up to 30 comma-separated
+  // batch endpoint: /tokens/v1/{chain}/{mints} takes up to 30 comma-separated
   // mints and returns a flat pair array (the /latest/dex/tokens endpoint no
   // longer supports commas — it returns pairs:null, which must NOT be read
   // as "everything died")
-  for (let i = 0; i < due.length; i += 25) {
-    const chunk = due.slice(i, i + 25);
+  //
+  // Batched PER CHAIN, and the chainId filter below uses that chain rather than
+  // a constant. Sending a Robinhood address to the solana endpoint returns
+  // nothing, and `pair == null` is written as ret = -1 — every non-Solana row
+  // would be recorded as having gone to zero on its first poll.
+  const byChain = new Map();
+  for (const entry of due) {
+    const c = chainOf(entry[1]);
+    if (!byChain.has(c)) byChain.set(c, []);
+    byChain.get(c).push(entry);
+  }
+  const batches = [];
+  for (const [c, rowsOfChain] of byChain)
+    for (let i = 0; i < rowsOfChain.length; i += 25)
+      batches.push([c, rowsOfChain.slice(i, i + 25)]);
+  for (const [chainId, chunk] of batches) {
+    const seg = CHAINS[chainId]?.dsBatch || chainId;
+    const wantChain = CHAINS[chainId]?.ds || chainId;
     let pairsByMint = {};
     try {
       const data = await getJson(
-        `https://api.dexscreener.com/tokens/v1/solana/${chunk.map(([m]) => m).join(",")}`
+        `https://api.dexscreener.com/tokens/v1/${seg}/${chunk.map(([m]) => m).join(",")}`
       );
       if (!Array.isArray(data)) throw new Error("unexpected response shape");
+      // keyed by the mint AS WE STORE IT, not as dexscreener returns it: an
+      // EVM address comes back checksummed and would never match the lowercase
+      // key the row is filed under (see sameAddress)
+      const wantMints = chunk.map(([m]) => m);
       for (const p of data) {
-        if (p.chainId !== "solana") continue;
-        const m = p.baseToken?.address;
+        if (p.chainId !== wantChain) continue;
+        const m = wantMints.find((w) => sameAddress(w, p.baseToken?.address));
         if (!m) continue;
         if (!pairsByMint[m] || (p.liquidity?.usd || 0) > (pairsByMint[m].liquidity?.usd || 0))
           pairsByMint[m] = p;
@@ -1530,6 +1794,12 @@ function cmdPatterns(bucketArg) {
   };
 
   console.log("");
+  // Chain first. Two chains do not share a safety filter — one answers nine
+  // checks, the other three — so every table below this line pools rows that
+  // were vetted to different standards unless you read this one first. It also
+  // answers the owner's actual question ("which chain is worth entering") on
+  // the only terms that mean anything: what the rows on each chain did.
+  table("chain", (f) => `${f.chain || "solana"}${f.coverage && f.coverage !== "full" ? " (market-only)" : ""}`);
   table("verdict", (f) => (f.pass ? "PASS" : "FAIL"));
   table("age at discovery", (f) =>
     // 24-48h is split out so the zone minAgeHours cuts stays visible here —
@@ -1546,8 +1816,26 @@ function cmdPatterns(bucketArg) {
               ? "2-3d"
               : ">3d"
   );
+  // Market-only rows are EXCLUDED, not bucketed. scoreCandidate's penalties are
+  // almost all holder-derived, so on a chain without holder data the score is a
+  // constant: every Robinhood row scored exactly 82 on 2026-09-02, from the same
+  // two "data missing" penalties. That is not a low-information score, it is a
+  // zero-information one, and pooling it with Solana's 80-100 bucket would let a
+  // constant vote on which score band pumps. (It also lands just above
+  // alertMinScore: 80 — harmless only because alertQualifies refuses incomplete
+  // coverage outright. If that gate is ever relaxed, this is the trap under it.)
   table("safety score", (f) =>
-    !f.pass ? "FAIL" : f.score == null ? null : f.score >= 80 ? "80-100" : f.score >= 60 ? "60-79" : "<60"
+    f.coverage && f.coverage !== "full"
+      ? null
+      : !f.pass
+        ? "FAIL"
+        : f.score == null
+          ? null
+          : f.score >= 80
+            ? "80-100"
+            : f.score >= 60
+              ? "60-79"
+              : "<60"
   );
   table("insider %", (f) =>
     f.insiderPct == null ? "unknown" : f.insiderPct < 5 ? "<5%" : f.insiderPct < 15 ? "5-15%" : ">15%"
@@ -1823,6 +2111,19 @@ function loadAlertsSent() {
 
 function alertQualifies(c, sent, now) {
   const R = RULES;
+  // Incomplete safety coverage never buzzes the phone. On a chain with no
+  // holder/authority data source, PASS means "no market-side red flag" and
+  // nothing about rug risk — six of the nine checks were never asked. Alerting
+  // on that would hand the owner a token vetted to a visibly lower standard
+  // while the message looks identical to a fully-vetted one, and it would do it
+  // on the chain we have the least history for.
+  //
+  // This is a floor, not a verdict on the chain. Those tokens are still scanned,
+  // still tracked, and still appear in `patterns` under their own coverage
+  // label, so the data needed to revisit this accumulates either way. Lifting
+  // it is a RULES change that must cite that data — either a holder-data source
+  // for the chain, or measured outcomes showing market-only PASS is not worse.
+  if (c.coverage && c.coverage !== "full") return false;
   if (!(c.score >= R.alertMinScore)) return false;
   if (c.insiderPct == null || c.insiderPct >= R.alertMaxInsiderPct) return false;
   if (c.fdv == null || c.fdv >= R.alertMaxFdv) return false;
@@ -1875,7 +2176,7 @@ function alertBody(c) {
     seenFor = h < 2 ? " · **ใหม่**" : ` · อยู่ในลิสต์มา ${h < 48 ? `${h.toFixed(0)}h` : `${(h / 24).toFixed(0)}d`}`;
   }
   return [
-    `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}${seenFor}`,
+    `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}${c.chain && c.chain !== "solana" ? ` · ${c.chain}` : ""}${seenFor}`,
     "",
     "```",
     c.mint,
@@ -1890,7 +2191,12 @@ function alertBody(c) {
     `- **Stop loss:** ${fmtPrice(P * (1 - R.stopLossPct / 100))} หรือออกทันทีถ้า LP หดแรง`,
     `- **Time stop:** ${R.timeStopHours}h ไม่ขยับ = ออก`,
     "",
-    `[dexscreener](https://dexscreener.com/solana/${c.mint}) · [gmgn](https://gmgn.ai/sol/token/${c.mint})`,
+    (() => {
+      const cfg = CHAINS[c.chain || "solana"] || CHAINS.solana;
+      const links = [`[dexscreener](${cfg.explorer(c.mint)})`];
+      if (cfg.explorer2) links.push(`[gmgn](${cfg.explorer2(c.mint)})`);
+      return links.join(" · ");
+    })(),
     `ข้อมูล ณ ${c.checkedAt}`,
   ].join("\n");
 }
