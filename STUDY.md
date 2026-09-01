@@ -819,3 +819,138 @@ d3   young hot  n=22 lifePk2x 36%  rug 64%   |  young cold n= 55 lifePk2x  9%  r
 คือจำนวน event ไม่ใช่จำนวนแถว** ทุก finding ต่อจากนี้ต้องรายงาน (ก) จำนวน pumper
 ที่แบกผลนั้น (ข) FWER-adjusted p ถ้ามีการค้น threshold (ค) ผลหลัง stratify ตาม
 `v.ef` และ sample count ก่อนจะถูกอ้างเป็นหลักฐาน
+
+---
+
+## 2026-09-01 — ท่อ intake ตาย: PASS arm หยุดโตมา 1 วันโดยไม่มีใครเห็น
+
+รอบนี้ตั้งใจจะวิเคราะห์ pattern แต่เจอว่า **dataset หยุดเก็บฝั่ง PASS ไปแล้ว**
+ต้องซ่อมท่อก่อน ไม่งั้นทุกคำถามที่เหลือรอคำตอบจาก data ที่ไม่มีวันมา
+
+### อาการ
+
+```
+ยุค          n    %pass  %age<48h  %liq<50k  median liq  median chg24h  median vol/liq
+Aug24-26   155     51%     33%       21%       118k          18%            4.2
+Aug27-30   112     22%     53%       28%        85k         180%           11.8
+Aug31+      43      5%     63%       49%        67k         229%           15.8
+```
+
+แถวที่ stamp `ef=71c22712` แล้ว (31 ส.ค. 13:42 เป็นต้นมา): **PASS 0 จาก 30**
+
+### สาเหตุ — selection bias จาก dedupe ไม่ใช่ตลาด ไม่ใช่ threshold
+
+`cmdScan` ดึงจาก `trending_pools` + `new_pools` แล้ว dedupe ด้วย
+`!tracking[mint] && !archived.has(mint)` คือ **เจอครั้งเดียวแล้วตัดออกถาวร**
+
+`trending_pools` 10 หน้าคือเซ็ตเล็กและค่อนข้างนิ่ง — วัดเมื่อ 2026-09-01 ได้ 138 mint
+ที่ liq ≥ 30k, 122 ตัวอายุเกิน 48h แต่ **เหลือที่ยังไม่เคย track แค่ 22 ตัว** (84%
+ถูกดูดเข้า archive ไปแล้วใน 8 วันแรก) ที่เหลือเข้ามาจึงเป็น `new_pools` เป็นหลัก
+= อ่อนและบางโดยโครงสร้าง ตกด่าน age/liquidity ตั้งแต่ต้น
+
+ผลที่ตามมาและเป็นตัวที่ร้ายจริง: **screener ยังพิมพ์ PASS ~27 ตัวทุกชั่วโมง** —
+แต่ 24 scan ล่าสุดมี 39 mint ไม่ซ้ำ และ **33 ตัวถูก archive ไปแล้ว** outcome ปิดไป
+นานแล้ว ไม่มีทางให้ข้อมูลใหม่ได้อีก 21 ตัวโผล่ ≥20 จาก 24 scan, 19 ตัวลงวันที่
+25 ส.ค. หน้าจอดูเหมือนระบบทำงาน แต่ learning loop หยุดหมุนไปแล้ว
+
+### สิ่งที่แก้
+
+1. **`RULES.reentryCooldownHours: 168`** — mint กลับเข้ามาใหม่ได้ ถ้าห่างจาก
+   `firstSeenAt` ของรอบก่อน ≥ 168h เหตุผลที่ต้องมี cooldown ไม่ใช่เอา dedupe ออกเฉยๆ:
+   bucket ยาวสุดคือ d3 = 72h สอง entry ที่ window ทับกันคือ observation เดียวนับสองครั้ง
+   ซึ่งคือ double-count ที่ dedupe เดิมเขียนไว้กัน 168h ทำให้ window ไม่ทับกันโดยมี margin
+   - แถวใหม่ stamp `entryNo` (1 = ครั้งแรก, 2+ = re-entry)
+   - `patterns` เปลี่ยน key เป็น `mint#entryNo` — เดิม key ด้วย mint เฉยๆ ซึ่งจะ
+     **ทิ้ง observation เก่าเงียบๆ** ถ้ามี re-entry
+   - `printProvenance` พิมพ์จำนวน distinct mint คู่กับ n และเตือนเมื่อมี re-entry:
+     สอง entry ของเหรียญเดียวกันไม่ใช่ sample อิสระ
+   - ทดสอบแล้ว: scan 14 ตัวได้ re-entry 6 ตัว (PENGU 6691h/$4M liq, TROLL 11971h/$3M,
+     ANSEM, USELESS, CATE, CYBERLEEK) — คือ stratum "แก่ + liquid" ที่หายไปพอดี
+     ตอนนี้มี 31 mint ที่พ้น cooldown แล้ว และจะเพิ่มทุกวัน
+
+2. **`candidates.json` stamp `firstSurfacedAt` + `surfacedCount`** และเรียง
+   ตัวใหม่ขึ้นก่อน `alert` แสดง "**ใหม่**" หรือ "อยู่ในลิสต์มา Nd" ที่หัวเรื่อง
+   **ไม่ได้ filter อะไรออก** — เหรียญที่ยังผ่าน filter อยู่ก็ยังซื้อได้ มันแค่ไม่ใช่ข่าว
+   (fone: surfacedCount 81, first 27 ส.ค.)
+
+3. **`patterns` provenance แตก sparse/dense** — `pre-versioning` bucket เดียว
+   ซ่อน median samples/row 12 (Aug24-26) กับ 175-385 (Aug27-30) ไว้ด้วยกัน
+   ตอนนี้พิมพ์ n=143 sparse (median 12) / n=137 dense (median 258) พร้อมคำเตือน
+   `DENSE_SAMPLE_MIN = 50` วางตรงที่ cadence change ลงจริงในข้อมูล ไม่ใช่ค่าที่ tune
+
+### RULES change: ลบ momentum track (`momMinVolLiq`) — ตามเงื่อนไขฆ่าที่ตั้งไว้เอง
+
+เงื่อนไขที่เขียนไว้ตอน ship 2026-08-27: ฆ่าถ้าที่ ~20-30 tokens แล้ว MOMENTUM ยังไม่ชนะ
+`PASS, quiet` บน peak-2x ถึงแล้วและไม่ชนะ:
+
+```
+lifetime peak-2x, ทุกแถว     MOMENTUM n=20  5.0%   PASS,quiet n=49  4.1%   p=0.65
+เฉพาะแถว dense               MOMENTUM n= 7  0.0%   PASS,quiet n=20  5.0%   p=1.00
+```
+
+ไม่แยกใน stratum ไหนเลย และทิศกลับด้านระหว่างสอง stratum = หน้าตาของผลที่เหรียญเดียวแบกอยู่
+
+และ threshold ถูก intake drift กินไปแล้ว: ตอนตั้ง median vol/liq ที่ discovery = 4.2
+`>= 5` จึงคัดครึ่งบน พอถึง 31 ส.ค. median = 15.8 มันรับ **67% ของ intake**
+gate ที่ปล่อยผ่านสองในสามของสิ่งที่เห็นไม่ได้คัดอะไร
+
+ลบ: `momMinVolLiq`, `momentumQualifies()`, momentum section ใน `cmdAlert`,
+ตาราง `momentum gate` ใน `patterns` เหลือ gate เดียวคือ safety
+
+### ทำไมไม่เอา chg24h > 1000 ขึ้นมาแทนเป็น gate
+
+CLAUDE.md บอกให้ "replace it with a better pump-pattern candidate" และมีตัวจริง —
+`momMinChg24h` เป็นตัวเดียวที่รอดทุก stratification รอบนี้ทดสอบซ้ำโดยแบ่งตาม
+sampling density (ซึ่งเป็นตัวที่ฆ่า vol/liq):
+
+```
+                      มีสัญญาณ            ไม่มีสัญญาณ
+chg24h>1000  sparse   4/21  19.0%   vs   8/131   6.1%   p=0.064
+             dense    8/27  29.6%   vs  17/131  13.0%   p=0.036
+vol/liq>=5   sparse   9/71  12.7%   vs   3/81    3.7%   p=0.040
+             dense   17/96  17.7%   vs   8/62   12.9%   p=0.28
+```
+
+chg24h ทิศเดียวกันและขนาดใกล้กันทั้งสองฝั่งของ cadence change — ไม่ใช่ artifact
+ของการ poll ต่างกัน ส่วน vol/liq เอฟเฟกต์อยู่แค่ฝั่ง sparse = artifact
+
+**แต่ยังไม่ promote** เหตุผลที่เขียนไว้ 31 ส.ค. ยังอยู่ครบ: FWER-adjusted p = 0.116,
+pumper 12 ตัวแบกทั้งผล, และมันเลือก rug 50-62% การส่งเข้าโทรศัพท์คือการใช้เงินจริง
+กับผลที่ยังไม่ผ่านบาร์ของตัวเอง — นี่คือ "loosening rules without data" ที่ CLAUDE.md ห้าม
+goal arm ตอนนี้ = ตาราง `chg24h gate x age` + ท่อ intake ที่ซ่อมแล้วให้มันสะสม forward row ได้
+
+**bug ในเงื่อนไข checkpoint เดิม**: `n >= 30 in the current era` นับแถว ไม่ได้นับ outcome
+ยุค 71c22712 แตะ 30 แถววันนี้ทั้งที่ทุกแถวอายุไม่ถึงวันและยังไม่มี d3 เลย
+แก้คำอ่านเป็น **30 แถวที่มี d3 outcome แล้ว** ในยุคปัจจุบัน
+
+### ตาราง `entry floors` แทนที่ `momentum gate`
+
+คำถามใต้ gate เดิมยังเป็นความตึงหลักของโปรเจค เลยเก็บ view ไว้ในรูปที่ตรงกว่า
+วัดบนแถว dense เท่านั้น (sample-matched: median 231 vs 237 samples):
+
+```
+below floors  n=99  peak-2x 21.2%  rug 49.5%
+above floors  n=59  peak-2x  6.8%  rug  1.7%    p=0.012
+  แยก:  age<48h อย่างเดียว  n=48  peak-2x 25.0%  rug 60%
+        liq<50k อย่างเดียว  n=13  peak-2x 15.4%  rug  0%
+        ตกทั้งคู่            n=38  peak-2x 18.4%  rug 53%
+```
+
+floor ตัด pump population ไปราวสองในสาม และตัด rug population ไปเกือบหมด พร้อมกัน
+นี่คือ trade ที่เจ้าของกำลังซื้อ พูดเป็นตัวเลขแทนที่จะสมมติเอา
+ตัวที่ทำทั้งสองอย่างคือ **ด่าน age** (age<48h เดี่ยวๆ: peak-2x 25% บน rug 60%)
+→ ไม่ใช่ candidate สำหรับผ่อน
+
+ช่องเดียวที่ผ่อนแล้วดูถูก — **liq 30-50k ที่ age ≥ 48h: peak-2x 15.4% บน rug 0/13** —
+n=13 และเป็น 1 ใน 3 cell ที่ผมแบ่งเอง (multiplicity) **ยังไม่ใช่หลักฐาน** ให้เฝ้าดูสะสม
+อย่าขยับ `minLiquidityUsd` จนกว่ามัน pre-register forward sample ของตัวเอง
+
+### ข้อจำกัดของรอบนี้
+
+- ตัวเลขทั้งหมดยังเป็น paper — `journal.json` ยังว่าง 0 entries
+- `peakRet` ยังเป็น sampled lower bound เหมือนเดิม การเทียบข้าม density stratum
+  ยังห้ามอยู่ ทุกตัวเลขข้างบนอ่านภายใน stratum เดียว
+- การเทียบ "ยุค" ในตารางแรกเป็นการเทียบ **องค์ประกอบของ feed** ไม่ใช่ผลของ threshold
+  ห้ามอ่านว่า "filter เข้มขึ้น" หรือ "ตลาดแย่ลง"
+- re-entry เพิ่งเปิดวันนี้ แถว entryNo≥2 ยังไม่มี outcome สักตัว ผลของการแก้จะวัดได้
+  จริงตอน d3 ของแถวชุดแรกสุก (~4 ก.ย.)

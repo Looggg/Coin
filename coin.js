@@ -38,6 +38,37 @@ const RULES = {
   // between the two still gets scanned, scored and tracked (as FAIL), so the
   // dataset keeps the evidence that would let us walk this change back
   minTrackLiquidityUsd: 30000,
+
+  // How long a mint must wait, after the START of its last tracked entry,
+  // before a scan may enter it again. Added 2026-09-01 to unblock intake.
+  //
+  // WHY THIS EXISTS. Discovery dedupes against the archive, so a token was
+  // tracked once and then excluded forever. `trending_pools` is a small stable
+  // set (10 pages = 138 mints over minTrackLiquidityUsd, 122 of them older than
+  // minAgeHours) and it was fully absorbed within the first days. After that the
+  // only rows still entering the dataset were whatever had just arrived in
+  // trending plus the `new_pools` firehose — that is, young and thin by
+  // construction. Measured: median age at discovery 376h (Aug 24-26) -> 24h
+  // (Aug 27-30) -> 10h (Aug 31+), median liquidity 118k -> 85k -> 67k, and
+  // pass rate 51% -> 22% -> 5%, ending at 0 PASS in 30 consecutive rows. The
+  // PASS arm of the dataset had stopped growing entirely: the screener still
+  // printed ~27 PASS candidates an hour, but 33 of the 39 distinct mints in the
+  // last 24 scans were already archived, so none of them could ever produce a
+  // new outcome. That is a broken learning loop, not a market observation.
+  //
+  // WHY A COOLDOWN AND NOT JUST REMOVING THE DEDUPE. Re-entering the same mint
+  // is a genuinely new entry decision — different price, different age, and the
+  // 2-5x play is judged from the entry, not from the token. But two entries
+  // whose outcome windows overlap are one observation counted twice, which is
+  // the double-count this dedupe was written to prevent. The longest outcome
+  // bucket is d3 = 72h, so the cooldown must exceed it; 168h leaves the windows
+  // disjoint with margin.
+  //
+  // Repeat entries are NOT independent samples (same token, same holders, often
+  // the same regime). `patterns` keys rows by mint+entryNo so no entry is lost,
+  // and prints the distinct-mint count next to n so any table read off a
+  // repeat-heavy dataset shows its own clustering.
+  reentryCooldownHours: 168,
   maxTop10Pct: 30, // top-10 holders (excl. LP/CEX) combined %
   minLpLockedPct: 80, // LP locked/burned percentage
   washVolLiqRatio: 10, // vol24h > N x liquidity => wash suspicion
@@ -89,43 +120,35 @@ const RULES = {
   alertMinAgeHours: 24,
   alertCooldownHours: 72, // do not re-alert the same mint inside this window
 
-  // `momentum` notification track — a SECOND gate, parallel to the one above,
-  // added 2026-08-27. The safety gate answers "is this unlikely to rug"; every
-  // measurement so far says that is uncorrelated with going up, which surfaces
-  // tokens that survive without growing. This gate answers a different
-  // question: "is anyone actually trading this right now".
+  // `momentum` notification track — REMOVED 2026-09-01, by the kill condition
+  // it shipped with. Added 2026-08-27 to select on attention (vol/liq >=
+  // momMinVolLiq) instead of cleanliness, it was to be deleted if the MOMENTUM
+  // cell had not beaten `PASS, quiet` on peak-2x by ~20-30 tokens. It reached
+  // that sample and did not:
   //
-  // It keeps the full safety verdict (candidates.json only ever holds PASS) and
-  // the age + liquidity floors, then selects on attention instead of cleanliness
-  // by DROPPING alertMinScore, alertMaxInsiderPct, alertMaxFdv and the chg24h
-  // band — those three are exactly what excluded every token that ran:
+  //   lifetime peak-2x, all rows   MOMENTUM n=20  5.0%   PASS,quiet n=49  4.1%   p=0.65
+  //   dense-sampled rows only      MOMENTUM n= 7  0.0%   PASS,quiet n=20  5.0%   p=1.00
   //
-  //   hit-2x rate, n=145 tracked, win = peakRet >= 1 (the 2x the play targets)
-  //     vol/liq >= 5   n=66  9%        vol/liq < 5   n=79  1%
+  // No separation in either density stratum, and the direction flips between
+  // them — which is what one token carrying the whole number looks like. The
+  // threshold had also been eaten by intake drift: when it was set, median
+  // vol/liq at discovery was 4.2 and `>= 5` selected the top half; by 2026-08-31
+  // the median was 15.8 and it admitted 67% of intake. A gate that passes two
+  // thirds of what it sees is not selecting anything.
   //
-  // That single feature is the whole basis. Measured on the EXACT cut this gate
-  // makes — safety PASS included, which the line above does not require — the
-  // sample is far thinner and does NOT yet support the gate:
-  //
-  //     MOMENTUM     n=13  peak-2x 1 (PANTS +271%)  d1 median -18.2%  rug 0%
-  //     PASS, quiet  n=29  peak-2x 0                d1 median  -9.0%  rug 0%
-  //
-  // 1-of-13 against 0-of-29 is not a result, and on d1 return the selected cell
-  // is the WORSE of the two — the case rests entirely on peak path, which is
-  // what the 2-5x play actually exits into, on one token. The age floor is kept
-  // because the winners here are second-wave pumps on established pools (PANTS
-  // at 131h, Sue at 586h, Zoe at 189h), not launch snipes, so this gate does not
-  // fight minAgeHours.
-  //
-  // UNPROVEN, and deliberately shipped anyway: nothing in the safety track was
-  // ever going to surface these, so there is no forward sample to argue over
-  // until something does. Paper only. `patterns` prints the `momentum gate`
-  // table that settles it; revisit at ~20-30 tokens, and delete this gate if the
-  // MOMENTUM cell has not beaten `PASS, quiet` on peak-2x by then.
-  momMinVolLiq: 5, // the only new threshold; everything else is reused above
+  // NOT replaced by another live notification gate. CLAUDE.md asks for a better
+  // pump-pattern candidate rather than abandoning the goal, and there is one —
+  // momMinChg24h below, the only feature that survived every stratification
+  // tried, re-confirmed 2026-09-01 inside both density strata (19.0% vs 6.1%
+  // sparse, 29.6% vs 13.0% dense). It stays MEASUREMENT ONLY anyway: not
+  // multiplicity-clean (FWER-adjusted p = 0.116), 12 pumpers carry it, and it
+  // selects 50-62% rug. Buzzing the phone with it would be spending real money
+  // on a result that has not cleared its own pre-registered bar. The goal arm is
+  // now that table plus the intake fix that lets it accumulate forward rows —
+  // see STUDY.md 2026-09-01.
 
-  // MEASUREMENT ONLY — deliberately NOT wired into momentumQualifies, alert,
-  // or any buy path. Added 2026-08-31 as a pre-registered candidate after an
+  // MEASUREMENT ONLY — deliberately NOT wired into the alert gate or any buy
+  // path. Added 2026-08-31 as a pre-registered candidate after an
   // audit that refuted the session's headline finding but left this one
   // standing. chg24h at discovery is the only gate that survived every
   // stratification tried: both polling eras (p=0.057 sparse / p=0.044 dense),
@@ -148,6 +171,18 @@ const RULES = {
   // number to make the table look better — that is the failure mode the
   // 2026-08-31 audit was written to prevent. Judge it on forward rows only,
   // stamped with an entry-filter version, at n >= 30 in the current era.
+  //
+  // 2026-09-01 re-check, now inside sampling-density strata (see
+  // DENSE_SAMPLE_MIN): 19.0% vs 6.1% on sparse rows, 29.6% vs 13.0% on dense.
+  // Same direction, same rough effect size on both sides of the cadence change,
+  // so it is not the polling artifact that killed the vol/liq result. 12 pumpers
+  // carry it. Still not promoted — none of the reasons above went away.
+  //
+  // The n >= 30 checkpoint is COUNT-BASED AND THAT IS A BUG in how it was
+  // written: era 71c22712 hit 30 rows on 2026-09-01 with every row under a day
+  // old and no d3 outcome, so the count triggered while the data it was meant
+  // to trigger on did not exist. Read the checkpoint as 30 rows with a RECORDED
+  // d3 outcome in the current era, not 30 rows.
   momMinChg24h: 1000,
   alertPullbackChg24h: 30, // above this, suggest waiting for a dip instead
   alertDowntrendChg6h: -10, // below this, say so instead of "enter at market"
@@ -789,9 +824,11 @@ async function cmdScan(fullCheckCap) {
   if (candidates.size > list.length)
     console.log(`(full-checking first ${list.length} — raise with: node coin.js scan ${candidates.size})`);
   const tracking = loadTracking();
-  // a token already archived was fully observed once — re-tracking it under a
-  // new firstSeenAt would double-count it in patterns
-  const archived = new Set(loadArchive().map((r) => r.mint));
+  // A token already archived was fully observed once. Re-entering it before its
+  // outcome window has closed would double-count one observation; re-entering it
+  // long after is a new entry decision at a new price. RULES.reentryCooldownHours
+  // draws that line — see the note there for why intake dies without it.
+  const history = archiveHistory();
   const passed = [];
   let i = 0;
   http429s = 0; // count only this scan's rate limiting
@@ -803,10 +840,17 @@ async function cmdScan(fullCheckCap) {
       const verdict = runChecklist(s);
       // track every full-checked token, pass or fail — the pump-pattern
       // dataset needs the failures as its control group
-      if (!tracking[mint] && !archived.has(mint) && !s.dead) {
+      const prior = history.get(mint);
+      const cooledDown =
+        !prior || Date.now() - prior.lastSeenAt >= RULES.reentryCooldownHours * 3.6e6;
+      if (!tracking[mint] && cooledDown && !s.dead) {
         tracking[mint] = {
           symbol: s.symbol || null,
           firstSeenAt: new Date().toISOString(),
+          // 1 for a first-ever entry, 2+ for a re-entry after the cooldown.
+          // `patterns` keys on mint+entryNo, so this is what keeps a repeat
+          // from overwriting the earlier observation of the same token.
+          entryNo: (prior?.entries || 0) + 1,
           // entry-filter hash + poll cadence — see the dataset provenance block.
           // without these, `f.pass` and `p.peakRet` are not comparable across
           // time and `patterns` silently averages incompatible eras.
@@ -864,7 +908,25 @@ async function cmdScan(fullCheckCap) {
     );
 
   saveTracking(tracking);
-  passed.sort((a, b) => b.score - a.score); // best-looking survivor first
+
+  // Stamp how long each survivor has been on the shortlist. The screener
+  // re-checks every candidate every run, so the numbers in candidates.json are
+  // always fresh — but the same tokens keep clearing the filter, and nothing
+  // said so. On 2026-09-01, 21 of the 39 distinct mints surfaced across the
+  // last 24 scans had been on the list for at least 20 of them and 19 of them
+  // dated to 2026-08-25, which reads as a live shortlist and is really one
+  // week-old shortlist reprinted. These two fields are the difference between
+  // "still passing" and "new", and nothing filters on them: a token that keeps
+  // passing is still a valid buy, it just is not news.
+  const surfaced = candidateHistory();
+  for (const c of passed) {
+    const h = surfaced.get(c.mint);
+    c.firstSurfacedAt = h ? h.firstAt : c.checkedAt;
+    c.surfacedCount = (h?.count || 0) + 1;
+  }
+  // new arrivals first, then by score within each group — the shortlist is read
+  // top-down and the thing worth reading is what was not there yesterday
+  passed.sort((a, b) => a.surfacedCount - b.surfacedCount || b.score - a.score);
 
   // candidates.json = latest shortlist (overwritten every run);
   // candidates-history.jsonl = every candidate ever surfaced, so a find is
@@ -956,6 +1018,64 @@ function loadArchive() {
   }
   if (bad) console.error(`(archive: skipped ${bad} corrupt line(s) in tracking-archive.jsonl)`);
   return rows;
+}
+
+// How many times each mint has already been surfaced as a candidate, and when
+// it first was. Derived from candidates-history.jsonl rather than kept as its
+// own state file: that log is already append-only and already holds every
+// candidate ever printed, so there is nothing to keep in sync.
+//
+// Best-effort by design — a missing or corrupt history must not stop a scan
+// from writing its shortlist, it just makes this run look like everything is
+// new.
+function candidateHistory() {
+  const h = new Map();
+  const p = path.join(__dirname, "candidates-history.jsonl");
+  if (!fs.existsSync(p)) return h;
+  for (const l of fs.readFileSync(p, "utf8").split("\n")) {
+    if (!l.trim()) continue;
+    let c;
+    try {
+      c = JSON.parse(l);
+    } catch {
+      continue;
+    }
+    if (!c.mint) continue;
+    const prev = h.get(c.mint);
+    const at = c.checkedAt || null;
+    h.set(c.mint, {
+      count: (prev?.count || 0) + 1,
+      firstAt: prev?.firstAt && (!at || prev.firstAt < at) ? prev.firstAt : at,
+    });
+  }
+  return h;
+}
+
+// per-mint entry history for the scan's re-entry cooldown: how many times this
+// mint has been entered, and when the most recent entry STARTED. Start, not
+// finish, is the right anchor — the cooldown exists to keep two outcome windows
+// from overlapping, and a window is measured from firstSeenAt.
+//
+// Reads live tracking as well as the archive: a mint whose first entry is still
+// mid-flight is excluded by the `!tracking[mint]` check anyway, but counting it
+// here keeps entryNo correct if it ever finishes and re-enters later.
+function archiveHistory() {
+  const h = new Map();
+  const note = (r) => {
+    const t = new Date(r.firstSeenAt).getTime();
+    if (!r.mint || !Number.isFinite(t)) return;
+    const prev = h.get(r.mint);
+    // fail CLOSED on a corrupt/missing timestamp elsewhere in the history: keep
+    // the newest one seen, so a bad row can only delay a re-entry, never invite
+    // a double-count
+    h.set(r.mint, {
+      entries: (prev?.entries || 0) + 1,
+      lastSeenAt: Math.max(prev?.lastSeenAt || 0, t),
+    });
+  };
+  for (const r of loadArchive()) note(r);
+  for (const [mint, r] of Object.entries(loadTracking())) note({ mint, ...r });
+  return h;
 }
 
 function trackFeatures(s, verdict, score) {
@@ -1162,6 +1282,12 @@ function observedCadenceMin(r) {
 // were collected — which is exactly how the refuted 2026-08-31 `pass` finding
 // happened. Print the partition first so it is impossible to read the tables
 // without seeing it.
+// A row is "dense" if its peak was sampled often enough that p.peakRet is a
+// tight lower bound, "sparse" if it was not. The boundary is where the cadence
+// change of 2026-08-27 actually landed in the data (median samples/row 12 before
+// it, 175-385 after), not a tuned number — rows sit far from it on both sides.
+const DENSE_SAMPLE_MIN = 50;
+
 function printProvenance(rows) {
   const eras = {};
   for (const r of rows) {
@@ -1169,7 +1295,10 @@ function printProvenance(rows) {
     (eras[key] = eras[key] || []).push(r);
   }
   const keys = Object.keys(eras).sort((a, b) => eras[b].length - eras[a].length);
+  const mints = new Set(rows.map((r) => r.mint).filter(Boolean));
+  const repeats = rows.length - mints.size;
   console.log(`\n── dataset provenance (n=${rows.length}) ──`);
+  let splitEras = 0;
   for (const k of keys) {
     const g = eras[k];
     const cadences = g.map(observedCadenceMin).filter((x) => x != null);
@@ -1179,6 +1308,50 @@ function printProvenance(rows) {
     console.log(
       `  entry filter ${k.padEnd(14)} n=${String(g.length).padStart(3)}  ${cfg}, ${obs}  median samples/row ${samples[Math.floor(samples.length / 2)]}`
     );
+    // An entry-filter version is NOT by itself a comparable stratum: the
+    // pre-versioning bucket alone spans an hourly and a 10-minute polling
+    // regime, and lifePk2x rises with poll count on its own. Split each era by
+    // sampling density so that confound cannot hide inside a single line —
+    // it is what made the 2026-08-31 headline look solid.
+    const dense = g.filter((r) => (r.p?.samples || 0) >= DENSE_SAMPLE_MIN);
+    const sparse = g.length - dense.length;
+    if (dense.length && sparse) {
+      splitEras++;
+      const med = (a) => {
+        const s = a.map((r) => r.p?.samples || 0).sort((x, y) => x - y);
+        return s[Math.floor(s.length / 2)];
+      };
+      console.log(
+        `      ├─ sparse (<${DENSE_SAMPLE_MIN} samples) n=${String(sparse).padStart(3)}  median ${med(g.filter((r) => (r.p?.samples || 0) < DENSE_SAMPLE_MIN))}`
+      );
+      console.log(
+        `      └─ dense  (≥${DENSE_SAMPLE_MIN} samples) n=${String(dense.length).padStart(3)}  median ${med(dense)}`
+      );
+    }
+  }
+  if (repeats) {
+    console.log(
+      `\n  ⚠ ${rows.length} rows over ${mints.size} distinct mints (${repeats} re-entries).`
+    );
+    console.log(
+      `    Repeat entries of one token are NOT independent samples — same holders,`
+    );
+    console.log(
+      `    often the same regime. Any cell here can be several looks at one token;`
+    );
+    console.log(`    check the distinct-mint count before treating n as n.`);
+  }
+  if (splitEras) {
+    console.log(
+      `\n  ⚠ ${splitEras} era(s) above contain BOTH sparse and dense rows. \`lifePk2x\` is a`
+    );
+    console.log(
+      `    sampled lower bound that rises with poll count, so within such an era a`
+    );
+    console.log(
+      `    cell that skews dense will out-score one that skews sparse for no reason`
+    );
+    console.log(`    but observation. Compare inside one density stratum, never across.`);
   }
   if (keys.length > 1) {
     console.log(
@@ -1209,9 +1382,15 @@ function cmdPatterns(bucketArg) {
   const horizon = ["h4", "d1", "d3"].includes(bucketArg) ? bucketArg : "d1";
   // archive first, live second: dedupe by mint keeps the live row if a crash
   // ever left a token in both places
-  const byMint = new Map(loadArchive().map((r) => [r.mint, r]));
-  for (const [mint, r] of Object.entries(loadTracking())) byMint.set(mint, r);
-  const rows = [...byMint.values()].filter(
+  // Keyed by mint+entryNo, not mint: a token may legitimately be entered more
+  // than once (RULES.reentryCooldownHours), and those are separate observations.
+  // Keying on mint alone would silently drop the earlier one. The key still
+  // dedupes the case this was written for — a crash leaving one entry in both
+  // the archive and the live file — because that duplicate shares both fields.
+  const key = (mint, r) => `${mint}#${r.entryNo || 1}`;
+  const byEntry = new Map(loadArchive().map((r) => [key(r.mint, r), r]));
+  for (const [mint, r] of Object.entries(loadTracking())) byEntry.set(key(mint, r), { mint, ...r });
+  const rows = [...byEntry.values()].filter(
     (r) => r.o?.[horizon] && Number.isFinite(r.o[horizon].ret)
   );
   if (!rows.length)
@@ -1287,43 +1466,37 @@ function cmdPatterns(bucketArg) {
   table("liquidity", (f) =>
     f.liqUsd == null ? null : f.liqUsd < 50000 ? "$30-50k" : f.liqUsd < 150000 ? "$50-150k" : ">$150k"
   );
-  // forward-evaluation table for the momentum track: the same cut the gate
-  // makes, so `patterns d1` is what decides whether it ever earns real money
+  // What the entry floors cost the pump goal. Replaces the `momentum gate`
+  // table on 2026-09-01: that table existed to settle whether vol/liq >= 5
+  // earned a live gate, it settled it (no), and the gate is gone — but the
+  // question underneath it is the project's central tension and still needs a
+  // standing view.
   //
-  // MEASUREMENT ONLY — this table does not gate or alert anything; it just
-  // prices what requiring safety PASS costs the pump goal. floors (liquidity,
-  // age) apply to everyone FIRST, then the safety verdict splits each
-  // attention cell in two, so "MOMENTUM, not-PASS" sits right next to
-  // "MOMENTUM" with matching liq/age/vol-liq. rug sits beside it as the
-  // counter-argument: if "MOMENTUM, not-PASS" keeps winning on pump metrics
-  // (pk2x/pk50) without a correspondingly ugly rug rate, the next debate is
-  // whether the insider/top10 rules are too strict for THIS track specifically
-  // — argued from this data, as its own RULES change, not decided here.
+  // MEASUREMENT ONLY. Read this INSIDE one sampling-density stratum or not at
+  // all: "below floors" skews to the recent, densely-polled intake, and
+  // lifePk2x rises with poll count on its own. On the dense rows, where the two
+  // sides are sample-matched (median 231 vs 237 samples), 2026-09-01 measured:
   //
-  // The decision metric for this track is peak-2x (lifePk2x), read at d3 —
-  // the pre-registered kill criterion, not the fixed-horizon return.
+  //   below floors  n=99  peak-2x 21.2%  rug 49.5%
+  //   above floors  n=59  peak-2x  6.8%  rug  1.7%    p=0.012
   //
-  // CORRECTION 2026-08-28: an earlier draft of this comment claimed Fisher
-  // exact p is "roughly 0.1 at 2-vs-0" for a 20-30 token sample and used that
-  // to add lifePk50 as a co-primary. Both halves were wrong. Computed exactly,
-  // 2-vs-0 two-tailed is p = 0.487 at 20-vs-20, 0.490 at 25-vs-25, 0.492 at
-  // 30-vs-30. (0.091 is the 13-vs-29 shape the cells happen to have today,
-  // not the checkpoint's.) The honest reading is that the 20-30 token
-  // checkpoint is UNDERPOWERED, not that a second metric fixes it — and a
-  // second metric that can independently declare success only raises the
-  // false-positive rate of the kill test.
-  //
-  // So: lifePk50 is descriptive context, NOT a success criterion. A gate that
-  // fails on lifePk2x is not rescued by lifePk50. If the checkpoint arrives
-  // underpowered, the correct outcome is "inconclusive, keep collecting" or
-  // "kill it for lack of evidence" — decided by the owner, not by reaching
-  // for whichever number happens to look better.
-  table("momentum gate", (f) => {
-    if (f.liqUsd == null || f.vol24h == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
-    if (!(f.liqUsd >= RULES.minLiquidityUsd && f.ageHours >= RULES.minAgeHours)) return "below floors";
-    const attention = f.vol24h / f.liqUsd >= RULES.momMinVolLiq;
-    if (attention) return f.pass ? "MOMENTUM" : "MOMENTUM, not-PASS";
-    return f.pass ? "PASS, quiet" : "FAIL, quiet";
+  // So the floors are removing roughly two thirds of the pump population, and
+  // ~all of the rug population, at the same time. That is the trade the owner
+  // is buying, stated as a number rather than assumed. Decomposed, the age
+  // floor is what does both (age<48h alone: 25.0% peak-2x on 60% rug), which is
+  // why it is NOT a candidate for loosening. The one cell where relaxing looked
+  // cheap — liq 30-50k with age >= 48h, 15.4% peak-2x on 0% rug — is n=13 and
+  // one of three cells inspected; it is a thing to WATCH accumulate, not
+  // evidence. Do not move minLiquidityUsd off this table until it has its own
+  // pre-registered forward sample.
+  table("entry floors", (f) => {
+    if (f.liqUsd == null || f.ageHours == null || !(f.liqUsd > 0)) return null;
+    const liqOk = f.liqUsd >= RULES.minLiquidityUsd;
+    const ageOk = f.ageHours >= RULES.minAgeHours;
+    if (liqOk && ageOk) return f.pass ? "above floors, PASS" : "above floors, FAIL";
+    if (ageOk) return "below: liq only";
+    if (liqOk) return "below: age only";
+    return "below: both";
   });
   // Pre-registered candidate (RULES.momMinChg24h), MEASUREMENT ONLY — nothing
   // gates or alerts on this. Split INSIDE age strata on purpose: chg24h is
@@ -1589,32 +1762,7 @@ function alertQualifies(c, sent, now) {
   return true;
 }
 
-// The momentum gate. Deliberately NOT a relaxation of alertQualifies: it
-// reuses the hard floors (safety PASS, liquidity, age, freshness, cooldown) and
-// then selects on attention rather than on absence of red flags.
-function momentumQualifies(c, sent, now) {
-  const R = RULES;
-  // candidates.json only ever holds tokens that passed runChecklist, so the
-  // rug protection is already applied before anything here runs
-  if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
-  if (!(c.ageHours >= R.minAgeHours)) return false;
-  if (c.vol24h == null || !(c.liqUsd > 0)) return false;
-  if (c.vol24h / c.liqUsd < R.momMinVolLiq) return false;
-  if (!(c.priceUsd > 0)) return false;
-  // same staleness rule as the safety gate: never quote a price this scan did
-  // not fetch (`discovery scan` is continue-on-error)
-  const seenAt = c.checkedAt ? new Date(c.checkedAt).getTime() : NaN;
-  if (!Number.isFinite(seenAt) || now - seenAt > 2 * 3.6e6) return false;
-  // shared dedup with the safety track: same phone, same mint, one buzz
-  if (c.mint in sent) {
-    const last = new Date(sent[c.mint]).getTime();
-    if (!Number.isFinite(last)) return false;
-    if (now - last < R.alertCooldownHours * 3.6e6) return false;
-  }
-  return true;
-}
-
-function alertBody(c, track) {
+function alertBody(c) {
   const P = c.priceUsd;
   const R = RULES;
   // the knife check comes FIRST. it used to sit behind the pullback branch,
@@ -1631,10 +1779,16 @@ function alertBody(c, track) {
     entry = `เข้าแถว **${fmtPrice(P)}** ได้`;
   }
   const volLiq = c.liqUsd > 0 && c.vol24h != null ? (c.vol24h / c.liqUsd).toFixed(1) + "x" : "?";
+  // "ใหม่" vs "อยู่ในลิสต์มา Nh" — the shortlist reprints tokens that keep
+  // passing, and without this every entry reads as a fresh find
+  let seenFor = "";
+  const firstAt = c.firstSurfacedAt ? new Date(c.firstSurfacedAt).getTime() : NaN;
+  if (Number.isFinite(firstAt)) {
+    const h = (Date.now() - firstAt) / 3.6e6;
+    seenFor = h < 2 ? " · **ใหม่**" : ` · อยู่ในลิสต์มา ${h < 48 ? `${h.toFixed(0)}h` : `${(h / 24).toFixed(0)}d`}`;
+  }
   return [
-    track === "momentum"
-      ? `### ${c.symbol || c.mint.slice(0, 8)} — vol/liq ${volLiq} · score ${c.score}`
-      : `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}`,
+    `### ${c.symbol || c.mint.slice(0, 8)} — score ${c.score}${seenFor}`,
     "",
     "```",
     c.mint,
@@ -1663,46 +1817,25 @@ function cmdAlert(commitSent) {
   const candidates = JSON.parse(fs.readFileSync(CAND_PATH, "utf8"));
   const sent = loadAlertsSent();
   const now = Date.now();
+  // One gate since 2026-09-01. The parallel `momentum` track was removed by
+  // its own pre-registered kill condition — see the RULES tombstone. Nothing
+  // replaced it: the surviving pump candidate (momMinChg24h) is measurement
+  // only, so the phone gets safety-gate hits or nothing at all.
   const hits = candidates.filter((c) => alertQualifies(c, sent, now));
-  // safety wins a tie: a token clearing both gates is reported once, under the
-  // track whose entry advice is the more conservative of the two
-  const safeMints = new Set(hits.map((c) => c.mint));
-  const momHits = candidates.filter(
-    (c) => !safeMints.has(c.mint) && momentumQualifies(c, sent, now)
-  );
-  if (!hits.length && !momHits.length) {
-    console.error(`alert: ${candidates.length} candidate(s), none clear either notification gate`);
+  if (!hits.length) {
+    console.error(`alert: ${candidates.length} candidate(s), none clear the notification gate`);
     process.exit(3);
   }
 
   const out = [];
-  if (hits.length) {
-    out.push("## 🛡 safety — ผ่าน filter ครบ ไม่มี red flag", "");
-    out.push(hits.map((c) => alertBody(c, "safety")).join("\n\n---\n\n"));
-  }
-  if (momHits.length) {
-    if (out.length) out.push("", "---", "");
-    out.push("## 🔥 momentum — มีคนเทรดจริงตอนนี้ (track ทดลอง)", "");
-    out.push(
-      `ผ่าน safety filter + floor liq/อายุ เท่าเดิม แต่คัดด้วย **vol/liq ≥ ${RULES.momMinVolLiq}x** ` +
-        "แทนคะแนนความสะอาด.",
-      "",
-      "> ⚠️ **track นี้ยังไม่มีหลักฐานรองรับ** — บน cut เดียวกันนี้ใน tracking ปัจจุบัน",
-      "> แตะ 2x 1 ใน 13 ตัว (PANTS) เทียบ 0 ใน 29 ของฝั่งเงียบ และ **d1 median แย่กว่า**",
-      "> (-18.2% เทียบ -9.0%) มีไว้เก็บ forward sample เท่านั้น",
-      ">",
-      "> **paper ก่อน** — `log <mint> skip` ก็นับเป็น data. อย่าใส่เงินจริงกับ track นี้",
-      "> จนกว่าตาราง `momentum gate` ใน `node coin.js patterns d1` จะสะสมได้ 20-30 ตัว",
-      ""
-    );
-    out.push(momHits.map((c) => alertBody(c, "momentum")).join("\n\n---\n\n"));
-  }
+  out.push("## 🛡 safety — ผ่าน filter ครบ ไม่มี red flag", "");
+  out.push(hits.map((c) => alertBody(c)).join("\n\n---\n\n"));
   out.push(
     "",
     "---",
     "",
     "ตัวเลขเข้า/ออกคำนวณจาก exit rules ใน RULES ตรงๆ ไม่ใช่คำทำนาย.",
-    "safety track กัน downside; momentum track เลือกความสนใจ ไม่ใช่ความปลอดภัยที่มากกว่า.",
+    "gate นี้กัน downside เท่านั้น — ผ่าน filter แล้วยังไม่ได้แปลว่าจะขึ้น.",
     "$10 ต่อไม้คือ stop loss ตัวจริง.",
     "",
     "ดูแล้วบันทึก: `node coin.js log <mint> buy|skip \"reason\"` — skip ก็เป็น data"
@@ -1715,7 +1848,7 @@ function cmdAlert(commitSent) {
   // workflow's revert branch exists to prevent, entered through the front door.
   // Only the workflow, which actually creates the issue, passes --commit-sent.
   if (commitSent) {
-    for (const c of [...hits, ...momHits]) sent[c.mint] = new Date(now).toISOString();
+    for (const c of hits) sent[c.mint] = new Date(now).toISOString();
     // prune anything long past the cooldown so this file cannot grow forever
     const cutoff = now - RULES.alertCooldownHours * 3.6e6 * 4;
     for (const [m, t] of Object.entries(sent)) {
@@ -1726,10 +1859,8 @@ function cmdAlert(commitSent) {
   } else {
     console.error("(preview — alerts-sent.json not written; pass --commit-sent to record)");
   }
-  const say = (label, list) =>
-    list.length ? `${label} ${list.length} (${list.map((c) => c.symbol).join(", ")})` : null;
   console.error(
-    "alert: " + [say("safety", hits), say("momentum", momHits)].filter(Boolean).join(" · ")
+    `alert: safety ${hits.length} (${hits.map((c) => c.symbol).join(", ")})`
   );
 }
 
