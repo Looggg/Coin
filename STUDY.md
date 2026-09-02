@@ -1112,3 +1112,165 @@ reviewer รอบแรกเสนอให้ใส่เพดาน liquidi
 - `journal.json` ยังว่าง — **ยังไม่มีการซื้อจริงสักไม้** ทุกอย่างเป็น paper
 - ยุค `71c22712` ยังไม่มี d3 สักแถว -> ไม่มี finding ไหนถูกทดสอบบนข้อมูลใหม่จริงๆ เลย
 - ตัวเลข backtest ที่แน่นอนไม่สามารถรู้ได้จากข้อมูลชุดนี้ รู้ได้แค่ทิศทาง
+
+---
+
+## 2026-09-03 — alert อ่านผิดเพราะ cooldown, gate ไม่มีเงื่อนไข trend, และ momMinChg24h **ยังไม่ตาย**
+
+session นี้เกือบบันทึกข้อผิดพลาดถาวรลงไฟล์นี้ auditor จับได้ทัน ลำดับสำคัญกว่าผลลัพธ์
+
+### ❌ สิ่งที่ผมเกือบเขียนผิด: "momMinChg24h ตายตาม kill condition ของตัวเอง"
+
+ผมอ่าน comment ที่ `coin.js` เหนือ table `chg24h gate x age` ("no separation inside
+either stratum once the current entry-filter era reaches n >= 30") แล้วสรุปว่า era
+`71c22712` ถึง n=30 แล้ว (h4 n=177, d1 n=30) เลย retire ได้
+
+**ผิด เพราะผมไม่ได้อ่านโน้ตที่ comment นั้นชี้ไปหา** RULES note (`momMinChg24h`) เขียนไว้แล้วว่า:
+
+> The n >= 30 checkpoint is COUNT-BASED AND THAT IS A BUG in how it was written:
+> era 71c22712 hit 30 rows on 2026-09-01 with every row under a day old and no d3
+> outcome... Read the checkpoint as 30 rows with a RECORDED d3 outcome in the
+> current era, not 30 rows.
+
+era `71c22712` มี **0 rows ที่มี d3 outcome** และไม่มีแถวไหนอายุเกิน 51.4h
+**checkpoint ยังไปไม่ถึง การทดสอบยังรันไม่ได้ momMinChg24h ยังอยู่ในสถานะเดิม**
+
+สิ่งที่วัดได้จริงและบันทึกได้ (h4/d1 ไม่ใช่การทดสอบ pre-registered):
+
+| horizon | stratum | hot (chg24h>1000) | cold | Fisher p |
+|---|---|---|---|---|
+| h4 | young <168h | 3/17 (17.6%) | 9/41 (22.0%) | 1.000 |
+| d1 | young <168h | 1/8 (12.5%) | 3/13 (23.1%) | 1.000 |
+| h4 | old >=168h | 0/2 | 3/116 (2.6%) | 1.000 |
+| d1 | old >=168h | **0/0** | 0/9 | n/a |
+
+ทิศกลับด้าน (cold > hot) แต่ **exact Fisher power ที่ n เหล่านี้ = 34.0% (h4) และ 15.9% (d1)**
+ต่อ effect ขนาดเดิม (30.3% vs 12.0%) null คือผลลัพธ์ที่น่าจะเกิดที่สุดอยู่แล้วแม้ effect จะจริง
+stratum `old` มี hot 2 แถว (h4) และ 0 แถว (d1) -> "either stratum" ตัดสินไม่ได้อยู่ดี
+
+**บทเรียน: comment ที่ชี้ไปหาโน้ตอื่น ต้องตามไปอ่าน การอ่านครึ่งเดียวแล้วสรุปคือ มโน แบบหนึ่ง**
+
+### ❌ window-matched re-test ของผม — underpowered ไม่ใช่การหักล้าง
+
+ผมคำนวณ peak ใหม่จาก `r.s` ตัดที่ h <= W (W = 4/12/24) แล้วพบว่า effect หายทั้งสองยุค
+5 จาก 6 cell ทิศกลับด้าน min p = 0.565 ผมสรุปว่า "effect หาย"
+
+auditor ตรวจ method แล้วบอกว่า**ตัว filter ไม่ bias** (eligibility rate hot/cold =
+50.0%/50.0% ที่ W=4, 42.9%/47.3% ที่ W=12, 37.5%/36.7% ที่ W=24 และ median in-window
+samples แมตช์กัน 24/24, 68/72, 136/136) แต่ **power ต่ำเกินจะสรุปอะไร**:
+
+| cell | exact Fisher power ต่อ 30.3% vs 12.0% |
+|---|---|
+| ต้นฉบับ pre-versioning d3 (33 vs 83) | 58.0% |
+| W=24 pre-versioning (13 vs 42) | 32.0% |
+| W=24 era ใหม่ (8 vs 13) | 15.9% |
+| W=12 pre-versioning (11 vs 37) | 26.5% |
+
+**คำที่ถูกต้องคือ "การทดสอบนี้ไม่มีกำลังพอจะเห็น effect" ไม่ใช่ "effect หาย"**
+เอา underpowered null ไปเป็นหลักฐานหักล้าง = ความผิดพลาดคนละทิศกับ p-hacking แต่ร้ายพอกัน
+
+หมายเหตุเพิ่ม: "coverage ถึง W" คือการ condition บน post-treatment variable (การรอดถึง W)
+แถวที่ถูกตัดออกที่ W=24 (n=54) มี median troughRet -0.263 = เอียงไปทางเหรียญที่ตายเร็ว
+สมดุลทั้งสองฝั่งจึงไม่น่าพลิกเครื่องหมาย แต่ **absolute rate ที่ได้ไม่ใช่ population rate**
+
+### ❌ 0/31 ของ drawdown test — ไม่ใช่ observation-window artifact
+
+ผมพบว่า rows ที่มีราคาย้อนหลัง >=3 จุด มี 31 แถว pumper 0 ตัว ทุกแถว track < 24h
+แล้วสรุปว่าเป็น window artifact **auditor หักล้าง และผมตรวจแล้วเขาถูก**:
+
+- rows ที่ series จบก่อน 24h ทั้งหมด: peak-2x rate = **8.43% (14/166)**
+  -> 31 แถวควรได้ 2.61 pumper, **P(0) = 0.065** ไม่ใช่เรื่องปกติ
+- **71.4% ของ pumper (35/49) ข้าม 2x ครั้งแรกภายใน h<=24** median first-cross = **12.8h**
+  (ตัวเลขนี้ต้องใช้ first-crossing จาก `r.s` ไม่ใช่ `p.peakH` ซึ่งเป็นชั่วโมงของ max:
+  ใช้ `p.peakH` จะได้ 57.7% (30/52) ซึ่งตอบคนละคำถาม)
+- แถวทั้ง 31 นี้ sample หนาแน่น (median 111 samples) -> ขอบเขต peak หลวมเพราะ**หน้าต่าง**
+  ไม่ใช่เพราะ**ความถี่**
+
+**คำที่ถูกต้อง: "ทดสอบไม่ได้ที่ n=31 และปนเปื้อน selection ของการอยู่บน shortlist ซ้ำๆ"**
+ไม่ใช่ "หน้าต่างสั้นทำให้เป็นศูนย์" — ความเป็นไปได้ที่ยังเปิดอยู่คือ **0/31 เป็นสัญญาณลบจริง**
+
+### ✅ `node coin.js alert` ถูกอ่านผิด — cooldown ไม่ใช่คุณภาพ
+
+`alert` พิมพ์ `28 candidate(s), none clear the notification gate` แล้ว session ก่อนหน้า
+เชื่อตามนั้นโดยไม่ถามว่าทำไม simulate `alertQualifies` ทีละเงื่อนไขกับ solana 28 แถว:
+
+```
+insider>=5%   15/28      cooldown      11/28      score<80       6/28
+fdv>=1.5M     12/28      vol/liq<1      8/28
+```
+
+**5 แถว (Qenis, EYE, moonkey, Morty, PANTS) ตกเพราะ cooldown 72h อย่างเดียว**
+ผ่านทุกเงื่อนไขคุณภาพ ข้อความที่ `coin.js` พิมพ์เหมือนกันหมดทุกสาเหตุการปฏิเสธ
+-> "ไม่มีอะไรผ่าน" ถูกอ่านเป็น "ไม่มีอะไรดี" ทั้งที่แปลว่า "เพิ่งเตือนไปแล้ว"
+
+**ยังไม่แก้ข้อความ** เป็น TODO: ให้ `alert` บอกสาเหตุที่บล็อกด้วย
+
+### ✅ `alertQualifies` ไม่มีเงื่อนไข drawdown หรือ trend หลายวันเลย
+
+field ทั้งหมดที่ฟังก์ชันแตะ: `coverage, score, insiderPct, fdv, liqUsd, chg24h,
+vol24h, ageHours, priceUsd, checkedAt, mint` — **มีแค่หน้าต่าง 24h** (-50% ถึง +100%)
+
+เคสที่เปิดโปงเรื่องนี้ — **Morty** (`GUmbtfjSZkybSFgPibBcvwExEBdXwewJHR5PkTjzpump`)
+จาก `candidates-history.jsonl` 100 จุดราคา:
+
+| | เวลา | ราคา | liq |
+|---|---|---|---|
+| peak | 2026-08-27T13:38 | $0.002356 | $171.0k |
+| ล่าสุด | 2026-09-02T13:36 | $0.000387 | $73.1k |
+
+**-83.6% จาก peak, liq -57.2%** — ผ่าน gate ได้ทุกวันเพราะไม่มีวันไหนลงเกิน 50%
+score 95 ก็ไม่ช่วย เพราะ score วัด rug risk ไม่ได้วัดทิศทางราคา (LP locked 100%,
+auth revoked, insider 0%, rugScore 1 — ปลอดภัยจริง แค่เลือดไหลช้าๆ)
+
+ข้อจำกัดของข้อความนี้: `alertBody` **มี** branch บน `chg6h` (`alertDowntrendChg6h: -10`)
+แต่มันเปลี่ยนแค่ถ้อยคำในข้อความ **ไม่เคยบล็อกการเตือน**
+
+### สิ่งที่ทำ: เพิ่ม `f.ddFromPriorPeak` — วัดอย่างเดียว ไม่มีอะไร gate บนมัน
+
+`trackFeatures()` เก็บเพิ่ม 2 field ตอน discovery:
+- `ddFromPriorPeak` = `priceUsd / max(ราคาก่อนหน้าใน candidates-history) - 1`
+- `priorPricePoints` = จำนวนจุดราคาที่ใช้คำนวณ (ตัวเลขไร้ความหมายถ้าไม่มี n)
+
+reconstruct จาก `candidates-history.jsonl` ที่มีอยู่แล้ว **ไม่เพิ่ม API call แม้แต่ครั้งเดียว**
+`candidateHistory()` ถูกเรียกก่อน loop เพราะ candidate ของรอบนี้จะ append เข้าไฟล์
+*หลัง* loop จบ -> ทุกราคาใน map เป็นราคาก่อนหน้า entry นี้จริง
+
+ตรวจแล้ว: `ENTRY_FILTER_VERSION` ยังเป็น `71c22712` (sha1 ของ **8 ค่า threshold** เท่านั้น
+ไม่ได้ hash รูปร่าง schema) -> **ไม่สร้าง era ใหม่** และการเพิ่ม field ใน `r.f`
+ไม่กระทบ `patterns` / `stats` / `update`
+
+validate แล้วกับข้อมูลจริง: Morty ได้ `ddFromPriorPeak = -0.8357` ตรงกับ -83.6% ที่คำนวณมือ
+
+### ❌ สิ่งที่ตัดสินใจ **ไม่ทำ**: เก็บ holder count ราย sample
+
+ผมเสนอไปว่า "เก็บได้ฟรีจาก API ที่เรียกอยู่แล้ว" **ผมพูดเกินจริง** ตรวจแล้ว:
+
+- sample สร้างจาก **DexScreener แบบ batch 25 mint/call** -> 236 mint ที่ track อยู่ = **10 call/poll**
+- `totalHolders` มาจาก **rugcheck 1 call ต่อ 1 mint** -> **236 call/poll = 23.6 เท่า**
+- rugcheck **Solana-only** (`cfg.holderData` gate) -> robinhood rows ทำไม่ได้เลย
+- `scan` เจอ rugcheck 429 อยู่แล้วเป็นประจำ
+
+**เลื่อนออกไปจนกว่าจะแก้เรื่อง fetch cost ได้** และ auditor ชี้ประเด็นลำดับที่ถูก:
+attention series ที่เก็บมาตั้งแต่ 2026-08-27 — **61,943 samples ของ
+`v1/b1/s1/c5/v5/b5/s5`** — **ยังไม่มีคำสั่งไหนในรีโปอ่านมันเลย** เพิ่ม field ที่ 11
+เข้า series ที่ไม่มีใครวิเคราะห์ = ลำดับผิด **วิเคราะห์ 10 ตัวที่มีอยู่ก่อน**
+
+### กับดักที่ auditor เจอโดยไม่ได้ถูกถาม
+
+`node coin.js patterns d1` **pool ทั้งสองยุคเป็นค่า default** และ table
+`chg24h gate x age` ที่ pool แล้วแสดง young hot 26% vs young cold 15% `lifePk2x`
+= **ทิศตรงข้าม**กับผลที่แยกยุคแล้วในตารางข้างบน banner เตือนเรื่องนี้อยู่
+แต่ใครอ่าน default output ตรงๆ จะได้คำตอบที่ปลอบใจ
+
+### สถานะจริงของโปรเจกต์ ณ วันนี้
+
+- **ยังไม่เจอ pattern ที่ทำนาย pump ได้** base rate = **52/476 = 10.9%** peak-2x
+  (dense s>=50: 36/293 = 12.3%)
+- `momMinChg24h` = **ยังไม่ตัดสิน** ไม่ใช่ตาย รอ d3 ในยุค `71c22712`
+- power ที่มี: จับได้แค่ effect ใหญ่ ~3 เท่า (10%->30% ต้อง 62/arm)
+  ส่วน 2 เท่า (10%->20%) ต้อง **199/arm** ด้วย pooled-variance convention
+  (unpooled ให้ 59/197/354 — **ต้องระบุ convention ทุกครั้ง**)
+- เหรียญพุ่งอยู่ **ใต้** entry floors (below 19.6% peak-2x / rug 44.2%,
+  above 5.8% / 2.6%) แต่ gate เตือนเฉพาะ **เหนือ** floors -> เราเตือนเฉพาะ stratum
+  ที่พุ่งน้อยที่สุด **โดยการออกแบบ** นี่คือ trade-off ที่ยังไม่มีข้อมูลมาแก้
+- `journal.json` ยังว่าง — ยังไม่มีการซื้อจริงสักไม้

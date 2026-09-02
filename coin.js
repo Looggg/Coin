@@ -1055,6 +1055,12 @@ async function cmdScan(fullCheckCap) {
   // long after is a new entry decision at a new price. RULES.reentryCooldownHours
   // draws that line — see the note there for why intake dies without it.
   const history = archiveHistory();
+  // Read BEFORE the loop on purpose: this run's own candidates are appended to
+  // candidates-history.jsonl only after the loop finishes, so every price in
+  // here is strictly prior to this entry — which is what f.ddFromPriorPeak
+  // means. Reused below for the surfacedCount stamping; the file does not
+  // change while the loop runs.
+  const surfaced = candidateHistory();
   const passed = [];
   let i = 0;
   http429s = 0; // count only this scan's rate limiting
@@ -1087,7 +1093,12 @@ async function cmdScan(fullCheckCap) {
           // without these, `f.pass` and `p.peakRet` are not comparable across
           // time and `patterns` silently averages incompatible eras.
           v: provenance(),
-          f: trackFeatures(s, verdict, verdict.pass ? scoreCandidate(s).score : null),
+          f: trackFeatures(
+            s,
+            verdict,
+            verdict.pass ? scoreCandidate(s).score : null,
+            surfaced.get(mint)
+          ),
           o: {},
         };
       }
@@ -1155,7 +1166,6 @@ async function cmdScan(fullCheckCap) {
   // week-old shortlist reprinted. These two fields are the difference between
   // "still passing" and "new", and nothing filters on them: a token that keeps
   // passing is still a valid buy, it just is not news.
-  const surfaced = candidateHistory();
   for (const c of passed) {
     const h = surfaced.get(c.mint);
     c.firstSurfacedAt = h ? h.firstAt : c.checkedAt;
@@ -1280,9 +1290,15 @@ function candidateHistory() {
     if (!c.mint) continue;
     const prev = h.get(c.mint);
     const at = c.checkedAt || null;
+    // maxPrice/pricedCount feed f.ddFromPriorPeak — see trackFeatures. Rows
+    // logged before priceUsd was carried on a candidate have no price, so
+    // pricedCount is counted separately from count and is the honest n.
+    const px = typeof c.priceUsd === "number" && c.priceUsd > 0 ? c.priceUsd : null;
     h.set(c.mint, {
       count: (prev?.count || 0) + 1,
       firstAt: prev?.firstAt && (!at || prev.firstAt < at) ? prev.firstAt : at,
+      maxPrice: px == null ? prev?.maxPrice ?? null : Math.max(px, prev?.maxPrice ?? 0),
+      pricedCount: (prev?.pricedCount || 0) + (px == null ? 0 : 1),
     });
   }
   return h;
@@ -1315,9 +1331,30 @@ function archiveHistory() {
   return h;
 }
 
-function trackFeatures(s, verdict, score) {
+// `prior` is candidateHistory().get(mint) or undefined — the shortlist record
+// of this mint from runs BEFORE this one.
+function trackFeatures(s, verdict, score, prior) {
+  // How far below its own prior shortlist peak this token is being entered.
+  // MEASUREMENT ONLY — nothing gates or alerts on it, and no threshold on it
+  // has been tested. Added 2026-09-03 after `alertQualifies` was found to
+  // carry no multi-day-trend condition at all: Morty passed the gate every day
+  // while bleeding -83.6% from its recorded peak over six days, because no
+  // single 24h window breached alertMinChg24h. Whether that shape predicts
+  // anything is unknown — as of today only 31 rows in the whole dataset have
+  // enough prior history to compute it and NONE of them has a mature outcome,
+  // so this exists to make the question answerable later, not to answer it.
+  //
+  // Deliberately reconstructed from candidates-history.jsonl rather than a new
+  // state file: that log is already append-only and already holds every
+  // candidate ever printed. priorPricePoints is stored beside it because the
+  // number is meaningless without its n — a "peak" from 2 samples is not a peak.
+  let ddFromPriorPeak = null;
+  if (prior?.maxPrice > 0 && s.priceUsd > 0)
+    ddFromPriorPeak = +(s.priceUsd / prior.maxPrice - 1).toFixed(4);
   return {
     priceUsd: s.priceUsd,
+    ddFromPriorPeak,
+    priorPricePoints: prior?.pricedCount || 0,
     liqUsd: s.liqUsd,
     vol24h: s.vol24h,
     vol1h: s.vol1h,
