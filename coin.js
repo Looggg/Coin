@@ -1589,6 +1589,17 @@ function observedCadenceMin(r) {
 // it, 175-385 after), not a tuned number — rows sit far from it on both sides.
 const DENSE_SAMPLE_MIN = 50;
 
+// "Realizable" 2x: some sampled poll at >= 2x WITH liquidity someone could sell
+// into. A drained pool keeps printing a price (DexScreener freezes it), so the
+// raw running max counts 2x prints on ~$1 of liquidity. Measured 2026-09-18 on
+// era 71c22712, dense rows: below the entry floors raw peak-2x 33.1% vs
+// realizable 20.0%; above the floors 11.9% vs 11.9%. The raw column stays for
+// comparability with every earlier STUDY.md figure; quote realizable.
+const REALIZABLE_LIQ_USD = 5000;
+function realizable2x(r) {
+  return (r.s || []).some((x) => x.ret >= 1 && x.liq != null && x.liq >= REALIZABLE_LIQ_USD);
+}
+
 function printProvenance(rows) {
   const eras = {};
   for (const r of rows) {
@@ -1742,6 +1753,7 @@ function printFloorsCost(allRows) {
   const line = (label, g) => {
     if (!g.length) return console.log(`  ${label.padEnd(20)} n=  0`);
     const pk = g.filter((r) => (r.p.peakRet || 0) >= 1).length;
+    const pkReal = g.filter(realizable2x).length;
     const trough = g.filter((r) => r.p.troughRet != null && r.p.troughRet <= -0.9).length;
     const withD3 = g.filter((r) => r.o?.d3 && Number.isFinite(r.o.d3.ret));
     const d3rug = withD3.filter((r) => r.o.d3.ret <= -0.9).length;
@@ -1749,7 +1761,7 @@ function printFloorsCost(allRows) {
     const mints = new Set(g.map((r) => r.mint).filter(Boolean)).size;
     console.log(
       `  ${label.padEnd(20)} n=${String(g.length).padStart(3)} (${String(mints).padStart(3)} mints)` +
-        `  peak-2x ${pct(pk, g.length)}  rug(trough) ${pct(trough, g.length)}` +
+        `  peak-2x raw ${pct(pk, g.length)} real ${pct(pkReal, g.length)}  rug(trough) ${pct(trough, g.length)}` +
         `  rug(d3ret) ${pct(d3rug, withD3.length)} of ${String(withD3.length).padStart(3)}` +
         `  med samples ${String(s[Math.floor(s.length / 2)]).padStart(3)}`
     );
@@ -1817,6 +1829,12 @@ function cmdPatterns(bucketArg) {
       //      higher lifePk for free. Compare cells only at d3, where the
       //      windows are closest, exactly as the path section below does.
       const withPath = rowsInGroup.filter((r) => r.p && r.p.samples >= 3);
+      // same denominator as lifePk2x, but only rows that carry a sample series
+      // can be judged, so the n is printed beside it
+      const withSeries = withPath.filter((r) => Array.isArray(r.s) && r.s.length);
+      const real2x = withSeries.length
+        ? `${Math.round((withSeries.filter(realizable2x).length / withSeries.length) * 100)}`.padStart(3) + `% (n=${withSeries.length})`
+        : "  -";
       const lifePk2x = withPath.length
         ? `${Math.round((withPath.filter((r) => r.p.peakRet >= 1).length / withPath.length) * 100)}`.padStart(3) + "%"
         : "  -";
@@ -1824,7 +1842,7 @@ function cmdPatterns(bucketArg) {
         ? `${Math.round((withPath.filter((r) => r.p.peakRet >= 0.5).length / withPath.length) * 100)}`.padStart(3) + "%"
         : "  -";
       console.log(
-        `  ${g.padEnd(18)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  lifePk2x ${lifePk2x}  lifePk50 ${lifePk50} (path n=${withPath.length})`
+        `  ${g.padEnd(18)} n=${String(rets.length).padStart(3)}  median ${fmtPct(median(rets)).padStart(8)}  2x+ ${((twoX / rets.length) * 100).toFixed(0).padStart(3)}%  rug ${((dead / rets.length) * 100).toFixed(0).padStart(3)}%  lifePk2x ${lifePk2x}  real2x ${real2x}  lifePk50 ${lifePk50} (path n=${withPath.length})`
       );
     }
     console.log("");
