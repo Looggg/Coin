@@ -2116,6 +2116,437 @@ async function cmdLog(mint, decision, reason, source) {
   await updateOutcomes();
 }
 
+// ---------- paper ----------
+// Paper wallet, owner's request 2026-09-18: "I give it $30, see whether it makes
+// a profit; if it runs out, note that wallet 1 went bust" — and from that, judge
+// whether the project is worth using for real. No real money moves here; there
+// is no wallet integration and there must never be one in this path.
+//
+// What it simulates is the plan the phone prints, entry included (alertBody):
+//   - 6h below alertDowntrendChg6h -> "don't catch the knife, wait for 6h to
+//     turn positive": bought only once a later poll shows chg6h > 0.
+//   - 24h above alertPullbackChg24h -> "wait for a dip to 0.72-0.80P": bought
+//     only once a later poll prices at or under 0.80P.
+//   - otherwise "enter at market": bought at the first price after the alert.
+// A waiting alert that never meets its condition within maxWaitHours is
+// skipped, with the reason. 54 of the first 84 recorded alerts carried one of
+// the two wait lines, so buying everything at market would have simulated a
+// different strategy from the one on the phone. Then managed by the exit plan
+// in the same body: half at takeProfitX, the rest at secondTargetX, stop loss,
+// LP drain, time stop, plus maxHoldHours. Forward only: alerts sent before the
+// wallet existed are never bought, so nothing here is a backtest.
+//
+// Conventions, stated because the result will be read as "is this profitable":
+//   - Entry fills at a price fetched AFTER the alert, never the alert's quoted
+//     price (which can be up to 2h old). A market entry fills within seconds of
+//     the alert on the same runner: the best case for reaction latency, since
+//     the owner reads a phone notification first.
+//   - Exits fill at the sampled price on the poll that triggers them, not at the
+//     trigger level. A -50% stop seen at -63% fills at -63%.
+//   - GROSS of fees and slippage. Neither is modelled or recorded; every report
+//     says so. The real result on $10 positions will be worse by that amount.
+//   - Liquidity reported under minSellableLiqUsd, or a pair missing for
+//     maxMisses polls in a row, closes the rest at ZERO. A price printed on a
+//     drained pool is not an exit anyone could take (STUDY.md 2026-09-18: those
+//     prints inflated the dataset's peak-2x from 20% to 33%). Liquidity absent
+//     from the response is unknown, not zero, and triggers nothing.
+//   - A position that cannot be priced at all for staleCloseHours past
+//     maxHoldHours is closed at zero rather than marked at its last price
+//     forever.
+const PAPER_PATH = path.join(__dirname, "paper.json");
+const PAPER = {
+  bankrollUsd: 30, // per wallet, owner-set
+  stakeUsd: 10, // per position, owner's standing size
+  secondTargetX: 3, // the alert body's "ที่เหลือ 3-4x — อย่ารอยอด": low end
+  dipMaxFrac: 0.8, // the alert body's dip zone is 0.72-0.80P; a fill at or under the top counts
+  maxHoldHours: 72, // owner holds "hours to a few days"; closes anything still open
+  minSellableLiqUsd: 5000, // the repo's "realizable" convention (STUDY.md 2026-08-31)
+  maxMisses: 3, // consecutive polls with no pair => treat as gone (30 min at 10-min polls)
+  maxOpenDelayMin: 60, // a market-entry alert not priced within this is skipped, never back-dated
+  maxWaitHours: 24, // a wait-for-condition alert that has not triggered by now is skipped
+  staleCloseHours: 24, // unpriceable this long past maxHoldHours => closed at zero
+};
+
+function newPaperWallet(id, nowIso, solPriceUsd) {
+  return {
+    id,
+    startedAt: nowIso,
+    startUsd: PAPER.bankrollUsd,
+    cashUsd: PAPER.bankrollUsd,
+    solPriceAtStart: Number.isFinite(solPriceUsd) ? solPriceUsd : null,
+    status: "active",
+    // the rules this wallet traded under, so a later change is visible in data
+    rules: {
+      stakeUsd: PAPER.stakeUsd,
+      takeProfitX: RULES.takeProfitX,
+      secondTargetX: PAPER.secondTargetX,
+      stopLossPct: RULES.stopLossPct,
+      lpDrainPct: RULES.lpDrainPct,
+      timeStopHours: RULES.timeStopHours,
+      maxHoldHours: PAPER.maxHoldHours,
+      minSellableLiqUsd: PAPER.minSellableLiqUsd,
+      alertDowntrendChg6h: RULES.alertDowntrendChg6h,
+      alertPullbackChg24h: RULES.alertPullbackChg24h,
+      dipMaxFrac: PAPER.dipMaxFrac,
+      maxWaitHours: PAPER.maxWaitHours,
+    },
+  };
+}
+
+// The entry the alert body printed, decided from the alert's own logged fields
+// in the same order alertBody decides it (the knife check outranks the dip).
+function paperEntryPlan(a) {
+  if (a.chg6h != null && a.chg6h < RULES.alertDowntrendChg6h) return { type: "knife" };
+  if (a.chg24h > RULES.alertPullbackChg24h) {
+    if (!(a.priceUsd > 0)) return { type: "invalid", why: "dip plan with no alert price" };
+    return { type: "dip", maxPriceUsd: a.priceUsd * PAPER.dipMaxFrac };
+  }
+  return { type: "market" };
+}
+
+// alerts.jsonl is append-only, so the cursor is a line count, not a timestamp:
+// a line appended with an older stamp is still new. A file that shrank was
+// rewritten by someone, and nothing after the cursor can be trusted as new.
+function paperNewAlerts(state, lines) {
+  if (lines.length < state.alertLines) return { alerts: [], error: `alerts.jsonl shrank ${state.alertLines} -> ${lines.length} lines` };
+  const alerts = [];
+  for (const l of lines.slice(state.alertLines)) {
+    try {
+      alerts.push(JSON.parse(l));
+    } catch {
+      alerts.push(null); // counted, so the cursor still moves past it
+    }
+  }
+  return { alerts };
+}
+
+// Pure: (state, alerts, quotes, now) -> events. Mutates state. No I/O, so the
+// test can drive it with hand-made prices. `alerts` are only the NEW ones.
+// `quotes[mint]` is {priceUsd, liqUsd, chg6h} for a live pair, null for "the API
+// answered and the pair is not there", and undefined for "we did not get an
+// answer" (fetch failed) — the last must never be read as a rug.
+function paperStep(state, alerts, quotes, nowMs, solPriceUsd) {
+  const nowIso = new Date(nowMs).toISOString();
+  const events = [];
+  const active = () => state.wallets.find((w) => w.status === "active");
+  const walletOf = (p) => state.wallets.find((w) => w.id === p.wallet);
+
+  const sell = (p, frac, mult, reason) => {
+    const proceeds = p.stakeUsd * frac * mult;
+    p.fills.push({ at: nowIso, frac, mult: +mult.toFixed(4), proceedsUsd: +proceeds.toFixed(4), reason });
+    p.remainingFrac = +(p.remainingFrac - frac).toFixed(6);
+    walletOf(p).cashUsd = +(walletOf(p).cashUsd + proceeds).toFixed(4);
+    if (p.remainingFrac <= 1e-9) {
+      p.remainingFrac = 0;
+      p.status = "closed";
+      p.closedAt = nowIso;
+      p.pnlUsd = +(p.fills.reduce((s, f) => s + f.proceedsUsd, 0) - p.stakeUsd).toFixed(4);
+    }
+    events.push({ type: "sell", pos: p.id, symbol: p.symbol, frac, mult, reason });
+  };
+
+  // 1. manage open positions first: exits free cash for this poll's alerts
+  for (const p of state.positions) {
+    if (p.status !== "open") continue;
+    const q = quotes[p.mint];
+    const heldH = (nowMs - new Date(p.openedAt).getTime()) / 3.6e6;
+    if (q === undefined) {
+      // no answer this poll — hold and retry, but not forever
+      if (heldH >= PAPER.maxHoldHours + PAPER.staleCloseHours)
+        sell(p, p.remainingFrac, 0, `no price for ${PAPER.staleCloseHours}h past max hold — counted as zero`);
+      continue;
+    }
+    if (q === null) {
+      p.misses = (p.misses || 0) + 1;
+      if (p.misses >= PAPER.maxMisses) sell(p, p.remainingFrac, 0, `pair vanished ${p.misses} polls in a row — counted as zero`);
+      continue;
+    }
+    p.misses = 0;
+    const mult = q.priceUsd / p.entryPriceUsd;
+    if (!Number.isFinite(mult)) continue;
+    p.lastMult = +mult.toFixed(4);
+    p.lastLiqUsd = q.liqUsd ?? null;
+    p.lastSeenAt = nowIso;
+    const liqKnown = Number.isFinite(q.liqUsd);
+
+    if (liqKnown && q.liqUsd < PAPER.minSellableLiqUsd) {
+      sell(p, p.remainingFrac, 0, `liquidity $${Math.round(q.liqUsd)} < $${PAPER.minSellableLiqUsd} — unsellable, counted as zero`);
+      continue;
+    }
+    if (liqKnown && p.entryLiqUsd > 0 && q.liqUsd < p.entryLiqUsd * (1 - RULES.lpDrainPct / 100)) {
+      sell(p, p.remainingFrac, mult, "LP drain");
+      continue;
+    }
+    if (mult <= 1 - RULES.stopLossPct / 100) {
+      sell(p, p.remainingFrac, mult, "stop loss");
+      continue;
+    }
+    if (!p.tookFirst && mult >= RULES.takeProfitX) {
+      p.tookFirst = true;
+      sell(p, 0.5, mult, `take profit ${RULES.takeProfitX}x (half)`);
+    }
+    if (p.tookFirst && mult >= PAPER.secondTargetX) {
+      sell(p, p.remainingFrac, mult, `take profit ${PAPER.secondTargetX}x (rest)`);
+      continue;
+    }
+    if (heldH > RULES.timeStopHours && mult < RULES.takeProfitX) {
+      sell(p, p.remainingFrac, mult, "time stop");
+      continue;
+    }
+    if (heldH >= PAPER.maxHoldHours) sell(p, p.remainingFrac, mult, "max hold");
+  }
+
+  // 2. a wallet that cannot afford a position and holds nothing is bust
+  let w = active();
+  const holding = (id) => state.positions.some((p) => p.wallet === id && p.status === "open");
+  if (w && w.cashUsd < PAPER.stakeUsd && !holding(w.id)) {
+    w.status = "busted";
+    w.bustedAt = nowIso;
+    w.note = `wallet ${w.id} busted: $${w.startUsd} -> $${w.cashUsd.toFixed(2)}`;
+    events.push({ type: "bust", wallet: w.id, cashUsd: w.cashUsd });
+    w = newPaperWallet(w.id + 1, nowIso, solPriceUsd);
+    state.wallets.push(w);
+    events.push({ type: "wallet", wallet: w.id });
+  }
+
+  // 3. queue every new alert with the entry plan its message printed
+  const skip = (a, reason) => {
+    state.skipped.push({ mint: a.mint, symbol: a.symbol, alertedAt: a.alertedAt, plan: a.plan, at: nowIso, reason });
+    events.push({ type: "skip", symbol: a.symbol, reason });
+  };
+  state.alertLines += alerts.length;
+  for (const a of alerts) {
+    if (!a || !a.mint || !a.alertedAt) {
+      state.skipped.push({ at: nowIso, reason: "unparseable alerts.jsonl line" });
+      continue;
+    }
+    const plan = paperEntryPlan(a);
+    const item = { mint: a.mint, symbol: a.symbol, alertedAt: a.alertedAt, alertPriceUsd: a.priceUsd ?? null, plan };
+    if (plan.type === "invalid") skip(item, plan.why);
+    else state.pending.push(item);
+  }
+
+  // 4. buy what meets its plan now; skip (with the reason) what timed out
+  const stillPending = [];
+  for (const a of state.pending) {
+    if (state.positions.some((p) => p.mint === a.mint && p.status === "open")) {
+      skip(a, "already holding this mint");
+      continue;
+    }
+    const q = quotes[a.mint];
+    const ageMin = (nowMs - new Date(a.alertedAt).getTime()) / 60e3;
+    const limitMin = a.plan.type === "market" ? PAPER.maxOpenDelayMin : PAPER.maxWaitHours * 60;
+    const wait = (why) => {
+      if (ageMin > limitMin) skip(a, why);
+      else stillPending.push(a);
+    };
+    if (q == null || !(q.priceUsd > 0)) {
+      wait(`no price within ${Math.round(limitMin)} min of the alert`);
+      continue;
+    }
+    if (a.plan.type === "knife" && !(q.chg6h > 0)) {
+      wait(`plan: 6h never turned positive within ${PAPER.maxWaitHours}h`);
+      continue;
+    }
+    if (a.plan.type === "dip" && !(q.priceUsd <= a.plan.maxPriceUsd)) {
+      wait(`plan: no dip to ${PAPER.dipMaxFrac}x the alert price within ${PAPER.maxWaitHours}h`);
+      continue;
+    }
+    if (!(q.liqUsd >= PAPER.minSellableLiqUsd)) {
+      skip(a, `liquidity ${q.liqUsd == null ? "unknown" : "$" + Math.round(q.liqUsd)} at entry — not buying blind`);
+      continue;
+    }
+    w = active();
+    if (w.cashUsd < PAPER.stakeUsd) {
+      skip(a, `wallet ${w.id} has $${w.cashUsd.toFixed(2)}, stake is $${PAPER.stakeUsd}`);
+      continue;
+    }
+    w.cashUsd = +(w.cashUsd - PAPER.stakeUsd).toFixed(4);
+    const p = {
+      id: state.positions.length + 1,
+      wallet: w.id,
+      mint: a.mint,
+      symbol: a.symbol,
+      alertedAt: a.alertedAt,
+      alertPriceUsd: a.alertPriceUsd,
+      plan: a.plan.type,
+      openedAt: nowIso,
+      entryPriceUsd: q.priceUsd,
+      entryLiqUsd: q.liqUsd,
+      stakeUsd: PAPER.stakeUsd,
+      remainingFrac: 1,
+      tookFirst: false,
+      misses: 0,
+      fills: [],
+      status: "open",
+    };
+    state.positions.push(p);
+    events.push({ type: "buy", pos: p.id, symbol: p.symbol, wallet: w.id, priceUsd: q.priceUsd, plan: a.plan.type });
+  }
+  state.pending = stillPending;
+  return events;
+}
+
+// Mark-to-market. An open position on an unsellable pool is worth zero here for
+// the same reason it would close at zero.
+function paperEquity(state, wallet) {
+  let open = 0;
+  for (const p of state.positions) {
+    if (p.wallet !== wallet.id || p.status !== "open") continue;
+    const mult = p.lastMult ?? 1;
+    const sellable = p.lastLiqUsd == null || p.lastLiqUsd >= PAPER.minSellableLiqUsd;
+    open += sellable ? p.stakeUsd * p.remainingFrac * mult : 0;
+  }
+  return wallet.cashUsd + open;
+}
+
+// The verdict inputs STUDY.md 2026-09-18 pre-registered, computed rather than
+// left to be eyeballed: totals across ALL wallets, since a new wallet is new
+// capital. The SOL line is the same dollars put into SOL on each wallet's start
+// date and held to now; it is null when any wallet lacks a start price.
+function paperSummary(state, solPriceUsd) {
+  const invested = state.wallets.reduce((s, w) => s + w.startUsd, 0);
+  const equity = state.wallets.reduce((s, w) => s + paperEquity(state, w), 0);
+  const closed = state.positions.filter((p) => p.status === "closed");
+  const pnls = closed.map((p) => p.pnlUsd).sort((a, b) => b - a);
+  const total = pnls.reduce((s, x) => s + x, 0);
+  const solOk = Number.isFinite(solPriceUsd) && state.wallets.every((w) => w.solPriceAtStart > 0);
+  return {
+    invested,
+    equity,
+    closed: closed.length,
+    closedMints: new Set(closed.map((p) => p.mint)).size,
+    wins: pnls.filter((x) => x > 0).length,
+    closedPnlUsd: total,
+    closedPnlExBestUsd: pnls.length ? total - pnls[0] : null,
+    solEquity: solOk ? state.wallets.reduce((s, w) => s + (w.startUsd * solPriceUsd) / w.solPriceAtStart, 0) : null,
+    busted: state.wallets.filter((w) => w.status === "busted").length,
+  };
+}
+
+// One batched DexScreener call per chain per 25 mints, the same endpoint and
+// the same glitch rule as `track`.
+async function fetchPaperQuotes(mints) {
+  const quotes = {};
+  const byChain = new Map();
+  for (const m of mints) {
+    const c = /^0x[0-9a-fA-F]{40}$/.test(m) ? "robinhood" : "solana";
+    if (!byChain.has(c)) byChain.set(c, []);
+    byChain.get(c).push(m);
+  }
+  for (const [chainId, list] of byChain) {
+    for (let i = 0; i < list.length; i += 25) {
+      const chunk = list.slice(i, i + 25);
+      let data;
+      try {
+        data = await getJson(`https://api.dexscreener.com/tokens/v1/${CHAINS[chainId].dsBatch}/${chunk.join(",")}`);
+        if (!Array.isArray(data)) throw new Error("unexpected response shape");
+      } catch (e) {
+        console.error(`  paper: quote fetch failed (${e.message}) — holding, retry next poll`);
+        continue; // quotes stay undefined => no action
+      }
+      const best = {};
+      for (const p of data) {
+        if (p.chainId !== CHAINS[chainId].ds) continue;
+        const m = chunk.find((w) => sameAddress(w, p.baseToken?.address));
+        if (!m) continue;
+        if (!best[m] || (p.liquidity?.usd || 0) > (best[m].liquidity?.usd || 0)) best[m] = p;
+      }
+      if (Object.keys(best).length === 0 && chunk.length > 1) {
+        console.error(`  paper: batch returned no pairs for ${chunk.length} tokens — treating as API glitch`);
+        continue;
+      }
+      for (const m of chunk)
+        quotes[m] = best[m]
+          ? {
+              priceUsd: Number(best[m].priceUsd),
+              liqUsd: Number.isFinite(best[m].liquidity?.usd) ? best[m].liquidity.usd : null,
+              chg6h: best[m].priceChange?.h6 ?? null,
+            }
+          : null;
+    }
+  }
+  return quotes;
+}
+
+async function cmdPaper(commit) {
+  const now = Date.now();
+  const solPriceUsd = await fetchSolPrice();
+  const lines = fs.existsSync(ALERTS_LOG_PATH)
+    ? fs.readFileSync(ALERTS_LOG_PATH, "utf8").split("\n").filter((l) => l.trim())
+    : [];
+  let state;
+  if (fs.existsSync(PAPER_PATH)) state = JSON.parse(fs.readFileSync(PAPER_PATH, "utf8"));
+  else {
+    const iso = new Date(now).toISOString();
+    // the cursor starts at the current end of alerts.jsonl: alerts already sent
+    // are history, not trades
+    state = { alertLines: lines.length, wallets: [newPaperWallet(1, iso, solPriceUsd)], positions: [], pending: [], skipped: [] };
+    console.log(`paper: new wallet 1 with $${PAPER.bankrollUsd} — buys alerts after line ${lines.length} of alerts.jsonl`);
+  }
+
+  const { alerts, error } = paperNewAlerts(state, lines);
+  if (error) {
+    // fail loudly: the workflow turns the job red on a non-zero exit here
+    console.error(`paper: ${error} — refusing to trade on a rewritten alert log`);
+    process.exitCode = 1;
+    return;
+  }
+  const mints = new Set([
+    ...state.positions.filter((p) => p.status === "open").map((p) => p.mint),
+    ...state.pending.map((a) => a.mint),
+    ...alerts.filter(Boolean).map((a) => a.mint),
+  ]);
+  const quotes = mints.size ? await fetchPaperQuotes([...mints]) : {};
+  const events = paperStep(state, alerts, quotes, now, solPriceUsd);
+
+  for (const e of events) {
+    if (e.type === "buy") console.log(`  BUY  #${e.pos} ${e.symbol} $${PAPER.stakeUsd} @ ${fmtPrice(e.priceUsd)} (wallet ${e.wallet}, ${e.plan} entry)`);
+    if (e.type === "sell") console.log(`  SELL #${e.pos} ${e.symbol} ${Math.round(e.frac * 100)}% at ${e.mult.toFixed(2)}x — ${e.reason}`);
+    if (e.type === "skip") console.log(`  skip ${e.symbol}: ${e.reason}`);
+    if (e.type === "bust") console.log(`  💀 wallet ${e.wallet} เจ๊ง — เหลือ $${e.cashUsd.toFixed(2)}`);
+    if (e.type === "wallet") console.log(`  opened wallet ${e.wallet} with $${PAPER.bankrollUsd}`);
+  }
+
+  console.log(`\n── paper wallets (GROSS: fees and slippage not modelled) ──`);
+  for (const w of state.wallets) {
+    const pos = state.positions.filter((p) => p.wallet === w.id);
+    console.log(
+      `  wallet ${w.id} [${w.status}] since ${w.startedAt.slice(0, 16)}  $${w.startUsd} -> $${paperEquity(state, w).toFixed(2)} ` +
+        `(cash $${w.cashUsd.toFixed(2)})  positions ${pos.length}`
+    );
+    if (w.note) console.log(`    ${w.note}`);
+    for (const p of pos.filter((x) => x.status === "open")) {
+      const stale = p.lastSeenAt ? (now - new Date(p.lastSeenAt).getTime()) / 3.6e6 : null;
+      console.log(
+        `    open #${p.id} ${p.symbol} ${p.lastMult != null ? p.lastMult.toFixed(2) + "x" : "?"}  held ${((now - new Date(p.openedAt).getTime()) / 3.6e6).toFixed(0)}h` +
+          (stale != null && stale > 1 ? `  (price ${stale.toFixed(0)}h stale)` : "")
+      );
+    }
+  }
+  const S = paperSummary(state, solPriceUsd);
+  console.log(
+    `  all wallets: $${S.invested} in -> $${S.equity.toFixed(2)} now` +
+      `  | same dollars in SOL: ${S.solEquity == null ? "n/a (a wallet has no SOL start price)" : "$" + S.solEquity.toFixed(2)}`
+  );
+  console.log(
+    `  closed ${S.closed} (${S.closedMints} mints), ${S.wins} in profit, closed P&L $${S.closedPnlUsd.toFixed(2)}` +
+      (S.closedPnlExBestUsd == null ? "" : `, without the best trade $${S.closedPnlExBestUsd.toFixed(2)}`) +
+      `  | busted wallets ${S.busted}`
+  );
+  if (state.pending.length) console.log(`  waiting on entry plan: ${state.pending.map((a) => `${a.symbol} (${a.plan.type})`).join(", ")}`);
+  if (state.skipped.length) console.log(`  skipped alerts: ${state.skipped.length} (reasons in paper.json)`);
+
+  if (commit) {
+    const tmp = PAPER_PATH + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(state, null, 1));
+    fs.renameSync(tmp, PAPER_PATH);
+  } else {
+    console.error("(preview — paper.json not written; the workflow passes --commit)");
+  }
+}
+// ---------- end paper ----------
+
 // ---------- alert ----------
 // Deterministic: same inputs -> same issue body, no model in the path. Reads
 // only candidates.json (written by the hourly Action, which has network) so
@@ -2366,6 +2797,8 @@ async function main() {
       return updateOutcomes();
     case "stats":
       return stats();
+    case "paper":
+      return cmdPaper(args.includes("--commit"));
     case "list":
       return list();
     default:
@@ -2387,7 +2820,9 @@ usage:
   node coin.js exit <mint> "reason"           close a position, record realized return
   node coin.js update                         record due 1d/7d/30d outcomes
   node coin.js stats                          returns, rug rate, vs SOL baseline
-  node coin.js list                           list journal entries`);
+  node coin.js paper [--commit]               $30 paper wallet that buys every alert and exits by
+                                              the alert's own plan (preview unless --commit)
+  node coin.js list                          list journal entries`);
   }
 }
 

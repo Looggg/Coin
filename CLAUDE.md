@@ -176,7 +176,9 @@ header prints distinct mints beside n. Rows sharing a mint are not independent.
 `scan [cap]` · `check <mint>` · `log <mint> buy|skip "reason" [--src ch]` ·
 `watch` (exit 1 = action needed) · `exit <mint> "reason"` · `track` ·
 `patterns [h4|d1|d3]` · `update` · `stats` · `list` ·
-`alert [--commit-sent]` (phone notification body; exit 3 = nothing to say)
+`alert [--commit-sent]` (phone notification body; exit 3 = nothing to say) ·
+`paper [--commit]` ($30 paper wallet buying every alert, gross of fees; state in
+`paper.json`, verdict criteria in STUDY.md 2026-09-18)
 
 ## Style
 

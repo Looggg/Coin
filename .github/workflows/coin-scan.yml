@@ -44,6 +44,12 @@ jobs:
         continue-on-error: true
         run: node t-provenance.js
 
+      # same contract as above: reports, never blocks collection
+      - name: paper wallet checks
+        id: paper
+        continue-on-error: true
+        run: node t-paper.js
+
       - name: collect on a loop
         env:
           GH_TOKEN: ${{ github.token }}
@@ -72,6 +78,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           alert_failed=0
+          paper_failed=0
           push_failed=0
           action_needed=0
 
@@ -129,6 +136,10 @@ jobs:
                   --assignee "$OWNER"; then
               echo '::error::gh issue create failed — reverting alerts-sent.json so the next cycle retries'
               git checkout -- alerts-sent.json 2>/dev/null || rm -f alerts-sent.json
+              # alerts.jsonl is the record of what the phone was told, and the
+              # paper wallet buys from it: a line for an alert that never
+              # reached the phone would be a trade the owner could not have made
+              git checkout -- alerts.jsonl 2>/dev/null || true
               alert_failed=1
             fi
             rm -f alert-body.md
@@ -152,6 +163,14 @@ jobs:
             if [ $(( (cycle - 1) % SCAN_EVERY )) -eq 0 ]; then
               timeout 900 node coin.js scan || echo "::warning::scan failed"
               run_alert
+            fi
+
+            # $30 paper wallet that buys every alert and exits by the alert's
+            # own plan (owner's request 2026-09-18). Every cycle, not every
+            # scan: its exits are the 10-minute question. Paper only — it never
+            # touches journal.json, so it can never trip `watch` below.
+            if ! timeout 300 node coin.js paper --commit; then
+              echo "::error::paper failed"; paper_failed=1
             fi
 
             commit_cycle || true
@@ -192,6 +211,9 @@ jobs:
           if [ "$alert_failed" = "1" ]; then
             echo "::error::at least one alert cycle failed to notify"; rc=1
           fi
+          if [ "$paper_failed" = "1" ]; then
+            echo "::error::the paper wallet failed at least one cycle"; rc=1
+          fi
           # a run whose data never landed must go red, not silently vanish —
           # the pre-loop workflow treated this as fatal and so does this one
           if [ "$push_failed" = "1" ]; then
@@ -202,5 +224,8 @@ jobs:
           # red test would once again pass unnoticed
           if [ "${{ steps.provenance.outcome }}" = "failure" ]; then
             echo "::error::t-provenance.js failed — the era stamp that makes rows comparable is unguarded"; rc=1
+          fi
+          if [ "${{ steps.paper.outcome }}" = "failure" ]; then
+            echo "::error::t-paper.js failed — the paper wallet's numbers are not trustworthy"; rc=1
           fi
           exit $rc

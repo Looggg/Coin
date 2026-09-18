@@ -1274,3 +1274,75 @@ attention series ที่เก็บมาตั้งแต่ 2026-08-27 —
   above 5.8% / 2.6%) แต่ gate เตือนเฉพาะ **เหนือ** floors -> เราเตือนเฉพาะ stratum
   ที่พุ่งน้อยที่สุด **โดยการออกแบบ** นี่คือ trade-off ที่ยังไม่มีข้อมูลมาแก้
 - `journal.json` ยังว่าง — ยังไม่มีการซื้อจริงสักไม้
+
+## 2026-09-18 — replication ครั้งแรกของ chg24h, bug peak บน liquidity ตาย, และเปิด paper wallet
+
+ไม่มี session มนุษย์ตั้งแต่ 09-03 cloud รันต่อเนื่อง (~140 commit/วัน) `journal.json` ยังไม่มีไฟล์ = 0 decisions
+
+### ❌ สิ่งที่ผมรายงาน owner ผิดไปก่อน แล้วแก้ภายใน session เดียวกัน
+
+ผมบอก owner ว่า chg24h>1000 "กลับทิศ" ใน young stratum (raw peak-2x hot 97/374=25.9% vs cold
+291/803=36.2%, Fisher two-sided p=0.0005; era `71c22712`, dense s>=50, d3 recorded) **ผิด — เป็น artifact**:
+auditor พบว่า cold young 176/291 ข้าม 2x ภายใน 1h, 109 ตัว sample แรกก็ >=2x แล้ว (median +52,115%)
+บน liq null/~$1 ต้นเหตุคือ entry liq < $100 (266 young rows: raw 2x hot 10 vs cold 110)
+
+### ✅ bug วิธีวัด: peak ที่พิมพ์บน liquidity ตาย
+
+- เมื่อ LP ถูกดึง DexScreener ยังพิมพ์ราคาค้าง -> `p.peakRet` นับเป็น 2x ได้, `p.troughRet` ไม่ลง -> rug(trough) มองไม่เห็น
+- pair หายทีหลัง -> `o.d3.ret=-1, dead:true` แต่ `troughRet` ไม่ถูกแตะ (โดยออกแบบ, coin.js track)
+- young cold: 328 rows dead ที่ d3 แต่ trough > -90%, sample สุดท้าย median liq $1, 156 ตัวนับเป็น raw pumper
+- **floors cost ในยุค `71c22712` (dense, d3):** ใต้ floors raw peak-2x 33.1% -> realizable (ret>=1 & liq>=$5k) **20.0%**;
+  เหนือ floors 11.9% -> 11.9%; rug(d3ret) 70.0% vs 2.7% -> "เหรียญพุ่งอยู่ใต้ floors" จริงแต่เกินจริงจาก ~3x เหลือ ~1.7x
+- `lifePk2x` ใน `patterns` ยังเป็นนิยาม raw ทุก table — **ยังไม่ได้แก้** (TODO: พิมพ์ realizable คู่กัน)
+
+### chg24h>1000 บนข้อมูลใหม่ (realizable, era `71c22712`, dense, d3 recorded) — ตรวจโดย auditor อิสระ + ผมรันซ้ำ
+
+| cell | hot | cold | Fisher two-sided |
+|---|---|---|---|
+| young, ทุก chain | 86/374 = 23.0% | 149/803 = 18.6% | 0.085 |
+| young, **solana** | 61/308 = 19.8% | 109/580 = 18.8% | **0.72** |
+| young, robinhood | 25/66 = 37.9% | 40/223 = 17.9% | 0.001 |
+| old, ทุก chain | 6/18 = 33.3% | 54/515 = 10.5% | 0.010 (Bonferroni x2 = 0.020) |
+
+- young (95% ของ hot rows) บน Solana ไม่มี separation. edge รวมมาจาก robinhood ซึ่งเพิ่ม 09-02 หลัง pre-register และ alert ไม่ได้
+- old: 6 events, ตัดผู้ชนะ 1 ตัว p=0.031, 2 ตัว p=0.086; hot labels มี JUP chg24h 476,317% และ "USDC" ปลอม
+- **chg24h ของเหรียญอายุ < 6h ไม่ใช่ 24h momentum:** 768/912 young <6h rows มี chg24h == chg6h == chg1h
+  = "ขึ้นกี่เท่าตั้งแต่เปิด pool" (suspected: คนละปริมาณกับที่สมมติฐานสร้างจาก)
+- การเปลี่ยน raw -> realizable เลือกหลังเห็นข้อมูล (แม้นิยามมีตั้งแต่ 2026-08-31) — ต้องเปิดเผย
+- **verdict: not confirmed, not retired by its own literal condition** — รอดเพราะ 6 events ใน old เท่านั้น ไม่ผ่านเกณฑ์ promote ใดๆ
+
+### alert 127 ตัวที่ส่งไปแล้ว (2026-08-26 -> 09-18) ถ้าซื้อทุกตัวที่ราคา alert
+
+2x นับเฉพาะ liq>=$5k; loss = -50% หรือ liq pull; "determined" = path เริ่มภายใน 1h และไม่มี gap >2h ก่อน event แรก
+
+| | recorded (84) | backfilled (43) |
+|---|---|---|
+| 2x ก่อน / loss ก่อน / ไม่ถึงทั้งคู่ | 12 / 26 / 7 | 3 / 6 / 2 |
+| censored | 39 | 32 |
+
+first alert per mint (97 mints): determined 46 -> 12 / 28 / 6. ที่ exit +100%/-50% break-even ต้องชนะ 1:2 -> ได้ 12:26 ต่ำกว่าเล็กน้อย **ก่อน fee/slippage**
+P&L คำนวณไม่ได้ (71/127 censored). `candidates-history` อย่างเดียวให้ +72h median +82% vs tracking -25% = survivorship
+
+### เปิด paper wallet (owner สั่ง 2026-09-18: "ให้ทุน $30 ดูว่าจะได้กำไรไหม ถ้าหมดก็ note ว่า wallet 1 เจ๊ง")
+
+`node coin.js paper --commit` ทุก cycle ใน workflow, state ใน `paper.json`, test `t-paper.js`
+- $30/wallet, $10/ไม้, ทุก alert ที่ต่อท้าย `alerts.jsonl` **หลัง**สร้าง wallet (forward only; cursor = จำนวนบรรทัด ไม่ใช่ timestamp)
+- **เข้าตามแผนในข้อความ alert** (reviewer จับได้ว่า draft แรกซื้อ market ทุกตัว ทั้งที่ 54/84 recorded alerts บอกให้รอ):
+  6h < -10% -> รอจน poll ถัดไปเห็น chg6h > 0; 24h > +30% -> รอราคา <= 0.80P; นอกนั้น market.
+  เงื่อนไขไม่เกิดใน 24h -> skip พร้อมเหตุผล. market entry fill ภายในวินาทีหลัง alert = best case ของ latency
+- ออกตามแผนในข้อความ alert: ขายครึ่งที่ 2x, ที่เหลือ 3x, stop -50%, LP drain, time stop 48h, max hold 72h
+- fill ที่ราคา sample จริง ไม่ใช่ราคา trigger; liq < $5k หรือ pair หาย 3 polls = ขายได้ $0;
+  liq ไม่มีใน response = ไม่รู้ ไม่ trigger อะไร; ไม่มีราคาเลยเกิน max hold + 24h = $0
+- **GROSS — ไม่รวม fee/slippage**
+- หมดทุน (cash < $10 และไม่มีไม้เปิด) -> `wallet N busted` + เปิด wallet N+1 $30
+
+**เกณฑ์ตัดสินที่ตั้งไว้ก่อนเห็นผล (proposal — owner เป็นคนตัดสินสุดท้าย):** ประเมินเมื่อปิดไม้ครบ 30 ไม้รวมทุก wallet
+ตัวเลขทั้งหมดพิมพ์โดย `node coin.js paper` (บรรทัด `all wallets` / `closed`) ไม่ต้องคำนวณมือ
+- **ผ่าน** ต้องครบทุกข้อ: closed P&L รวม > 0; equity รวมทุก wallet > เงินก้อนเดียวกันใส่ SOL ตั้งแต่วันเปิดแต่ละ wallet;
+  และ closed P&L ยัง > 0 หลังตัดไม้ที่กำไรที่สุดออก 1 ไม้ (memecoin หางอ้วน ผลที่แขวนอยู่บนไม้เดียวไม่ใช่ระบบ)
+- **ตก:** closed P&L รวม < 0 ที่ 30 ไม้ หรือเจ๊ง 2 wallet
+- **อย่างอื่น (เช่น กำไรแต่แพ้ SOL) = ยังตัดสินไม่ได้** เก็บต่อ ห้ามอ่านเป็นผ่าน
+- ผ่าน = ผ่านบน **gross** เท่านั้น ก่อนใช้เงินจริงต้องรู้ fee/slippage จริงของไม้ $10 ก่อน (ยังไม่มีข้อมูลนี้ในรีโป)
+- รายงาน n เป็นทั้งไม้และ distinct mints (re-alert ของ mint เดียวกันไม่อิสระ)
+- ความไม่แน่นอน: win rate ~33% ที่ n=30 มี 95% CI ±17pp แบบ Wald (Wilson สำหรับ 10/30 = 19.2%-51.2%)
+  และ win rate ไม่ใช่ตัววัด P&L โดยตรง -> "ผ่าน" คือเงื่อนไขจำเป็น ไม่ใช่หลักฐานว่ามี edge
