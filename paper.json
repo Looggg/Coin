@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8311,
-   "lastLiqUsd": 48625.41,
-   "lastSeenAt": "2026-09-19T13:13:00.060Z"
+   "lastMult": 0.8139,
+   "lastLiqUsd": 48115.78,
+   "lastSeenAt": "2026-09-19T13:22:59.893Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0517,
-   "lastLiqUsd": 269247.7,
-   "lastSeenAt": "2026-09-19T13:13:00.060Z"
+   "lastMult": 1.0425,
+   "lastLiqUsd": 267526.34,
+   "lastSeenAt": "2026-09-19T13:22:59.893Z"
   },
   {
    "id": 3,
@@ -84,9 +84,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9182,
-   "lastLiqUsd": 606542.85,
-   "lastSeenAt": "2026-09-19T13:13:00.060Z"
+   "lastMult": 0.933,
+   "lastLiqUsd": 612110.35,
+   "lastSeenAt": "2026-09-19T13:22:59.893Z"
   }
  ],
  "pending": [
