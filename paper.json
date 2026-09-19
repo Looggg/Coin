@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7677,
-   "lastLiqUsd": 46669.05,
-   "lastSeenAt": "2026-09-19T12:23:00.151Z"
+   "lastMult": 0.7576,
+   "lastLiqUsd": 46343.76,
+   "lastSeenAt": "2026-09-19T12:35:31.648Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1146,
-   "lastLiqUsd": 279287.81,
-   "lastSeenAt": "2026-09-19T12:23:00.151Z"
+   "lastMult": 1.1607,
+   "lastLiqUsd": 286872.46,
+   "lastSeenAt": "2026-09-19T12:35:31.648Z"
   },
   {
    "id": 3,
@@ -84,9 +84,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8879,
-   "lastLiqUsd": 600538.32,
-   "lastSeenAt": "2026-09-19T12:23:00.151Z"
+   "lastMult": 0.891,
+   "lastLiqUsd": 602052.37,
+   "lastSeenAt": "2026-09-19T12:35:31.648Z"
   }
  ],
  "pending": [
@@ -95,15 +95,6 @@
    "symbol": "JubJub",
    "alertedAt": "2026-09-19T07:40:06.864Z",
    "alertPriceUsd": 0.001547,
-   "plan": {
-    "type": "knife"
-   }
-  },
-  {
-   "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
-   "symbol": "biketyson",
-   "alertedAt": "2026-09-19T07:40:06.864Z",
-   "alertPriceUsd": 0.001783,
    "plan": {
     "type": "knife"
    }
@@ -168,6 +159,16 @@
     "type": "knife"
    },
    "at": "2026-09-19T12:23:00.151Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
+   "symbol": "biketyson",
+   "alertedAt": "2026-09-19T07:40:06.864Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-19T12:35:31.648Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
