@@ -44,7 +44,7 @@
    "status": "open",
    "lastMult": 1.0015,
    "lastLiqUsd": 53628.03,
-   "lastSeenAt": "2026-09-19T08:38:52.856Z"
+   "lastSeenAt": "2026-09-19T08:46:02.280Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0461,
-   "lastLiqUsd": 269276.63,
-   "lastSeenAt": "2026-09-19T08:38:52.856Z"
+   "lastMult": 1.0667,
+   "lastLiqUsd": 271940.41,
+   "lastSeenAt": "2026-09-19T08:46:02.280Z"
   },
   {
    "id": 3,
@@ -84,9 +84,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0615,
-   "lastLiqUsd": 648927.62,
-   "lastSeenAt": "2026-09-19T08:38:52.856Z"
+   "lastMult": 1.0623,
+   "lastLiqUsd": 647674.86,
+   "lastSeenAt": "2026-09-19T08:46:02.280Z"
   }
  ],
  "pending": [
@@ -104,15 +104,6 @@
    "symbol": "TACZ",
    "alertedAt": "2026-09-19T07:40:06.864Z",
    "alertPriceUsd": 0.002399,
-   "plan": {
-    "type": "knife"
-   }
-  },
-  {
-   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
-   "symbol": "ELON",
-   "alertedAt": "2026-09-19T07:40:06.864Z",
-   "alertPriceUsd": 0.002078,
    "plan": {
     "type": "knife"
    }
@@ -164,6 +155,16 @@
     "type": "market"
    },
    "at": "2026-09-19T07:40:08.653Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
+   "symbol": "ELON",
+   "alertedAt": "2026-09-19T07:40:06.864Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-19T08:46:02.280Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
