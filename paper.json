@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8991,
-   "lastLiqUsd": 50649.22,
-   "lastSeenAt": "2026-09-19T09:46:02.760Z"
+   "lastMult": 0.9204,
+   "lastLiqUsd": 51291.9,
+   "lastSeenAt": "2026-09-19T09:56:02.463Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.2103,
-   "lastLiqUsd": 289579.47,
-   "lastSeenAt": "2026-09-19T09:46:02.760Z"
+   "lastMult": 1.1506,
+   "lastLiqUsd": 282288.23,
+   "lastSeenAt": "2026-09-19T09:56:02.463Z"
   },
   {
    "id": 3,
@@ -84,9 +84,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9751,
-   "lastLiqUsd": 621902.23,
-   "lastSeenAt": "2026-09-19T09:46:02.760Z"
+   "lastMult": 0.9852,
+   "lastLiqUsd": 624788.57,
+   "lastSeenAt": "2026-09-19T09:56:02.463Z"
   }
  ],
  "pending": [
@@ -113,15 +113,6 @@
    "symbol": "JubJub",
    "alertedAt": "2026-09-19T07:40:06.864Z",
    "alertPriceUsd": 0.001547,
-   "plan": {
-    "type": "knife"
-   }
-  },
-  {
-   "mint": "6UtY9iTZMQQ5QZVrbzFnNaJntV7oySm9k97mvwnuZcxr",
-   "symbol": "NEARKAT",
-   "alertedAt": "2026-09-19T07:40:06.864Z",
-   "alertPriceUsd": 0.009876,
    "plan": {
     "type": "knife"
    }
@@ -165,6 +156,16 @@
     "type": "knife"
    },
    "at": "2026-09-19T08:46:02.280Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "6UtY9iTZMQQ5QZVrbzFnNaJntV7oySm9k97mvwnuZcxr",
+   "symbol": "NEARKAT",
+   "alertedAt": "2026-09-19T07:40:06.864Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-19T09:56:02.463Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
