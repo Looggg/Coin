@@ -105,7 +105,17 @@ const RULES = {
   // they predict returns. See the open question in STUDY.md before touching.
   alertMinScore: 80, // NOT return-backed — noise control only
   alertMaxInsiderPct: 5, // NOT return-backed — see note above
-  alertMaxFdv: 1500000,
+  // alertMaxFdv (1.5M) — REMOVED 2026-09-19. It was a guess from day one
+  // (STUDY.md 2026-08-26: "headroom for 2x", no data) and became the single
+  // most binding condition: sole blocker for 36 of 112 full-coverage mints in
+  // the 7 days to 2026-09-19 (mints with at least one snapshot where fdv was
+  // the only failing condition). Measured on era 71c22712, dense, d3, PASS,
+  // full coverage, data commit 9c19bed (164 rows / 118 mints): realizable 2x
+  // 12/81 under the cap vs 13/83 over it (p=1.0), rug(d3ret <= -90%) 6/81 vs
+  // 1/83 (p=0.062; 0.117 two hours later on 167 rows) — not significant,
+  // leaning toward the side the cap kept. Removal is "buys no measured protection", NOT "shown
+  // to improve returns" — power to see a win-share change was 26%. Cost: ~67%
+  // more alerts, most of them no-move tokens. See STUDY.md 2026-09-19.
   alertMaxChg24h: 100, // already-pumped: chg24h > 100% ran -64.8% median @d1
   alertMinChg24h: -50, // chg24h < -50% ran median -21% and 0% winners @d1
   // liveness, not a return signal: the first live issue alerted a 9-month-old
@@ -227,6 +237,28 @@ const ENTRY_FILTER_KEYS = [
 const ENTRY_FILTER_VERSION = crypto
   .createHash("sha1")
   .update(JSON.stringify(ENTRY_FILTER_KEYS.map((k) => [k, RULES[k]])))
+  .digest("hex")
+  .slice(0, 8);
+
+// Same idea for the phone-alert gate, stamped on every alerts.jsonl line. Added
+// 2026-09-19 when alertMaxFdv was removed: before this, the only way to tell
+// which gate produced an alert was to line its timestamp up against git
+// history. The entry-filter hash is folded in because PASS is a precondition
+// of every alert. It hashes threshold VALUES only: a logic edit inside
+// alertQualifies that leaves these keys alone does not move it — add or
+// remove a key here when you add or remove a condition there.
+const ALERT_GATE_KEYS = [
+  "alertMinScore",
+  "alertMaxInsiderPct",
+  "alertMaxChg24h",
+  "alertMinChg24h",
+  "alertMinVolLiq",
+  "alertMinAgeHours",
+  "alertCooldownHours",
+];
+const ALERT_GATE_VERSION = crypto
+  .createHash("sha1")
+  .update(JSON.stringify([ENTRY_FILTER_VERSION, ...ALERT_GATE_KEYS.map((k) => [k, RULES[k]])]))
   .digest("hex")
   .slice(0, 8);
 
@@ -2612,7 +2644,6 @@ function alertQualifies(c, sent, now) {
   if (c.coverage && c.coverage !== "full") return false;
   if (!(c.score >= R.alertMinScore)) return false;
   if (c.insiderPct == null || c.insiderPct >= R.alertMaxInsiderPct) return false;
-  if (c.fdv == null || c.fdv >= R.alertMaxFdv) return false;
   if (!(c.liqUsd >= R.minLiquidityUsd)) return false;
   if (c.chg24h == null || c.chg24h >= R.alertMaxChg24h) return false;
   if (c.chg24h <= R.alertMinChg24h) return false;
@@ -2745,6 +2776,7 @@ function cmdAlert(commitSent) {
         symbol: c.symbol,
         alertedAt: new Date(now).toISOString(),
         track: "safety",
+        gate: ALERT_GATE_VERSION,
         priceUsd: c.priceUsd,
         liqUsd: c.liqUsd,
         fdv: c.fdv,

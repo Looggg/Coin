@@ -7,8 +7,8 @@ const src = fs.readFileSync("coin.js", "utf8");
 // tests the shipped code, not a copy of it
 const rulesSrc = src.slice(src.indexOf("const RULES = {"), src.indexOf("// ---------- helpers ----------"));
 const mod = { crypto: require("crypto") };
-const fn = new Function("crypto", rulesSrc + "\nreturn { RULES, ENTRY_FILTER_VERSION, POLL_CADENCE_MIN, provenance };");
-const { RULES, ENTRY_FILTER_VERSION, POLL_CADENCE_MIN, provenance } = fn(mod.crypto);
+const fn = new Function("crypto", rulesSrc + "\nreturn { RULES, ENTRY_FILTER_VERSION, ALERT_GATE_KEYS, ALERT_GATE_VERSION, POLL_CADENCE_MIN, provenance };");
+const { RULES, ENTRY_FILTER_VERSION, ALERT_GATE_KEYS, ALERT_GATE_VERSION, POLL_CADENCE_MIN, provenance } = fn(mod.crypto);
 
 let fail = 0;
 const ok = (cond, msg) => { console.log((cond ? "  ok   " : "  FAIL ") + msg); if (!cond) fail++; };
@@ -73,6 +73,19 @@ const codeRefs = src
   .filter((l) => !l.trim().startsWith("//") && l.includes("momMinChg24h")).length;
 ok(codeRefs === 2, `momMinChg24h has exactly 2 code references — its RULES def + the patterns table (found ${codeRefs})`);
 ok(RULES.momMinChg24h === 1000, "momMinChg24h is pre-registered at 1000, not retuned to the grid optimum 1637");
+
+// alert gate stamp (2026-09-19): every alerts.jsonl line names the gate that
+// produced it, and every key the stamp hashes is a real RULES threshold
+ok(/^[0-9a-f]{8}$/.test(ALERT_GATE_VERSION), `ALERT_GATE_VERSION is an 8-hex hash (${ALERT_GATE_VERSION})`);
+const missingKeys = ALERT_GATE_KEYS.filter((k) => !(k in RULES));
+ok(missingKeys.length === 0, `every ALERT_GATE_KEYS entry exists in RULES${missingKeys.length ? " (missing: " + missingKeys.join(", ") + ")" : ""}`);
+ok(/\bgate:\s*ALERT_GATE_VERSION\b/.test(functionBody(src, "cmdAlert") || ""), "cmdAlert stamps `gate: ALERT_GATE_VERSION` on alerts.jsonl lines");
+// alertMaxFdv was removed 2026-09-19 (STUDY.md): it must not creep back into
+// the gate without a logged decision
+const qualifies = codeOnly(functionBody(src, "alertQualifies") || "");
+ok(qualifies.length > 300, `alertQualifies slice is non-empty (${qualifies.length} chars)`);
+ok(!/\bfdv\b|alertMaxFdv/.test(qualifies), "alertQualifies does not gate on fdv (alertMaxFdv removed 2026-09-19)");
+ok(!("alertMaxFdv" in RULES), "alertMaxFdv is gone from RULES");
 
 console.log(fail ? `\n${fail} check(s) failed` : "\nall provenance checks passed");
 process.exit(fail ? 1 : 0);

@@ -1346,3 +1346,79 @@ P&L คำนวณไม่ได้ (71/127 censored). `candidates-history` �
 - รายงาน n เป็นทั้งไม้และ distinct mints (re-alert ของ mint เดียวกันไม่อิสระ)
 - ความไม่แน่นอน: win rate ~33% ที่ n=30 มี 95% CI ±17pp แบบ Wald (Wilson สำหรับ 10/30 = 19.2%-51.2%)
   และ win rate ไม่ใช่ตัววัด P&L โดยตรง -> "ผ่าน" คือเงื่อนไขจำเป็น ไม่ใช่หลักฐานว่ามี edge
+
+## 2026-09-19 — RULES change #4: ถอด `alertMaxFdv` (1.5M) ออกจาก alert gate
+
+owner ถาม "gate ตอนนี้ดีแล้วหรอ ... ปรับ logic ได้ไหม" -> ส่ง analyst (Opus) วัดทีละเงื่อนไข แบบ read-only
+ผมรันสคริปต์ของมันซ้ำได้ตัวเลขตรงกัน และเขียน cross-check แยกเองสำหรับ split fdv ได้ตรงกัน (164/118, rug 6/81 vs 1/83)
+สคริปต์อยู่ใน session scratchpad (`agent1/gate1-4.js`, `xcheck_fdv.js`) ไม่ได้ commit.
+reviewer อิสระ (Opus) คำนวณ Table A/B และ sole-blocker ซ้ำด้วยโค้ดของตัวเองได้ตรงกัน (ไม่ได้คำนวณ power และ timing ซ้ำ)
+
+**ตัวเลขใน Table A/B ด้านล่างมาจาก data commit `9c19bed` (2026-09-19 04:03 UTC)** รันซ้ำบน `62e7f00` (06:46 UTC)
+มี 3 rows ใหม่ (fdv<1.5M ทั้งหมด) -> 167 rows / 120 mints และ p เปลี่ยน: fdv rug 6/84 vs 1/83 **p=0.117 (Holm 0.586)**,
+chg24h<100 rug **Holm 0.061** (ไม่ใช่ 0.047 แล้ว). นับ 1 row ต่อ mint (entry แรก) fdv rug p=0.12 (reviewer).
+-> อ่าน fdv rug ว่า **"ไม่ significant, เอียงไปทางใต้ cap"** และ chg24h<100 ว่า **"ใกล้ significant หลัง multiplicity, ไม่ผ่าน"**
+
+**ทำไม alert น้อย (7 วันถึง 2026-09-19, `candidates-history.jsonl`):** 193 mints = full coverage 112 + market-only 81
+(market-only ไม่ alert โดยออกแบบ) ใน 112 ตัวผ่าน gate 33 ตัว. sole blocker = mint ที่มี **อย่างน้อย 1 snapshot** ที่เงื่อนไขนั้น
+ตกเป็นเงื่อนไขเดียว: **fdv 36** (ในนี้ 13 ตัวก็ผ่าน gate เต็มใน 7 วันเดียวกัน, 23 ไม่เคยผ่าน), chg24h<100 14 (2 ไม่เคยผ่าน),
+vol/liq 13 (8), chg24h>-50 11 (0), insider 10 (9), score 5 (1). 24h ล่าสุดมี 5 mints ผ่านเงื่อนไขคุณภาพ ทุกตัวติด cooldown 72h -> ท่อไม่ตาย
+
+**Table A — discovery rows** (era `71c22712`, d3 recorded, dense s>=50, `f.pass`, coverage full = **164 rows / 118 mints**,
+Solana ทั้งหมด, 112 rows เป็น re-entry -> ไม่อิสระ). real2x = `realizable2x`; rug = `o.d3.ret <= -0.9` (trough-based ได้เท่ากันทุก cell);
+sim = เดิน `r.s` 2x (liq>=$5k) vs -50%/liq<$5k อะไรก่อน, gross. Fisher **two-sided**, Holm m=6
+
+| เงื่อนไข | ผ่าน: n · real2x · rug · sim W/L | ตก: n · real2x · rug · sim W/L | p real2x (Holm) | p rug (Holm) |
+|---|---|---|---|---|
+| fdv<1.5M | 81 · 12 · **6** · 11/24 | 83 · 13 · **1** · 13/13 | 1.00 (1.00) | 0.062 (0.31) |
+| insider<5 | 105 · 14 · 4 · 14/25 | 59 · 11 · 3 · 10/12 | 0.37 (0.75) | 0.70 (1) |
+| score>=80 | 135 · 17 · 5 · 17/30 | 29 · 8 · 2 · 7/7 | 0.050 (0.25) | 0.61 (1) |
+| vol/liq>=1 | 87 · 23 · 5 · 22/33 | 77 · 2 · 2 · 2/4 | 1.5e-5 (<0.001) | 0.45 (1) |
+| chg24h<100 | 141 · 19 · 3 · 19/20 | 23 · 6 · **4** · 5/17 | 0.13 (0.44) | **0.0079 (0.047)** |
+| chg24h>-50 | 160 · 23 · 7 · 22/37 | 4 · 2 · 0 · 2/0 | 0.11 (0.44) | 1.0 |
+
+power (exact Fisher two-sided, real2x 15.2% -> 30.5%): fdv 61%, insider 55-59%, vol/liq 62%, score 35-42%, chg24h<100 27-37%
+-> null ทุกตัวแปลว่า "บอกไม่ได้" ไม่ใช่ "ไม่มีผล"
+
+**Table B — แบบที่ gate รันจริง** (ทุก snapshot ใน `candidates-history`, 1 เทรด/tracking window ที่ snapshot แรกที่ผ่าน):
+full gate 63 windows (58 mints) W/L/neither 12/28/23, path rug 4, median sim -18.5%.
+ถอด fdv เพิ่ม **42 windows (31 mints) 7/10/24 (+1 undet), rug 1**, median -13.2% — vs full gate p(W:L)=0.54, p(rug)=0.65;
+power ที่จะเห็น win share 30%->50% = **26%**. PASS windows ที่ gate ไม่เคยหยิบ 178 (127 mints) 25/38/111 vs full gate p(W:L)=0.40
+-> **gate ทั้งตัวยังวัดไม่ได้ว่าดีกว่า PASS shortlist เปล่าๆ**. 12:28 ต่ำกว่า break-even 1:2 แต่ไม่ significant (one-sided binomial p=0.40)
+
+**การตัดสิน: ถอด `alertMaxFdv` ตัวเดียว** (one variable)
+- ที่มาเป็นการเดา (section 2026-08-26 ข้างบน: "headroom ให้ 2x ไม่ใช่ผลจาก data") และบล็อกมากที่สุด
+- ข้อมูล: real2x ไม่ต่าง (p=1.0), rug เอียงไปทาง**ฝั่งที่ cap เก็บไว้** (6/81 vs 1/83, p=0.062 @`9c19bed`; 6/84 vs 1/83,
+  p=0.117 @`62e7f00`; ไม่ significant ทั้งคู่) -> cap ไม่ได้ซื้อ protection ที่วัดได้
+- **นี่ไม่ใช่ "ทำให้ gate ดีขึ้น"** ไม่มีหลักฐานว่า return ดีขึ้น (power 26%). ต้นทุน: alert เพิ่มราว 67% (42 vs 63 windows),
+  ส่วนใหญ่เป็น no-move (24/42). ตัวที่ได้เพิ่มคือเหรียญ FDV ใหญ่อายุมาก (TOAD, PURR, ZCAT ซ้ำหลายรอบ)
+- ประโยชน์ที่ได้แน่ๆ คือ paper wallet ถึง 30 ไม้เร็วขึ้น -> verdict ของ gate มาเร็วขึ้น
+- preview หลังแก้ (`node coin.js alert`, ไม่มี `--commit-sent`, 2026-09-19 06:38 UTC): 3 hits คือ ELON FDV $2.20M, biketyson $1.79M,
+  fone $4.79M ซึ่ง gate เดิมจะบล็อกทั้งสามตัว. ELON (6h -14.1%) และ biketyson (6h -15.36%) ได้แผน knife (รอ 6h กลับบวก),
+  fone ได้ market
+
+**ผลต่อ paper wallet 1 — ผมรายงาน owner ผิดไปก่อน แล้ว reviewer จับได้:** ผมบอกว่า wallet ยังไม่ได้ซื้อ และจะใช้เงินหมดใน cycle
+ที่ deploy. **ผิดทั้งคู่** — ผมอ่าน `paper` ก่อน `git pull` ครั้งหลัง. ที่ HEAD `62e7f00`: `alerts.jsonl` 129 บรรทัด = `alertLines` 129,
+gate เดิมส่ง POT (04:37 UTC, fdv $192k) -> **open position #1, cash $20** และ USEFUL (06:39, fdv $1.37M) -> pending (knife)
+-> **wallet 1 ผสมไม้จาก gate เดิม 2 alert + gate ใหม่** gate ใหม่เป็น superset ของเดิม (ถอดเงื่อนไขอย่างเดียว) จึงไม่มีไม้ไหนที่ gate
+ใหม่จะไม่ซื้อ แต่ verdict 30 ไม้ของ 2026-09-18 ตอนนี้ครอบคลุมสอง gate — **ต้องรายงานแยกเมื่ออ่าน verdict**
+
+alert ทุกบรรทัดตั้งแต่ commit นี้มี `gate` = `ALERT_GATE_VERSION` = **`f42f3f10`** (sha1 ของ entry-filter hash + ค่า threshold ของ alert;
+hash แค่ค่า threshold — ถอด/เพิ่มเงื่อนไขต้องแก้ `ALERT_GATE_KEYS` ด้วย) บรรทัดที่ไม่มี field นี้ = gate ก่อน 2026-09-19
+
+**สิ่งที่ตัดสินใจไม่ทำ (จากการวัดเดียวกัน)**
+- ไม่แตะ `alertMaxChg24h` — rug protection แรงสุดในชุดนี้ (17.4% vs 2.1%, Holm 0.047 @`9c19bed`, 0.061 @`62e7f00`)
+  และมีหลักฐาน return ตั้งแต่ 2026-08-26
+- ไม่แตะ `alertMinVolLiq` — 26 windows ที่มันตัดออกได้ 0 win / 25 no-move = ทำหน้าที่ liveness ได้จริง
+- ไม่ถอด `alertMaxInsiderPct` — สอง view ขัดกัน (discovery ไม่มีผล; snapshot level 16 windows ที่เพิ่มได้ 1/8/7 median -35%) = บอกไม่ได้
+- `alertMinScore` redundant (ถอดแล้วเพิ่ม 0 discovery rows / 3 windows) ไม่มีเหตุให้แตะ
+- **ไม่เพิ่ม drawdown block** บน `ddFromPriorPeak` — ทิศกลับจากสมมติฐาน Morty: dd<=-50% ได้ 7/6 vs dd>-50% 1/13
+  (p=0.013 two-sided แต่ exploratory, Holm ข้าม 7 tests ไม่ต่ำกว่า ~0.09) ห้ามอ่านเป็นสัญญาณซื้อ
+- timing: เข้าที่ PASS snapshot แรกแทนที่ gate -> 9/21/6 vs 7/15/14, sign test p=1.0 = ไม่มีประโยชน์ที่วัดได้ภายใน window
+  (ทดสอบ lateness เชิงโครงสร้างไม่ได้ เพราะ pump นั้นเกิดก่อนเหรียญถึง PASS ที่อายุ >=48h)
+
+**kill condition ของการเปลี่ยนนี้ (ตั้งก่อนเห็นผล):** เมื่อ paper closed positions ที่ alert มี `gate` = `f42f3f10` และ fdv >= 1.5M
+ครบ 20 ไม้ ถ้า closed P&L รวมของกลุ่มนั้นติดลบ**และ**ต่ำกว่ากลุ่ม fdv < 1.5M ในช่วงเดียวกัน -> คืน cap แล้วบันทึกที่นี่
+- คำนวณมือ: join `paper.json` positions กับ `alerts.jsonl` ด้วย `mint` + `alertedAt` (position ไม่เก็บ `gate`/`fdv`) ยังไม่มีคำสั่งพิมพ์ให้
+- ไม่มี significance test ผูกไว้ — เป็นเกณฑ์ "หยุดเสียหาย" ไม่ใช่หลักฐาน. wallet $30 ถือได้ 3 ไม้ alert ส่วนใหญ่จะถูก skip เพราะเงินไม่พอ
+  -> 20 ไม้อาจใช้เวลานาน. ถ้า threshold ใด ๆ ใน gate เปลี่ยน hash จะเปลี่ยนและกลุ่มจะถูกแบ่ง
