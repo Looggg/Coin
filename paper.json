@@ -41,7 +41,10 @@
    "tookFirst": false,
    "misses": 0,
    "fills": [],
-   "status": "open"
+   "status": "open",
+   "lastMult": 0.9929,
+   "lastLiqUsd": 53361.12,
+   "lastSeenAt": "2026-09-19T04:43:54.933Z"
   }
  ],
  "pending": [],
