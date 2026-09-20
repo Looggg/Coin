@@ -1,5 +1,5 @@
 {
- "alertLines": 138,
+ "alertLines": 143,
  "wallets": [
   {
    "id": 1,
@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6253,
-   "lastLiqUsd": 41473.96,
-   "lastSeenAt": "2026-09-20T06:25:49.009Z"
+   "lastMult": 0.6156,
+   "lastLiqUsd": 41115.54,
+   "lastSeenAt": "2026-09-20T06:41:35.655Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6813,
-   "lastLiqUsd": 208059.67,
-   "lastSeenAt": "2026-09-20T06:25:49.009Z"
+   "lastMult": 0.6769,
+   "lastLiqUsd": 207433.08,
+   "lastSeenAt": "2026-09-20T06:41:35.655Z"
   },
   {
    "id": 3,
@@ -84,12 +84,22 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7975,
-   "lastLiqUsd": 564998.3,
-   "lastSeenAt": "2026-09-20T06:25:49.009Z"
+   "lastMult": 0.8045,
+   "lastLiqUsd": 568406.84,
+   "lastSeenAt": "2026-09-20T06:41:35.655Z"
   }
  ],
- "pending": [],
+ "pending": [
+  {
+   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
+   "symbol": "WOJAK",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "alertPriceUsd": 0.002129,
+   "plan": {
+    "type": "knife"
+   }
+  }
+ ],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -169,6 +179,46 @@
     "type": "knife"
    },
    "at": "2026-09-19T14:02:59.878Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "6JrR1iqPdinYTNvNPWTR2P7e2wSJ1rwdsrKGyhnzjUVr",
+   "symbol": "wifout",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-20T06:41:35.655Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "AqoPZcUumKUBHrnfBsNtoNuneYEjoimaiWYq8GH8gpX9",
+   "symbol": "STONK10",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-20T06:41:35.655Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "Ax5dAamJPeuaLpFUzs9FdcpoUhHDcxyjPzxCJQidjups",
+   "symbol": "MINI",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-20T06:41:35.655Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "CFNRDaxFcvRwRSNnA5cHrCCr6AHhk9dNkHWpRUjNupFL",
+   "symbol": "RAYCAT",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-20T06:41:35.655Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
