@@ -44,7 +44,7 @@
    "status": "open",
    "lastMult": 0.6628,
    "lastLiqUsd": 43040.25,
-   "lastSeenAt": "2026-09-20T18:50:06.374Z"
+   "lastSeenAt": "2026-09-20T19:00:04.469Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6364,
-   "lastLiqUsd": 201667.38,
-   "lastSeenAt": "2026-09-20T18:50:06.374Z"
+   "lastMult": 0.6308,
+   "lastLiqUsd": 200377.05,
+   "lastSeenAt": "2026-09-20T19:00:04.469Z"
   },
   {
    "id": 3,
@@ -84,22 +84,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8925,
-   "lastLiqUsd": 601190.68,
-   "lastSeenAt": "2026-09-20T18:50:06.374Z"
+   "lastMult": 0.8777,
+   "lastLiqUsd": 596096.31,
+   "lastSeenAt": "2026-09-20T19:00:04.469Z"
   }
  ],
- "pending": [
-  {
-   "mint": "AaEhFTX4naHSWSXz9TVe5QgLbtSLT8ZqYJGZzDDcoroh",
-   "symbol": "JUPCAT",
-   "alertedAt": "2026-09-20T16:32:47.849Z",
-   "alertPriceUsd": 0.001266,
-   "plan": {
-    "type": "knife"
-   }
-  }
- ],
+ "pending": [],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -249,6 +239,16 @@
     "type": "market"
    },
    "at": "2026-09-20T10:07:10.415Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "AaEhFTX4naHSWSXz9TVe5QgLbtSLT8ZqYJGZzDDcoroh",
+   "symbol": "JUPCAT",
+   "alertedAt": "2026-09-20T16:32:47.849Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-20T19:00:04.469Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
