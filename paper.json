@@ -1,5 +1,5 @@
 {
- "alertLines": 145,
+ "alertLines": 146,
  "wallets": [
   {
    "id": 1,
@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7236,
-   "lastLiqUsd": 44894.91,
-   "lastSeenAt": "2026-09-20T16:26:53.252Z"
+   "lastMult": 0.7211,
+   "lastLiqUsd": 44867.29,
+   "lastSeenAt": "2026-09-20T16:32:49.389Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.5851,
-   "lastLiqUsd": 194386.72,
-   "lastSeenAt": "2026-09-20T16:26:53.252Z"
+   "lastMult": 0.5859,
+   "lastLiqUsd": 194566.5,
+   "lastSeenAt": "2026-09-20T16:32:49.389Z"
   },
   {
    "id": 3,
@@ -84,12 +84,22 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8006,
-   "lastLiqUsd": 572213.9,
-   "lastSeenAt": "2026-09-20T16:26:53.252Z"
+   "lastMult": 0.8178,
+   "lastLiqUsd": 578217.78,
+   "lastSeenAt": "2026-09-20T16:32:49.389Z"
   }
  ],
- "pending": [],
+ "pending": [
+  {
+   "mint": "AaEhFTX4naHSWSXz9TVe5QgLbtSLT8ZqYJGZzDDcoroh",
+   "symbol": "JUPCAT",
+   "alertedAt": "2026-09-20T16:32:47.849Z",
+   "alertPriceUsd": 0.001266,
+   "plan": {
+    "type": "knife"
+   }
+  }
+ ],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
