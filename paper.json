@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6242,
-   "lastLiqUsd": 41451.2,
-   "lastSeenAt": "2026-09-20T07:51:28.341Z"
+   "lastMult": 0.6131,
+   "lastLiqUsd": 41030.78,
+   "lastSeenAt": "2026-09-20T08:07:08.133Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6852,
-   "lastLiqUsd": 209673.63,
-   "lastSeenAt": "2026-09-20T07:51:28.341Z"
+   "lastMult": 0.6645,
+   "lastLiqUsd": 205029.29,
+   "lastSeenAt": "2026-09-20T08:07:08.133Z"
   },
   {
    "id": 3,
@@ -84,22 +84,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8178,
-   "lastLiqUsd": 574183.99,
-   "lastSeenAt": "2026-09-20T07:51:28.341Z"
+   "lastMult": 0.8146,
+   "lastLiqUsd": 571335.51,
+   "lastSeenAt": "2026-09-20T08:07:08.133Z"
   }
  ],
- "pending": [
-  {
-   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
-   "symbol": "WOJAK",
-   "alertedAt": "2026-09-20T06:41:34.056Z",
-   "alertPriceUsd": 0.002129,
-   "plan": {
-    "type": "knife"
-   }
-  }
- ],
+ "pending": [],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -219,6 +209,16 @@
     "type": "market"
    },
    "at": "2026-09-20T06:41:35.655Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
+   "symbol": "WOJAK",
+   "alertedAt": "2026-09-20T06:41:34.056Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-20T08:07:08.133Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
