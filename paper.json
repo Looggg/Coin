@@ -1,5 +1,5 @@
 {
- "alertLines": 146,
+ "alertLines": 148,
  "wallets": [
   {
    "id": 1,
@@ -42,9 +42,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6628,
-   "lastLiqUsd": 43040.25,
-   "lastSeenAt": "2026-09-20T19:00:04.469Z"
+   "lastMult": 0.677,
+   "lastLiqUsd": 43481.26,
+   "lastSeenAt": "2026-09-20T19:07:34.813Z"
   },
   {
    "id": 2,
@@ -63,9 +63,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6308,
-   "lastLiqUsd": 200377.05,
-   "lastSeenAt": "2026-09-20T19:00:04.469Z"
+   "lastMult": 0.6261,
+   "lastLiqUsd": 199154.66,
+   "lastSeenAt": "2026-09-20T19:07:34.813Z"
   },
   {
    "id": 3,
@@ -84,12 +84,23 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8777,
-   "lastLiqUsd": 596096.31,
-   "lastSeenAt": "2026-09-20T19:00:04.469Z"
+   "lastMult": 0.8567,
+   "lastLiqUsd": 591408.34,
+   "lastSeenAt": "2026-09-20T19:07:34.813Z"
   }
  ],
- "pending": [],
+ "pending": [
+  {
+   "mint": "43VWkd99HjqkhFTZbWBpMpRhjG469nWa7x7uEsgSH7We",
+   "symbol": "STNK",
+   "alertedAt": "2026-09-20T19:07:33.523Z",
+   "alertPriceUsd": 8.5,
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 6.800000000000001
+   }
+  }
+ ],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -249,6 +260,16 @@
     "type": "knife"
    },
    "at": "2026-09-20T19:00:04.469Z",
+   "reason": "wallet 1 has $0.00, stake is $10"
+  },
+  {
+   "mint": "AGi2s9zPRPHs3zEDPhPTroumTEXK5ufymYSfEFndCSSW",
+   "symbol": "LEVERCAT",
+   "alertedAt": "2026-09-20T19:07:33.523Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-20T19:07:34.813Z",
    "reason": "wallet 1 has $0.00, stake is $10"
   }
  ]
