@@ -135,9 +135,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8802,
-   "lastLiqUsd": 386267.21,
-   "lastSeenAt": "2026-09-21T19:01:03.158Z"
+   "lastMult": 0.8751,
+   "lastLiqUsd": 384775.72,
+   "lastSeenAt": "2026-09-21T19:13:54.125Z"
   },
   {
    "id": 5,
@@ -156,22 +156,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.67,
-   "lastLiqUsd": 157108.28,
-   "lastSeenAt": "2026-09-21T19:01:03.158Z"
+   "lastMult": 0.6946,
+   "lastLiqUsd": 159844.45,
+   "lastSeenAt": "2026-09-21T19:13:54.125Z"
   }
  ],
  "pending": [
-  {
-   "mint": "43VWkd99HjqkhFTZbWBpMpRhjG469nWa7x7uEsgSH7We",
-   "symbol": "STNK",
-   "alertedAt": "2026-09-20T19:07:33.523Z",
-   "alertPriceUsd": 8.5,
-   "plan": {
-    "type": "dip",
-    "maxPriceUsd": 6.800000000000001
-   }
-  },
   {
    "mint": "9oXA1VWKNiYDYa6VKHBFFBBvZdvuhw1b2eD5Aka7YrVt",
    "symbol": "FLAME",
@@ -364,6 +354,17 @@
    },
    "at": "2026-09-21T17:21:02.774Z",
    "reason": "wallet 1 has $1.92, stake is $10"
+  },
+  {
+   "mint": "43VWkd99HjqkhFTZbWBpMpRhjG469nWa7x7uEsgSH7We",
+   "symbol": "STNK",
+   "alertedAt": "2026-09-20T19:07:33.523Z",
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 6.800000000000001
+   },
+   "at": "2026-09-21T19:13:54.125Z",
+   "reason": "plan: no dip to 0.8x the alert price within 24h"
   }
  ]
 }
