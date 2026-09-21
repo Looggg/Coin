@@ -5,7 +5,7 @@
    "id": 1,
    "startedAt": "2026-09-18T14:12:47.598Z",
    "startUsd": 30,
-   "cashUsd": 11.8236,
+   "cashUsd": 1.8236,
    "solPriceAtStart": 108.34,
    "status": "active",
    "rules": {
@@ -104,9 +104,27 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0452,
-   "lastLiqUsd": 647819.03,
-   "lastSeenAt": "2026-09-21T06:16:20.314Z"
+   "lastMult": 1.0506,
+   "lastLiqUsd": 650742.69,
+   "lastSeenAt": "2026-09-21T06:29:21.525Z"
+  },
+  {
+   "id": 4,
+   "wallet": 1,
+   "mint": "B5WTLaRwaUQpKk7ir1wniNB6m5o8GgMrimhKMYan2R6B",
+   "symbol": "Pepe",
+   "alertedAt": "2026-09-20T21:52:35.289Z",
+   "alertPriceUsd": 0.001387,
+   "plan": "knife",
+   "openedAt": "2026-09-21T06:29:21.525Z",
+   "entryPriceUsd": 0.001553,
+   "entryLiqUsd": 401154.16,
+   "stakeUsd": 10,
+   "remainingFrac": 1,
+   "tookFirst": false,
+   "misses": 0,
+   "fills": [],
+   "status": "open"
   }
  ],
  "pending": [
@@ -128,15 +146,6 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.0042791999999999995
-   }
-  },
-  {
-   "mint": "B5WTLaRwaUQpKk7ir1wniNB6m5o8GgMrimhKMYan2R6B",
-   "symbol": "Pepe",
-   "alertedAt": "2026-09-20T21:52:35.289Z",
-   "alertPriceUsd": 0.001387,
-   "plan": {
-    "type": "knife"
    }
   }
  ],
