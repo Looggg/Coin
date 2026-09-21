@@ -5,7 +5,7 @@
    "id": 1,
    "startedAt": "2026-09-18T14:12:47.598Z",
    "startUsd": 30,
-   "cashUsd": 1.8236,
+   "cashUsd": 11.9171,
    "solPriceAtStart": 108.34,
    "status": "active",
    "rules": {
@@ -99,14 +99,24 @@
    "entryPriceUsd": 0.01284,
    "entryLiqUsd": 630852.19,
    "stakeUsd": 10,
-   "remainingFrac": 1,
+   "remainingFrac": 0,
    "tookFirst": false,
    "misses": 0,
-   "fills": [],
-   "status": "open",
-   "lastMult": 1.0187,
-   "lastLiqUsd": 641467.03,
-   "lastSeenAt": "2026-09-21T07:36:20.717Z"
+   "fills": [
+    {
+     "at": "2026-09-21T07:46:20.968Z",
+     "frac": 1,
+     "mult": 1.0093,
+     "proceedsUsd": 10.0935,
+     "reason": "time stop"
+    }
+   ],
+   "status": "closed",
+   "lastMult": 1.0093,
+   "lastLiqUsd": 638967.25,
+   "lastSeenAt": "2026-09-21T07:46:20.968Z",
+   "closedAt": "2026-09-21T07:46:20.968Z",
+   "pnlUsd": 0.0935
   },
   {
    "id": 4,
@@ -126,8 +136,8 @@
    "fills": [],
    "status": "open",
    "lastMult": 1.0155,
-   "lastLiqUsd": 403709.96,
-   "lastSeenAt": "2026-09-21T07:36:20.717Z"
+   "lastLiqUsd": 403447.54,
+   "lastSeenAt": "2026-09-21T07:46:20.968Z"
   }
  ],
  "pending": [
