@@ -1,5 +1,5 @@
 {
- "alertLines": 150,
+ "alertLines": 152,
  "wallets": [
   {
    "id": 1,
@@ -135,9 +135,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0554,
-   "lastLiqUsd": 419260.17,
-   "lastSeenAt": "2026-09-21T10:16:21.654Z"
+   "lastMult": 1.0354,
+   "lastLiqUsd": 415278.55,
+   "lastSeenAt": "2026-09-21T10:30:42.821Z"
   }
  ],
  "pending": [
@@ -159,6 +159,26 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.0042791999999999995
+   }
+  },
+  {
+   "mint": "9oXA1VWKNiYDYa6VKHBFFBBvZdvuhw1b2eD5Aka7YrVt",
+   "symbol": "FLAME",
+   "alertedAt": "2026-09-21T10:30:39.343Z",
+   "alertPriceUsd": 0.0005818,
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.00046544000000000007
+   }
+  },
+  {
+   "mint": "GiUHYs5Hsv94P8bR9m26DsXsX8E786rQsFsPK6spump",
+   "symbol": "RICHDEBT",
+   "alertedAt": "2026-09-21T10:30:39.343Z",
+   "alertPriceUsd": 0.004011,
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.0032088
    }
   }
  ],
