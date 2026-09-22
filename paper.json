@@ -1,5 +1,5 @@
 {
- "alertLines": 154,
+ "alertLines": 156,
  "wallets": [
   {
    "id": 1,
@@ -136,8 +136,8 @@
    "fills": [],
    "status": "open",
    "lastMult": 0.763,
-   "lastLiqUsd": 359478.08,
-   "lastSeenAt": "2026-09-22T09:11:19.047Z"
+   "lastLiqUsd": 358960.17,
+   "lastSeenAt": "2026-09-22T09:25:16.388Z"
   },
   {
    "id": 5,
@@ -394,6 +394,26 @@
     "type": "market"
    },
    "at": "2026-09-22T08:25:06.909Z",
+   "reason": "wallet 1 has $6.14, stake is $10"
+  },
+  {
+   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
+   "symbol": "ELON",
+   "alertedAt": "2026-09-22T09:25:14.204Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-22T09:25:16.388Z",
+   "reason": "wallet 1 has $6.14, stake is $10"
+  },
+  {
+   "mint": "Cm6fNnMk7NfzStP9CZpsQA2v3jjzbcYGAxdJySmHpump",
+   "symbol": "Buttcoin",
+   "alertedAt": "2026-09-22T09:25:14.204Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-22T09:25:16.388Z",
    "reason": "wallet 1 has $6.14, stake is $10"
   }
  ]
