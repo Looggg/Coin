@@ -1,5 +1,5 @@
 {
- "alertLines": 156,
+ "alertLines": 157,
  "wallets": [
   {
    "id": 1,
@@ -135,9 +135,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7605,
-   "lastLiqUsd": 358780.18,
-   "lastSeenAt": "2026-09-22T10:11:18.504Z"
+   "lastMult": 0.7566,
+   "lastLiqUsd": 357510.59,
+   "lastSeenAt": "2026-09-22T10:24:24.636Z"
   },
   {
    "id": 5,
@@ -414,6 +414,16 @@
     "type": "market"
    },
    "at": "2026-09-22T09:25:16.388Z",
+   "reason": "wallet 1 has $6.14, stake is $10"
+  },
+  {
+   "mint": "8RNUw4N655VSrZKuhGdywhbSMDTrheguFPfxbpE2NZHQ",
+   "symbol": "PURR",
+   "alertedAt": "2026-09-22T10:24:23.036Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-22T10:24:24.636Z",
    "reason": "wallet 1 has $6.14, stake is $10"
   }
  ]
