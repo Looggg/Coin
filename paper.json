@@ -1,5 +1,5 @@
 {
- "alertLines": 152,
+ "alertLines": 154,
  "wallets": [
   {
    "id": 1,
@@ -135,9 +135,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7566,
-   "lastLiqUsd": 356404,
-   "lastSeenAt": "2026-09-22T08:11:19.049Z"
+   "lastMult": 0.7675,
+   "lastLiqUsd": 358801.89,
+   "lastSeenAt": "2026-09-22T08:25:06.909Z"
   },
   {
    "id": 5,
@@ -375,6 +375,26 @@
    },
    "at": "2026-09-21T19:13:54.125Z",
    "reason": "plan: no dip to 0.8x the alert price within 24h"
+  },
+  {
+   "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
+   "symbol": "biketyson",
+   "alertedAt": "2026-09-22T08:25:04.529Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-22T08:25:06.909Z",
+   "reason": "wallet 1 has $6.14, stake is $10"
+  },
+  {
+   "mint": "CTPoyCwkjMvoJwU4xvZZqoD8tiYk6yDchySiN5gGpump",
+   "symbol": "fone",
+   "alertedAt": "2026-09-22T08:25:04.529Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-22T08:25:06.909Z",
+   "reason": "wallet 1 has $6.14, stake is $10"
   }
  ]
 }
