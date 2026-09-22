@@ -1,5 +1,5 @@
 {
- "alertLines": 158,
+ "alertLines": 159,
  "wallets": [
   {
    "id": 1,
@@ -135,9 +135,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7611,
-   "lastLiqUsd": 359183.88,
-   "lastSeenAt": "2026-09-22T16:00:31.642Z"
+   "lastMult": 0.7527,
+   "lastLiqUsd": 356581.72,
+   "lastSeenAt": "2026-09-22T16:15:47.417Z"
   },
   {
    "id": 5,
@@ -177,6 +177,15 @@
    "symbol": "moonkey",
    "alertedAt": "2026-09-22T15:16:11.873Z",
    "alertPriceUsd": 0.0006279,
+   "plan": {
+    "type": "knife"
+   }
+  },
+  {
+   "mint": "7tFbGa9wt4Q4yxNAdaDcTKahv4WPrJtXh6ty7gjWyKx3",
+   "symbol": "JubJub",
+   "alertedAt": "2026-09-22T16:15:45.393Z",
+   "alertPriceUsd": 0.0007017,
    "plan": {
     "type": "knife"
    }
