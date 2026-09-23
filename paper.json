@@ -1,5 +1,5 @@
 {
- "alertLines": 163,
+ "alertLines": 164,
  "wallets": [
   {
    "id": 1,
@@ -197,12 +197,22 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9638,
-   "lastLiqUsd": 491342.46,
-   "lastSeenAt": "2026-09-23T18:47:48.589Z"
+   "lastMult": 1.0985,
+   "lastLiqUsd": 530887.68,
+   "lastSeenAt": "2026-09-23T19:04:43.386Z"
   }
  ],
- "pending": [],
+ "pending": [
+  {
+   "mint": "9DdHxVe1BSPaTy3iGEwvWsooRchNLK61XFAvzot59FwD",
+   "symbol": "CLIP",
+   "alertedAt": "2026-09-23T19:04:41.995Z",
+   "alertPriceUsd": 0.0002258,
+   "plan": {
+    "type": "knife"
+   }
+  }
+ ],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
