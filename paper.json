@@ -1,5 +1,5 @@
 {
- "alertLines": 164,
+ "alertLines": 166,
  "wallets": [
   {
    "id": 1,
@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0841,
-   "lastLiqUsd": 530256.06,
-   "lastSeenAt": "2026-09-23T19:47:48.191Z"
+   "lastMult": 1.0073,
+   "lastLiqUsd": 507790.27,
+   "lastSeenAt": "2026-09-23T20:04:42.045Z"
   }
  ],
  "pending": [
@@ -208,6 +208,15 @@
    "symbol": "CLIP",
    "alertedAt": "2026-09-23T19:04:41.995Z",
    "alertPriceUsd": 0.0002258,
+   "plan": {
+    "type": "knife"
+   }
+  },
+  {
+   "mint": "6kNNgyrdvjkRC8eRGQqx5sLfZG2jTmg3NCFmkX2hYP4j",
+   "symbol": "SOMETHING",
+   "alertedAt": "2026-09-23T20:04:40.059Z",
+   "alertPriceUsd": 0.001553,
    "plan": {
     "type": "knife"
    }
@@ -515,6 +524,16 @@
     "type": "market"
    },
    "at": "2026-09-23T18:04:41.845Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "AGi2s9zPRPHs3zEDPhPTroumTEXK5ufymYSfEFndCSSW",
+   "symbol": "LEVERCAT",
+   "alertedAt": "2026-09-23T20:04:40.059Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-23T20:04:42.045Z",
    "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
