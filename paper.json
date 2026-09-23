@@ -1,5 +1,5 @@
 {
- "alertLines": 161,
+ "alertLines": 162,
  "wallets": [
   {
    "id": 1,
@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1118,
-   "lastLiqUsd": 512822.79,
-   "lastSeenAt": "2026-09-23T11:57:52.383Z"
+   "lastMult": 0.9938,
+   "lastLiqUsd": 482531.59,
+   "lastSeenAt": "2026-09-23T13:03:33.302Z"
   }
  ],
  "pending": [],
@@ -486,6 +486,16 @@
    },
    "at": "2026-09-22T23:29:02.606Z",
    "reason": "wallet 1 has $6.14, stake is $10"
+  },
+  {
+   "mint": "E8fsmahzoa4WGZ1dCnGBTzgXRxz9T7nC17KWGkzGxray",
+   "symbol": "LYNKS",
+   "alertedAt": "2026-09-23T13:03:31.329Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-23T13:03:33.302Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
 }
