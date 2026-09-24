@@ -1,5 +1,5 @@
 {
- "alertLines": 177,
+ "alertLines": 178,
  "wallets": [
   {
    "id": 1,
@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.3721,
-   "lastLiqUsd": 597937.75,
-   "lastSeenAt": "2026-09-24T20:47:30.942Z"
+   "lastMult": 1.3501,
+   "lastLiqUsd": 594570,
+   "lastSeenAt": "2026-09-24T21:05:18.715Z"
   }
  ],
  "pending": [
@@ -218,6 +218,15 @@
    "symbol": "TEXTIT",
    "alertedAt": "2026-09-24T19:02:52.041Z",
    "alertPriceUsd": 0.009014,
+   "plan": {
+    "type": "knife"
+   }
+  },
+  {
+   "mint": "4ChT49V1iazP2XUGtycGkEsS6pRMqvGfUbqvRC9Z91ZT",
+   "symbol": "MOS",
+   "alertedAt": "2026-09-24T21:05:17.109Z",
+   "alertPriceUsd": 0.0007814,
    "plan": {
     "type": "knife"
    }
