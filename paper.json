@@ -1,5 +1,5 @@
 {
- "alertLines": 173,
+ "alertLines": 174,
  "wallets": [
   {
    "id": 1,
@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0504,
-   "lastLiqUsd": 514828.12,
-   "lastSeenAt": "2026-09-24T14:43:22.079Z"
+   "lastMult": 1.2053,
+   "lastLiqUsd": 548964.86,
+   "lastSeenAt": "2026-09-24T14:57:07.720Z"
   }
  ],
  "pending": [
@@ -607,6 +607,16 @@
     "type": "knife"
    },
    "at": "2026-09-24T11:23:09.775Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "GTBxUiw6wJdmmkCGZgRHLyYxqu1vG4KtRpeox6yDpump",
+   "symbol": "JEANPHIL",
+   "alertedAt": "2026-09-24T14:57:06.071Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-24T14:57:07.720Z",
    "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
