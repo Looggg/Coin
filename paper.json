@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1522,
-   "lastLiqUsd": 526685.58,
-   "lastSeenAt": "2026-09-24T11:13:10.348Z"
+   "lastMult": 1.1609,
+   "lastLiqUsd": 530396.54,
+   "lastSeenAt": "2026-09-24T11:23:09.775Z"
   }
  ],
  "pending": [
@@ -211,15 +211,6 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.0028624
-   }
-  },
-  {
-   "mint": "MboMMGXjGDi45hfjCVzYru32kEM5nw7VzCqCofZpump",
-   "symbol": "KCAT",
-   "alertedAt": "2026-09-24T10:46:15.092Z",
-   "alertPriceUsd": 0.000272,
-   "plan": {
-    "type": "knife"
    }
   }
  ],
@@ -606,6 +597,16 @@
     "maxPriceUsd": 0.0010856
    },
    "at": "2026-09-24T11:13:10.348Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "MboMMGXjGDi45hfjCVzYru32kEM5nw7VzCqCofZpump",
+   "symbol": "KCAT",
+   "alertedAt": "2026-09-24T10:46:15.092Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-24T11:23:09.775Z",
    "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
