@@ -1,5 +1,5 @@
 {
- "alertLines": 180,
+ "alertLines": 181,
  "wallets": [
   {
    "id": 1,
@@ -218,6 +218,15 @@
    "symbol": "biketyson",
    "alertedAt": "2026-09-25T08:38:39.027Z",
    "alertPriceUsd": 0.001836,
+   "plan": {
+    "type": "knife"
+   }
+  },
+  {
+   "mint": "6vVfbQVRSXcfyQamPqCzcqmA86vCzb2d7B7gmDDqpump",
+   "symbol": "UPTOBER",
+   "alertedAt": "2026-09-25T10:38:31.699Z",
+   "alertPriceUsd": 0.0004615,
    "plan": {
     "type": "knife"
    }
