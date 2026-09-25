@@ -197,22 +197,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.2963,
-   "lastLiqUsd": 576108.6,
-   "lastSeenAt": "2026-09-25T00:51:07.531Z"
+   "lastMult": 1.2727,
+   "lastLiqUsd": 570099.52,
+   "lastSeenAt": "2026-09-25T00:57:15.690Z"
   }
  ],
  "pending": [
-  {
-   "mint": "6HU4CmRb15C2nQDx8Ld2f2W2wTdmog6aZiiXdrT5Pzi8",
-   "symbol": "GROK",
-   "alertedAt": "2026-09-24T00:55:27.112Z",
-   "alertPriceUsd": 0.003578,
-   "plan": {
-    "type": "dip",
-    "maxPriceUsd": 0.0028624
-   }
-  },
   {
    "mint": "udPEzBjbGMzYZbuLtByqLYhc4TEs6EebG8R7fwdpump",
    "symbol": "TEXTIT",
@@ -658,6 +648,17 @@
    },
    "at": "2026-09-24T18:01:07.120Z",
    "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "6HU4CmRb15C2nQDx8Ld2f2W2wTdmog6aZiiXdrT5Pzi8",
+   "symbol": "GROK",
+   "alertedAt": "2026-09-24T00:55:27.112Z",
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.0028624
+   },
+   "at": "2026-09-25T00:57:15.690Z",
+   "reason": "plan: no dip to 0.8x the alert price within 24h"
   }
  ]
 }
