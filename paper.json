@@ -1,5 +1,5 @@
 {
- "alertLines": 185,
+ "alertLines": 187,
  "wallets": [
   {
    "id": 1,
@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1582,
-   "lastLiqUsd": 225378.34,
-   "lastSeenAt": "2026-09-25T22:35:08.740Z"
+   "lastMult": 1.3048,
+   "lastLiqUsd": 239759.55,
+   "lastSeenAt": "2026-09-25T22:48:04.728Z"
   }
  ],
  "pending": [
@@ -241,6 +241,16 @@
    "alertPriceUsd": 0.006434,
    "plan": {
     "type": "knife"
+   }
+  },
+  {
+   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
+   "symbol": "WOJAK",
+   "alertedAt": "2026-09-25T22:48:02.575Z",
+   "alertPriceUsd": 0.00294,
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.002352
    }
   }
  ],
@@ -752,6 +762,16 @@
     "maxPriceUsd": 0.0013168
    },
    "at": "2026-09-25T21:48:15.780Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "HSUMi4rMgjrx7zRUabw3ogGu1pa5hmF2eVcXj9Apump",
+   "symbol": "goon",
+   "alertedAt": "2026-09-25T22:48:02.575Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-25T22:48:04.728Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
