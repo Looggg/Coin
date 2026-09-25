@@ -1,5 +1,5 @@
 {
- "alertLines": 181,
+ "alertLines": 182,
  "wallets": [
   {
    "id": 1,
@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.093,
-   "lastLiqUsd": 217668.74,
-   "lastSeenAt": "2026-09-25T11:54:22.519Z"
+   "lastMult": 1.1388,
+   "lastLiqUsd": 220788.07,
+   "lastSeenAt": "2026-09-25T12:25:19.886Z"
   }
  ],
  "pending": [
@@ -241,6 +241,16 @@
    "alertPriceUsd": 0.0004615,
    "plan": {
     "type": "knife"
+   }
+  },
+  {
+   "mint": "HaYRgD7rjwj1AwoWjafokj4196sufYm4vKFamLZVpump",
+   "symbol": "ARCHIBROWN",
+   "alertedAt": "2026-09-25T12:25:18.432Z",
+   "alertPriceUsd": 0.0002736,
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.00021888
    }
   }
  ],
