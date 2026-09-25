@@ -5,7 +5,7 @@
    "id": 1,
    "startedAt": "2026-09-18T14:12:47.598Z",
    "startUsd": 30,
-   "cashUsd": 12.7133,
+   "cashUsd": 2.7133,
    "solPriceAtStart": 108.34,
    "status": "active",
    "rules": {
@@ -210,18 +210,27 @@
    "lastSeenAt": "2026-09-25T09:54:23.570Z",
    "closedAt": "2026-09-25T09:54:23.570Z",
    "pnlUsd": -0.5981
-  }
- ],
- "pending": [
+  },
   {
+   "id": 7,
+   "wallet": 1,
    "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
    "symbol": "biketyson",
    "alertedAt": "2026-09-25T08:38:39.027Z",
    "alertPriceUsd": 0.001836,
-   "plan": {
-    "type": "knife"
-   }
-  },
+   "plan": "knife",
+   "openedAt": "2026-09-25T10:44:23.425Z",
+   "entryPriceUsd": 0.002054,
+   "entryLiqUsd": 206096.02,
+   "stakeUsd": 10,
+   "remainingFrac": 1,
+   "tookFirst": false,
+   "misses": 0,
+   "fills": [],
+   "status": "open"
+  }
+ ],
+ "pending": [
   {
    "mint": "6vVfbQVRSXcfyQamPqCzcqmA86vCzb2d7B7gmDDqpump",
    "symbol": "UPTOBER",
