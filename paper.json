@@ -228,22 +228,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1792,
-   "lastLiqUsd": 226588.77,
-   "lastSeenAt": "2026-09-25T21:35:08.904Z"
+   "lastMult": 1.187,
+   "lastLiqUsd": 227331.66,
+   "lastSeenAt": "2026-09-25T21:48:15.780Z"
   }
  ],
  "pending": [
-  {
-   "mint": "BxftAowY2dVa2h9KMqDTPk4oMxzU9k6uVbZuoorXpump",
-   "symbol": "Holdoween",
-   "alertedAt": "2026-09-25T16:20:59.921Z",
-   "alertPriceUsd": 0.001646,
-   "plan": {
-    "type": "dip",
-    "maxPriceUsd": 0.0013168
-   }
-  },
   {
    "mint": "6UtY9iTZMQQ5QZVrbzFnNaJntV7oySm9k97mvwnuZcxr",
    "symbol": "NEARKAT",
@@ -751,6 +741,17 @@
     "type": "market"
    },
    "at": "2026-09-25T20:36:17.605Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "BxftAowY2dVa2h9KMqDTPk4oMxzU9k6uVbZuoorXpump",
+   "symbol": "Holdoween",
+   "alertedAt": "2026-09-25T16:20:59.921Z",
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.0013168
+   },
+   "at": "2026-09-25T21:48:15.780Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
