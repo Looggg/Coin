@@ -1,5 +1,5 @@
 {
- "alertLines": 178,
+ "alertLines": 180,
  "wallets": [
   {
    "id": 1,
@@ -197,9 +197,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.926,
-   "lastLiqUsd": 480776.27,
-   "lastSeenAt": "2026-09-25T08:24:22.738Z"
+   "lastMult": 0.9294,
+   "lastLiqUsd": 480512.34,
+   "lastSeenAt": "2026-09-25T08:38:41.074Z"
   }
  ],
  "pending": [
@@ -208,6 +208,15 @@
    "symbol": "MOS",
    "alertedAt": "2026-09-24T21:05:17.109Z",
    "alertPriceUsd": 0.0007814,
+   "plan": {
+    "type": "knife"
+   }
+  },
+  {
+   "mint": "CbyTNf7UPzvewHh4Zp6umogM2RWahhmGRJWLJnPwpump",
+   "symbol": "biketyson",
+   "alertedAt": "2026-09-25T08:38:39.027Z",
+   "alertPriceUsd": 0.001836,
    "plan": {
     "type": "knife"
    }
@@ -659,6 +668,16 @@
     "type": "knife"
    },
    "at": "2026-09-25T03:07:15.173Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "CTPoyCwkjMvoJwU4xvZZqoD8tiYk6yDchySiN5gGpump",
+   "symbol": "fone",
+   "alertedAt": "2026-09-25T08:38:39.027Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-25T08:38:41.074Z",
    "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
