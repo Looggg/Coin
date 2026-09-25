@@ -197,21 +197,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0417,
-   "lastLiqUsd": 509811.93,
-   "lastSeenAt": "2026-09-25T02:57:15.168Z"
+   "lastMult": 0.9704,
+   "lastLiqUsd": 491831.97,
+   "lastSeenAt": "2026-09-25T03:07:15.173Z"
   }
  ],
  "pending": [
-  {
-   "mint": "udPEzBjbGMzYZbuLtByqLYhc4TEs6EebG8R7fwdpump",
-   "symbol": "TEXTIT",
-   "alertedAt": "2026-09-24T19:02:52.041Z",
-   "alertPriceUsd": 0.009014,
-   "plan": {
-    "type": "knife"
-   }
-  },
   {
    "mint": "4ChT49V1iazP2XUGtycGkEsS6pRMqvGfUbqvRC9Z91ZT",
    "symbol": "MOS",
@@ -659,6 +650,16 @@
    },
    "at": "2026-09-25T00:57:15.690Z",
    "reason": "plan: no dip to 0.8x the alert price within 24h"
+  },
+  {
+   "mint": "udPEzBjbGMzYZbuLtByqLYhc4TEs6EebG8R7fwdpump",
+   "symbol": "TEXTIT",
+   "alertedAt": "2026-09-24T19:02:52.041Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-25T03:07:15.173Z",
+   "reason": "wallet 1 has $3.31, stake is $10"
   }
  ]
 }
