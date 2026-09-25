@@ -228,22 +228,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.2722,
-   "lastLiqUsd": 234583.67,
-   "lastSeenAt": "2026-09-25T13:05:32.759Z"
+   "lastMult": 1.3666,
+   "lastLiqUsd": 243346.46,
+   "lastSeenAt": "2026-09-25T13:21:13.817Z"
   }
  ],
- "pending": [
-  {
-   "mint": "6vVfbQVRSXcfyQamPqCzcqmA86vCzb2d7B7gmDDqpump",
-   "symbol": "UPTOBER",
-   "alertedAt": "2026-09-25T10:38:31.699Z",
-   "alertPriceUsd": 0.0004615,
-   "plan": {
-    "type": "knife"
-   }
-  }
- ],
+ "pending": [],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -721,6 +711,16 @@
     "maxPriceUsd": 0.00021888
    },
    "at": "2026-09-25T13:05:32.759Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "6vVfbQVRSXcfyQamPqCzcqmA86vCzb2d7B7gmDDqpump",
+   "symbol": "UPTOBER",
+   "alertedAt": "2026-09-25T10:38:31.699Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-25T13:21:13.817Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
