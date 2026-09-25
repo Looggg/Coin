@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.3481,
-   "lastLiqUsd": 241287.21,
-   "lastSeenAt": "2026-09-25T12:55:33.294Z"
+   "lastMult": 1.2722,
+   "lastLiqUsd": 234583.67,
+   "lastSeenAt": "2026-09-25T13:05:32.759Z"
   }
  ],
  "pending": [
@@ -241,16 +241,6 @@
    "alertPriceUsd": 0.0004615,
    "plan": {
     "type": "knife"
-   }
-  },
-  {
-   "mint": "HaYRgD7rjwj1AwoWjafokj4196sufYm4vKFamLZVpump",
-   "symbol": "ARCHIBROWN",
-   "alertedAt": "2026-09-25T12:25:18.432Z",
-   "alertPriceUsd": 0.0002736,
-   "plan": {
-    "type": "dip",
-    "maxPriceUsd": 0.00021888
    }
   }
  ],
@@ -721,6 +711,17 @@
    },
    "at": "2026-09-25T09:38:01.510Z",
    "reason": "wallet 1 has $3.31, stake is $10"
+  },
+  {
+   "mint": "HaYRgD7rjwj1AwoWjafokj4196sufYm4vKFamLZVpump",
+   "symbol": "ARCHIBROWN",
+   "alertedAt": "2026-09-25T12:25:18.432Z",
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.00021888
+   },
+   "at": "2026-09-25T13:05:32.759Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
 }
