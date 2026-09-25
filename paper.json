@@ -1,5 +1,5 @@
 {
- "alertLines": 184,
+ "alertLines": 185,
  "wallets": [
   {
    "id": 1,
@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1811,
-   "lastLiqUsd": 227280.59,
-   "lastSeenAt": "2026-09-25T20:22:01.117Z"
+   "lastMult": 1.1675,
+   "lastLiqUsd": 226658.31,
+   "lastSeenAt": "2026-09-25T20:36:17.605Z"
   }
  ],
  "pending": [
@@ -741,6 +741,16 @@
     "type": "knife"
    },
    "at": "2026-09-25T13:21:13.817Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "D1YZZg9dBZ7AbfknZVbaeVLto36eySwoFYEVhZrD4F4n",
+   "symbol": "GO",
+   "alertedAt": "2026-09-25T20:36:15.203Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-25T20:36:17.605Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
