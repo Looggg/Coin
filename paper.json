@@ -228,22 +228,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8019,
-   "lastLiqUsd": 187307.47,
-   "lastSeenAt": "2026-09-26T22:41:54.065Z"
+   "lastMult": 0.8359,
+   "lastLiqUsd": 191075.65,
+   "lastSeenAt": "2026-09-26T22:51:54.094Z"
   }
  ],
  "pending": [
-  {
-   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
-   "symbol": "WOJAK",
-   "alertedAt": "2026-09-25T22:48:02.575Z",
-   "alertPriceUsd": 0.00294,
-   "plan": {
-    "type": "dip",
-    "maxPriceUsd": 0.002352
-   }
-  },
   {
    "mint": "7M3gDRgozcumFsiTeXwjB8cYxpg7Q9R7rH7rkw2Fpump",
    "symbol": "CRIME",
@@ -885,6 +875,17 @@
    },
    "at": "2026-09-26T22:16:31.140Z",
    "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
+   "symbol": "WOJAK",
+   "alertedAt": "2026-09-25T22:48:02.575Z",
+   "plan": {
+    "type": "dip",
+    "maxPriceUsd": 0.002352
+   },
+   "at": "2026-09-26T22:51:54.094Z",
+   "reason": "plan: no dip to 0.8x the alert price within 24h"
   }
  ]
 }
