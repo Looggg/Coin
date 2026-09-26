@@ -1,5 +1,5 @@
 {
- "alertLines": 191,
+ "alertLines": 192,
  "wallets": [
   {
    "id": 1,
@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9966,
-   "lastLiqUsd": 208494.51,
-   "lastSeenAt": "2026-09-26T13:04:01.226Z"
+   "lastMult": 1.0336,
+   "lastLiqUsd": 212150.09,
+   "lastSeenAt": "2026-09-26T13:17:10.448Z"
   }
  ],
  "pending": [
@@ -242,6 +242,15 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.002352
+   }
+  },
+  {
+   "mint": "CvUX4G2tzq7J3ECmNvWZLayZYV6KpgQp6SJ5K8Uvsu5g",
+   "symbol": "parafactual",
+   "alertedAt": "2026-09-26T13:17:08.796Z",
+   "alertPriceUsd": 0.001443,
+   "plan": {
+    "type": "knife"
    }
   }
  ],
