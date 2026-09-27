@@ -1,5 +1,5 @@
 {
- "alertLines": 199,
+ "alertLines": 200,
  "wallets": [
   {
    "id": 1,
@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7975,
-   "lastLiqUsd": 186829.98,
-   "lastSeenAt": "2026-09-27T00:01:54.089Z"
+   "lastMult": 0.7955,
+   "lastLiqUsd": 186388.72,
+   "lastSeenAt": "2026-09-27T00:18:49.669Z"
   }
  ],
  "pending": [
@@ -242,6 +242,15 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.0021896
+   }
+  },
+  {
+   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
+   "symbol": "ELON",
+   "alertedAt": "2026-09-27T00:18:47.878Z",
+   "alertPriceUsd": 0.002803,
+   "plan": {
+    "type": "knife"
    }
   }
  ],
