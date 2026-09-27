@@ -228,9 +228,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8043,
-   "lastLiqUsd": 187255.36,
-   "lastSeenAt": "2026-09-27T01:21:10.046Z"
+   "lastMult": 0.7989,
+   "lastLiqUsd": 186606.87,
+   "lastSeenAt": "2026-09-27T01:31:09.287Z"
   }
  ],
  "pending": [
@@ -242,15 +242,6 @@
    "plan": {
     "type": "dip",
     "maxPriceUsd": 0.0021896
-   }
-  },
-  {
-   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
-   "symbol": "ELON",
-   "alertedAt": "2026-09-27T00:18:47.878Z",
-   "alertPriceUsd": 0.002803,
-   "plan": {
-    "type": "knife"
    }
   }
  ],
@@ -915,6 +906,16 @@
     "type": "market"
    },
    "at": "2026-09-27T00:55:52.166Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
+   "symbol": "ELON",
+   "alertedAt": "2026-09-27T00:18:47.878Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-27T01:31:09.287Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
