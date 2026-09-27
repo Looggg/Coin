@@ -1,5 +1,5 @@
 {
- "alertLines": 204,
+ "alertLines": 205,
  "wallets": [
   {
    "id": 1,
@@ -228,19 +228,20 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8111,
-   "lastLiqUsd": 190711.4,
-   "lastSeenAt": "2026-09-27T09:54:25.003Z"
+   "lastMult": 0.813,
+   "lastLiqUsd": 190996.9,
+   "lastSeenAt": "2026-09-27T10:09:00.609Z"
   }
  ],
  "pending": [
   {
-   "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
-   "symbol": "BTC",
-   "alertedAt": "2026-09-27T05:55:21.972Z",
-   "alertPriceUsd": 0.002367,
+   "mint": "yFcTuQJCMsd1Asya15GZ7h4KGdxsujRLcUiTWWXpump",
+   "symbol": "SDOG",
+   "alertedAt": "2026-09-27T10:08:59.318Z",
+   "alertPriceUsd": 0.001351,
    "plan": {
-    "type": "knife"
+    "type": "dip",
+    "maxPriceUsd": 0.0010808
    }
   }
  ],
@@ -946,6 +947,16 @@
     "type": "knife"
    },
    "at": "2026-09-27T08:24:24.369Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
+   "symbol": "BTC",
+   "alertedAt": "2026-09-27T05:55:21.972Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-27T10:09:00.609Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
