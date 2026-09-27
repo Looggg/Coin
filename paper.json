@@ -1,5 +1,5 @@
 {
- "alertLines": 209,
+ "alertLines": 210,
  "wallets": [
   {
    "id": 1,
@@ -259,9 +259,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7773,
-   "lastLiqUsd": 95517.93,
-   "lastSeenAt": "2026-09-27T20:46:41.963Z"
+   "lastMult": 0.6924,
+   "lastLiqUsd": 89989.09,
+   "lastSeenAt": "2026-09-27T21:04:05.288Z"
   }
  ],
  "pending": [],
@@ -1017,6 +1017,16 @@
     "type": "market"
    },
    "at": "2026-09-27T19:04:07.044Z",
+   "reason": "wallet 1 has $0.96, stake is $10"
+  },
+  {
+   "mint": "jLz71QZfjnZZMLjUaCBw7KmUyftkkNq8NkWi2u9dyap",
+   "symbol": "YAP",
+   "alertedAt": "2026-09-27T21:04:03.056Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-27T21:04:05.288Z",
    "reason": "wallet 1 has $0.96, stake is $10"
   }
  ]
