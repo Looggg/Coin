@@ -230,19 +230,10 @@
    "status": "open",
    "lastMult": 0.7751,
    "lastLiqUsd": 186480.14,
-   "lastSeenAt": "2026-09-27T08:14:24.338Z"
+   "lastSeenAt": "2026-09-27T08:24:24.369Z"
   }
  ],
  "pending": [
-  {
-   "mint": "HgcxVs6kJhPAaGqnPNGaa7zYgNT49hJrLufiqcNMuYZT",
-   "symbol": "FEELSGOOD",
-   "alertedAt": "2026-09-27T05:55:21.972Z",
-   "alertPriceUsd": 0.002564,
-   "plan": {
-    "type": "knife"
-   }
-  },
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
    "symbol": "BTC",
@@ -945,6 +936,16 @@
     "type": "market"
    },
    "at": "2026-09-27T04:54:46.469Z",
+   "reason": "wallet 1 has $2.71, stake is $10"
+  },
+  {
+   "mint": "HgcxVs6kJhPAaGqnPNGaa7zYgNT49hJrLufiqcNMuYZT",
+   "symbol": "FEELSGOOD",
+   "alertedAt": "2026-09-27T05:55:21.972Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-27T08:24:24.369Z",
    "reason": "wallet 1 has $2.71, stake is $10"
   }
  ]
