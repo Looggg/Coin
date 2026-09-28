@@ -1,5 +1,5 @@
 {
- "alertLines": 215,
+ "alertLines": 216,
  "wallets": [
   {
    "id": 1,
@@ -314,9 +314,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.5816,
-   "lastLiqUsd": 39629.15,
-   "lastSeenAt": "2026-09-28T17:16:23.933Z"
+   "lastMult": 0.6301,
+   "lastLiqUsd": 41358.75,
+   "lastSeenAt": "2026-09-28T17:30:50.437Z"
   },
   {
    "id": 10,
@@ -335,9 +335,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.981,
-   "lastLiqUsd": 660536.6,
-   "lastSeenAt": "2026-09-28T17:16:23.933Z"
+   "lastMult": 0.9745,
+   "lastLiqUsd": 656669.42,
+   "lastSeenAt": "2026-09-28T17:30:50.437Z"
   },
   {
    "id": 11,
@@ -356,9 +356,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.1763,
-   "lastLiqUsd": 328709.39,
-   "lastSeenAt": "2026-09-28T17:16:23.933Z"
+   "lastMult": 1.1541,
+   "lastLiqUsd": 324307.68,
+   "lastSeenAt": "2026-09-28T17:30:50.437Z"
   }
  ],
  "pending": [],
@@ -1144,6 +1144,16 @@
     "type": "market"
    },
    "at": "2026-09-28T16:31:05.856Z",
+   "reason": "wallet 2 has $0.00, stake is $10"
+  },
+  {
+   "mint": "8k4sBtEeK4pf26noKqApv8NBTnuSJcbdwpKYknk5PbAA",
+   "symbol": "CALI",
+   "alertedAt": "2026-09-28T17:30:48.109Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-28T17:30:50.437Z",
    "reason": "wallet 2 has $0.00, stake is $10"
   }
  ]
