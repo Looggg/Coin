@@ -1,5 +1,5 @@
 {
- "alertLines": 213,
+ "alertLines": 214,
  "wallets": [
   {
    "id": 1,
@@ -29,7 +29,7 @@
    "id": 2,
    "startedAt": "2026-09-28T01:04:16.858Z",
    "startUsd": 30,
-   "cashUsd": 10,
+   "cashUsd": 0,
    "solPriceAtStart": 121.43,
    "status": "active",
    "rules": {
@@ -314,9 +314,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6495,
-   "lastLiqUsd": 41959.78,
-   "lastSeenAt": "2026-09-28T15:16:24.233Z"
+   "lastMult": 0.6644,
+   "lastLiqUsd": 42392.97,
+   "lastSeenAt": "2026-09-28T15:29:50.480Z"
   },
   {
    "id": 10,
@@ -335,9 +335,27 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9563,
-   "lastLiqUsd": 645582.76,
-   "lastSeenAt": "2026-09-28T15:16:24.233Z"
+   "lastMult": 0.9562,
+   "lastLiqUsd": 645680.02,
+   "lastSeenAt": "2026-09-28T15:29:50.480Z"
+  },
+  {
+   "id": 11,
+   "wallet": 2,
+   "mint": "AQVcP67EpMyu4cBZZjqMu91cVsWy1aX98JmcZm1FyY9",
+   "symbol": "AQUA",
+   "alertedAt": "2026-09-28T15:29:48.441Z",
+   "alertPriceUsd": 0.002216,
+   "plan": "market",
+   "openedAt": "2026-09-28T15:29:50.480Z",
+   "entryPriceUsd": 0.002394,
+   "entryLiqUsd": 293394.92,
+   "stakeUsd": 10,
+   "remainingFrac": 1,
+   "tookFirst": false,
+   "misses": 0,
+   "fills": [],
+   "status": "open"
   }
  ],
  "pending": [],
