@@ -259,22 +259,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6275,
-   "lastLiqUsd": 85666.06,
-   "lastSeenAt": "2026-09-28T00:08:37.464Z"
+   "lastMult": 0.6263,
+   "lastLiqUsd": 85472.77,
+   "lastSeenAt": "2026-09-28T00:18:38.133Z"
   }
  ],
- "pending": [
-  {
-   "mint": "A7iQ8N5jKDrg1YUxJ7v8aN5AtkwJaUTNhq1jZ8YLFrAJ",
-   "symbol": "ALX",
-   "alertedAt": "2026-09-28T00:04:44.463Z",
-   "alertPriceUsd": 0.0002449,
-   "plan": {
-    "type": "knife"
-   }
-  }
- ],
+ "pending": [],
  "skipped": [
   {
    "mint": "E4Ap4icMLwKot8rkkTbq5JkS5kZxt5XCE3yfxbzYBjHx",
@@ -1037,6 +1027,16 @@
     "type": "market"
    },
    "at": "2026-09-27T21:04:05.288Z",
+   "reason": "wallet 1 has $0.96, stake is $10"
+  },
+  {
+   "mint": "A7iQ8N5jKDrg1YUxJ7v8aN5AtkwJaUTNhq1jZ8YLFrAJ",
+   "symbol": "ALX",
+   "alertedAt": "2026-09-28T00:04:44.463Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-28T00:18:38.133Z",
    "reason": "wallet 1 has $0.96, stake is $10"
   }
  ]
