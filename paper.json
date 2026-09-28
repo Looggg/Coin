@@ -314,9 +314,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.8275,
-   "lastLiqUsd": 48418.51,
-   "lastSeenAt": "2026-09-28T07:59:11.679Z"
+   "lastMult": 0.8,
+   "lastLiqUsd": 47523.65,
+   "lastSeenAt": "2026-09-28T08:09:11.976Z"
   }
  ],
  "pending": [],
