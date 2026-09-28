@@ -314,9 +314,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.6887,
-   "lastLiqUsd": 43361.82,
-   "lastSeenAt": "2026-09-28T10:29:11.025Z"
+   "lastMult": 0.7204,
+   "lastLiqUsd": 44563.57,
+   "lastSeenAt": "2026-09-28T10:39:11.656Z"
   },
   {
    "id": 10,
@@ -335,9 +335,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 1.0332,
-   "lastLiqUsd": 671085.48,
-   "lastSeenAt": "2026-09-28T10:29:11.025Z"
+   "lastMult": 1.014,
+   "lastLiqUsd": 665422.73,
+   "lastSeenAt": "2026-09-28T10:39:11.656Z"
   }
  ],
  "pending": [],
