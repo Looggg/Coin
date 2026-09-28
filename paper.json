@@ -1,5 +1,5 @@
 {
- "alertLines": 212,
+ "alertLines": 213,
  "wallets": [
   {
    "id": 1,
@@ -29,7 +29,7 @@
    "id": 2,
    "startedAt": "2026-09-28T01:04:16.858Z",
    "startUsd": 30,
-   "cashUsd": 20,
+   "cashUsd": 10,
    "solPriceAtStart": 121.43,
    "status": "active",
    "rules": {
@@ -314,9 +314,27 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.688,
-   "lastLiqUsd": 44092.69,
-   "lastSeenAt": "2026-09-28T08:39:12.432Z"
+   "lastMult": 0.6421,
+   "lastLiqUsd": 42326.27,
+   "lastSeenAt": "2026-09-28T08:52:05.709Z"
+  },
+  {
+   "id": 10,
+   "wallet": 2,
+   "mint": "CTPoyCwkjMvoJwU4xvZZqoD8tiYk6yDchySiN5gGpump",
+   "symbol": "fone",
+   "alertedAt": "2026-09-28T08:52:03.997Z",
+   "alertPriceUsd": 0.007484,
+   "plan": "market",
+   "openedAt": "2026-09-28T08:52:05.709Z",
+   "entryPriceUsd": 0.007413,
+   "entryLiqUsd": 660337.15,
+   "stakeUsd": 10,
+   "remainingFrac": 1,
+   "tookFirst": false,
+   "misses": 0,
+   "fills": [],
+   "status": "open"
   }
  ],
  "pending": [],
