@@ -1,5 +1,5 @@
 {
- "alertLines": 221,
+ "alertLines": 223,
  "wallets": [
   {
    "id": 1,
@@ -345,9 +345,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9446,
-   "lastLiqUsd": 651743.66,
-   "lastSeenAt": "2026-09-29T12:49:17.637Z"
+   "lastMult": 0.9806,
+   "lastLiqUsd": 664965.98,
+   "lastSeenAt": "2026-09-29T14:24:17.903Z"
   },
   {
    "id": 11,
@@ -366,9 +366,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.774,
-   "lastLiqUsd": 253037.11,
-   "lastSeenAt": "2026-09-29T12:49:17.637Z"
+   "lastMult": 0.7398,
+   "lastLiqUsd": 246321.59,
+   "lastSeenAt": "2026-09-29T14:24:17.903Z"
   }
  ],
  "pending": [],
@@ -1214,6 +1214,26 @@
     "type": "knife"
    },
    "at": "2026-09-29T12:09:17.532Z",
+   "reason": "wallet 2 has $4.73, stake is $10"
+  },
+  {
+   "mint": "3iUTyNYW6xKv5kZUjtbrEDTsuJTrSVwvB3bQtxkLpump",
+   "symbol": "bukangi",
+   "alertedAt": "2026-09-29T14:24:15.897Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-29T14:24:17.903Z",
+   "reason": "wallet 2 has $4.73, stake is $10"
+  },
+  {
+   "mint": "HSUMi4rMgjrx7zRUabw3ogGu1pa5hmF2eVcXj9Apump",
+   "symbol": "goon",
+   "alertedAt": "2026-09-29T14:24:15.897Z",
+   "plan": {
+    "type": "market"
+   },
+   "at": "2026-09-29T14:24:17.903Z",
    "reason": "wallet 2 has $4.73, stake is $10"
   }
  ]
