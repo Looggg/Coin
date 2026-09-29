@@ -345,9 +345,9 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.9433,
-   "lastLiqUsd": 647149.03,
-   "lastSeenAt": "2026-09-29T07:33:08.136Z"
+   "lastMult": 0.945,
+   "lastLiqUsd": 648233.47,
+   "lastSeenAt": "2026-09-29T07:39:18.535Z"
   },
   {
    "id": 11,
@@ -366,21 +366,12 @@
    "misses": 0,
    "fills": [],
    "status": "open",
-   "lastMult": 0.7552,
-   "lastLiqUsd": 247893.72,
-   "lastSeenAt": "2026-09-29T07:33:08.136Z"
+   "lastMult": 0.7878,
+   "lastLiqUsd": 254679.9,
+   "lastSeenAt": "2026-09-29T07:39:18.535Z"
   }
  ],
  "pending": [
-  {
-   "mint": "527PdUTGwcFxVEMXt8tyRJA1nYbVedgSiSfh4s2LWTWz",
-   "symbol": "BOP",
-   "alertedAt": "2026-09-29T00:52:42.846Z",
-   "alertPriceUsd": 0.0007784,
-   "plan": {
-    "type": "knife"
-   }
-  },
   {
    "mint": "7BN68PVzqWV6EjK8J8Y6Q1h5C8FFD5ZRZVscXyJDpump",
    "symbol": "20xx",
@@ -1213,6 +1204,16 @@
     "type": "knife"
    },
    "at": "2026-09-29T07:33:08.136Z",
+   "reason": "wallet 2 has $4.73, stake is $10"
+  },
+  {
+   "mint": "527PdUTGwcFxVEMXt8tyRJA1nYbVedgSiSfh4s2LWTWz",
+   "symbol": "BOP",
+   "alertedAt": "2026-09-29T00:52:42.846Z",
+   "plan": {
+    "type": "knife"
+   },
+   "at": "2026-09-29T07:39:18.535Z",
    "reason": "wallet 2 has $4.73, stake is $10"
   }
  ]
